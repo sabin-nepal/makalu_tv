@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List _tabPages;
+  List<Widget> _tabPages = [];
   int _selectedIndex = 0;
   @override
   void initState() {
@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
+      print(index);
       _selectedIndex = index;
     });
   }
@@ -45,7 +46,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: _bottomNavigationBar(context),
-      body: Container() // This trailing comma makes auto-formatting nicer for build methods.
+      body: IndexedStack(
+                  children: _tabPages,
+                  index: _selectedIndex,
+                ) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
   Widget _bottomNavigationBar(BuildContext context){

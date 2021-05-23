@@ -6,7 +6,7 @@ import 'package:makalu_tv/app/models/news/news.dart';
 
 class NewsService{
 
- Future<List<News>> getNews() async{
+ static Future<List<News>> getNews() async{
 
     final _res = await http.get(Uri.parse(UrlHelper.newsUrl));
     if(_res.statusCode == 200){
