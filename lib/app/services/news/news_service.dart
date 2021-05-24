@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:makalu_tv/app/helpers/url.dart';
+import 'package:makalu_tv/app/core/url.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 
 class NewsService{
