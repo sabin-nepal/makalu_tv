@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/news_helper.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
-import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/shared/image_list_view.dart';
 import 'package:stacked_page_view/stacked_page_view.dart';
 

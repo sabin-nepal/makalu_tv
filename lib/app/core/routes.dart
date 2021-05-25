@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 
-class AppRoutes{
-
+class AppRoutes {
   static const String mainScreen = 'main_screen';
   static const String newsDetails = 'news_details';
 
@@ -37,5 +35,4 @@ class AppRoutes{
       );
     });
   }
-
 }
