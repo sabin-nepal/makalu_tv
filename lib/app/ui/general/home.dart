@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/ui/screens/category_screen.dart';
 import 'package:makalu_tv/app/ui/screens/news_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _tabPages = [
       NewsScreen(),
-      NewsScreen(),
+      CategoryScreen(),
       NewsScreen(),
       NewsScreen(),
     ];
@@ -32,20 +33,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          flexibleSpace: Container(
-              decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
-          centerTitle: true,
-          title: Text(
-            'Makalu News',
-          ),
-        ),
+        appBar: _buildAppBar(context),
         bottomNavigationBar: _bottomNavigationBar(context),
         body: IndexedStack(
           children: _tabPages,
           index: _selectedIndex,
         ) // This trailing comma makes auto-formatting nicer for build methods.
         );
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    String _title;
+    if (_selectedIndex == 0) {
+      _title = 'Makalu News';
+    } else if (_selectedIndex == 2) {
+      _title = 'CATEGORIES';
+    } else {
+      _title = 'Makalu News';
+    }
+    if(_selectedIndex == 1)
+    return null;
+    return AppBar(
+      flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+      centerTitle: true,
+      title: Text(
+        _title,
+      ),
+    );
   }
 
   Widget _bottomNavigationBar(BuildContext context) {

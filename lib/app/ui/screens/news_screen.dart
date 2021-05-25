@@ -12,10 +12,12 @@ class NewsScreen extends StatefulWidget {
 
 class _NewsScreenState extends State<NewsScreen> {
   final PageController pageController = PageController();
+  final _newsHelper = NewsHelper();
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: NewsHelper().newsListView,
+        stream: _newsHelper.newsListView,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container();
