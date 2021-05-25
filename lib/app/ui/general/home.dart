@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
       NewsScreen(),
       NewsScreen(),
     ];
-
   }
 
   void _onItemTapped(int index) {
@@ -32,27 +31,24 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration:BoxDecoration(
-            gradient: AppColors.primaryGradient
-          )
+        appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+          centerTitle: true,
+          title: Text(
+            'Makalu News',
+          ),
         ),
-        centerTitle: true,
-        title: Text(
-          'Makalu News',
-        ),
-      ),
-      bottomNavigationBar: _bottomNavigationBar(context),
-      body: IndexedStack(
-                  children: _tabPages,
-                  index: _selectedIndex,
-                ) // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        bottomNavigationBar: _bottomNavigationBar(context),
+        body: IndexedStack(
+          children: _tabPages,
+          index: _selectedIndex,
+        ) // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
-  Widget _bottomNavigationBar(BuildContext context){
+
+  Widget _bottomNavigationBar(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: AppColors.primaryGradient,
@@ -60,29 +56,19 @@ class _HomePageState extends State<HomePage> {
       child: BottomNavigationBar(
         backgroundColor: Colors.transparent,
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,        
+        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         unselectedItemColor: Colors.white,
         selectedItemColor: AppColors.iconColor,
-        items:[
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Apps'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home'
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            label: 'Apps'
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection),
-            label: 'Video'
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: 'Library'
-            ),
+              icon: Icon(Icons.video_collection), label: 'Video'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.library_books_outlined), label: 'Library'),
         ],
       ),
     );

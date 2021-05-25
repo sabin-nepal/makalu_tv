@@ -26,6 +26,7 @@ dependencies:
   http: ^0.13.3  
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
+  stacked_page_view: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -39,8 +40,5 @@ flutter:
       fonts:
         - asset: assets/fonts/Mukta/Mukta-Regular.ttf
         - asset: assets/fonts/Mukta/Mukta-Bold.ttf
-        - asset: fonts/Mukta/Mukta-Italic.ttf
-          style: italic
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
