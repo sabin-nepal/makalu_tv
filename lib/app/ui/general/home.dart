@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
-import 'package:makalu_tv/app/ui/screens/category_screen.dart';
+import 'package:makalu_tv/app/ui/screens/home_screen.dart';
 import 'package:makalu_tv/app/ui/screens/news_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,13 +11,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Widget> _tabPages = [];
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   @override
   void initState() {
     super.initState();
     _tabPages = [
-      NewsScreen(),
-      CategoryScreen(),
+      HomeTab(),
       NewsScreen(),
       NewsScreen(),
     ];
@@ -45,14 +44,14 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAppBar(BuildContext context) {
     String _title;
     if (_selectedIndex == 0) {
-      _title = 'Makalu News';
-    } else if (_selectedIndex == 2) {
-      _title = 'CATEGORIES';
-    } else {
-      _title = 'Makalu News';
+      _title = 'Discover';
     }
-    if(_selectedIndex == 1)
-    return null;
+    if (_selectedIndex == 1) {
+      _title = 'News';
+    }
+    if (_selectedIndex == 2) {
+      _title = 'Video';
+    }
     return AppBar(
       flexibleSpace: Container(
           decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
@@ -72,18 +71,15 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         unselectedItemColor: Colors.white,
         selectedItemColor: AppColors.iconColor,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Apps'),
+          BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'News'),
           BottomNavigationBarItem(
               icon: Icon(Icons.video_collection), label: 'Video'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.library_books_outlined), label: 'Library'),
         ],
       ),
     );
