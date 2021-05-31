@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
-class ImageListView extends StatefulWidget {
+class CustomListItem extends StatefulWidget {
   final String title;
   final String content;
   final String image;
   final String excerpt;
   final bool isFullContent;
-  ImageListView(
+  CustomListItem(
       {this.title,
       this.image,
       this.content,
@@ -15,10 +15,10 @@ class ImageListView extends StatefulWidget {
       this.isFullContent: false});
 
   @override
-  _ImageListViewState createState() => _ImageListViewState();
+  _CustomListItemState createState() => _CustomListItemState();
 }
 
-class _ImageListViewState extends State<ImageListView> {
+class _CustomListItemState extends State<CustomListItem> {
   @override
   Widget build(BuildContext context) {
     return Column(

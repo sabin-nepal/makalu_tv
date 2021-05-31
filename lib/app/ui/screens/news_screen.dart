@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/news_helper.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
-import 'package:makalu_tv/app/ui/shared/image_list_view.dart';
+import 'package:makalu_tv/app/ui/shared/custom_list_item.dart';
 import 'package:stacked_page_view/stacked_page_view.dart';
 
 class NewsScreen extends StatefulWidget {
@@ -45,9 +45,8 @@ class _NewsScreenState extends State<NewsScreen> {
                   child: StackPageView(
                     index: index,
                     controller: pageController,
-                    child: ImageListView(
+                    child: CustomListItem(
                       title: _data.title,
-                      image: _data.thumbnail,
                       content: _data.content,
                       excerpt: _data.excerpt,
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
-import 'package:makalu_tv/app/ui/shared/image_list_view.dart';
+import 'package:makalu_tv/app/ui/shared/custom_list_item.dart';
 
 class NewsDetails extends StatelessWidget {
   final News news;
@@ -15,11 +15,10 @@ class NewsDetails extends StatelessWidget {
           centerTitle: true,
           title: Text("News Detail")),
       body: SingleChildScrollView(
-        child: ImageListView(
+        child: CustomListItem(
           title: news.title,
           content: news.content,
           isFullContent: true,
-          image: news.thumbnail,
         ),
       ),
     );

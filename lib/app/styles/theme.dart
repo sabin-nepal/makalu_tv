@@ -10,4 +10,5 @@ ThemeData theme = ThemeData(
   scaffoldBackgroundColor: AppColors.bgColor,
   primaryColor: AppColors.primaryColor,
   accentColor: AppColors.accentColor,
+  highlightColor: AppColors.primaryColor,
 );

@@ -29,6 +29,9 @@ dependencies:
   stacked_page_view: ^1.1.1
   cached_network_image: ^3.0.0
   carousel_slider: ^3.0.0
+  auto_size_text: ^2.1.0
+  visibility_detector: ^0.2.0
+  step_progress_indicator: ^1.0.0
 
 dev_dependencies:
   flutter_test:
