@@ -19,4 +19,34 @@ class NewsService{
   throw _res;
  }
 
+ static Future<List<News>> getNewsType(String type,int limit) async{
+
+    final _res = await http.get(Uri.parse('${UrlHelper.newsTypeUrl}/$type/$limit'));
+    if(_res.statusCode == 200){
+      final _decoded = jsonDecode(_res.body);
+      final _data = _decoded
+          .map<News>((e) => News.fromJson(e))
+          .toList();
+      return _data;
+    }
+  throw _res;
+ }
+
+  Future<News> setVote( String id,int choice) async{
+   final response = await http.post(
+    Uri.parse('${UrlHelper.newsUrl}/vote/$id'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, int>{
+      'choice': choice,
+    }),
+  );
+  if (response.statusCode == 201) {
+    return News.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to Vote.');
+  }
+ } 
+
 } 

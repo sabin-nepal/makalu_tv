@@ -6,13 +6,13 @@ import 'package:makalu_tv/app/models/news/insight.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/services/news/insight_service.dart';
+import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/category_tab_view.dart';
+import 'package:makalu_tv/app/ui/shared/primary_card.dart';
 import 'package:makalu_tv/app/ui/shared/search_bar.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -22,12 +22,22 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   Future _insightService;
   Future _categoryService;
+  Future _newsService;
   int selectedIndex = 1;
   @override
   void initState() {
     super.initState();
     _insightService = InsightService.getInsight();
     _categoryService = CategoryService.getCategoryNews();
+    _newsService = NewsService.getNewsType('poll',5);
+  }
+
+  List<Widget> indicator(){
+    var _list = [];
+    for(var i=0;i <10;i++){
+      _list.add('hello');
+    }
+    return _list;
   }
 
   @override
@@ -61,7 +71,14 @@ class _HomeTabState extends State<HomeTab> {
                 )),
             SizedBox(height: 20),
             Container(height: 500, child: _buildCategory(context)),
-            SizedBox(height:20),
+            SizedBox(height: 20),
+            Container(
+                margin: EdgeInsets.only(left: AppSizes.padding),
+                child: Text(
+                  "Poll",
+                  style: titleText,
+                )),  
+            Container(height: 400, child: _buildPoll(context)),
           ],
         ),
       ),
@@ -118,8 +135,12 @@ class _HomeTabState extends State<HomeTab> {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width / 3,
                       child: Center(
-                          child:
-                              InkWell(onTap: () {}, child: Text("View All",style: boldText,))),
+                          child: InkWell(
+                              onTap: () {},
+                              child: Text(
+                                "View All",
+                                style: boldText,
+                              ))),
                     );
                   }
                   final _data = _insight[i];
@@ -144,6 +165,33 @@ class _HomeTabState extends State<HomeTab> {
           if (snapshot.hasData) {
             return CategoryTabView(
               category: snapshot.data,
+            );
+          }
+          return Container();
+        });
+  }
+
+  Widget _buildPoll(BuildContext context) {
+    return FutureBuilder<List<News>>(
+        future: _newsService,
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Container();
+          }
+          if (snapshot.hasData) {
+            return ListView.builder(
+              physics: ClampingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                final _news = snapshot.data[index];
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: PrimaryCard(
+                    news: _news,
+                  ),
+                );
+              },
             );
           }
           return Container();
