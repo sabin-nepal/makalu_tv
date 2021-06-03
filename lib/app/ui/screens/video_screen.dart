@@ -1,7 +1,6 @@
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:makalu_tv/app/helpers/video_helper.dart';
 import 'package:makalu_tv/app/models/news/video.dart';
 import 'package:makalu_tv/app/services/news/video_service.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -12,7 +11,6 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  final _videoHelper = VideoHelper();
   String url;
   List video = [];
   int selectedIndex;
@@ -20,7 +18,6 @@ class _VideoScreenState extends State<VideoScreen> {
   void initState() {
     super.initState();
     _fetchData();
-    selectedIndex = 0;
   }
 
   void _fetchData() async {
