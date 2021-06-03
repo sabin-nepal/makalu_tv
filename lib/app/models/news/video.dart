@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class Video {
   final String id;
   final String title;
-  final List media;
+  final Map media;
+  final Map thumbnail;
   final List category;
   Video({
     @required this.id,
     @required this.title,
     this.media,
+    this.thumbnail,
     this.category,
   });
 
@@ -17,7 +19,8 @@ class Video {
       id: json['id'] as String,
       title: json['title'] as String,
       media: json['media'],
-      category: json['category'],
+      thumbnail: json['thumbnail'],
+      category: json['categories'],
     );
   }
 }
