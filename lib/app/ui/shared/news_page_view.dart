@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:stacked_page_view/stacked_page_view.dart';
 
-class NewsPageView extends StatelessWidget {
-  final PageController pageController;
+class NewsPageView extends StatefulWidget {
   final List<News> news;
-  NewsPageView({this.pageController, this.news});
+  NewsPageView({this.news});
+
+  @override
+  _NewsPageViewState createState() => _NewsPageViewState();
+}
+
+class _NewsPageViewState extends State<NewsPageView> {
+  final PageController pageController = PageController();
+  int remainingPage;
+  @override
+  void initState() {
+    super.initState();
+    remainingPage = widget.news.length - 1;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var currentPageValue = 0.0;
     return Container(
       child: PageView.builder(
+        onPageChanged: (index) {
+          int value = index + 1;
+          remainingPage = widget.news.length - value;
+          setState(() {});
+        },
         controller: pageController,
         pageSnapping: true,
         scrollDirection: Axis.vertical,
-        itemCount: news.length,
+        itemCount: widget.news.length,
         itemBuilder: (context, position) {
-          News _news = news[position];
+          News _news = widget.news[position];
           return GestureDetector(
             onHorizontalDragUpdate: (details) {
               if (details.primaryDelta < 0) {
@@ -29,6 +47,7 @@ class NewsPageView extends StatelessWidget {
                 );
               }
             },
+            onTap: () => _showToast(context),
             child: StackPageView(
               index: position,
               controller: pageController,
@@ -41,6 +60,17 @@ class NewsPageView extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: AppColors.primaryColor,
+        duration: Duration(milliseconds: 1000),
+        content: Text(remainingPage==0 ? 'No More News Refresh For New one' :'Remaing News $remainingPage'),
       ),
     );
   }
