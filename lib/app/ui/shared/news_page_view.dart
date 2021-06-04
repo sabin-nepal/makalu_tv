@@ -77,7 +77,7 @@ class _NewsPageViewState extends State<NewsPageView> {
       SnackBar(
         backgroundColor: AppColors.primaryColor,
         duration: Duration(milliseconds: 1000),
-        content: Text(remainingPage==0 ? 'No More News Refresh For New one' :'Remaing News $remainingPage'),
+        content: Text(remainingPage==0 ? 'No More News Refresh For New one' :'$remainingPage news is remaining'),
       ),
     );
   }

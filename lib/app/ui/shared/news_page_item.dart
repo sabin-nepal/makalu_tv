@@ -5,7 +5,7 @@ import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class NewsPageItem extends StatefulWidget {
+class NewsPageItem extends StatelessWidget {
   final String title;
   final String content;
   final List media;
@@ -19,11 +19,6 @@ class NewsPageItem extends StatefulWidget {
       this.isFullContent: false});
 
   @override
-  _NewsPageItemState createState() => _NewsPageItemState();
-}
-
-class _NewsPageItemState extends State<NewsPageItem> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -31,9 +26,9 @@ class _NewsPageItemState extends State<NewsPageItem> {
           height: 200,
           child: Card(
               child: PhotoViewGallery.builder(
-            itemCount: widget.media.length,
+            itemCount: media.length,
             builder: (context, i) {
-              var _media = widget.media[i];
+              var _media = media[i];
               return PhotoViewGalleryPageOptions.customChild(
                   disableGestures: true,
                   initialScale: PhotoViewComputedScale.contained * 2.0,
@@ -56,10 +51,10 @@ class _NewsPageItemState extends State<NewsPageItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.title,
+                title,
                 style: boldText,
               ),
-              widget.isFullContent ? Text(widget.content) : Text(widget.excerpt)
+              isFullContent ? Text(content) : Text(excerpt)
             ],
           ),
         ),
