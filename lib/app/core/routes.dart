@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
+import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 
 class AppRoutes {
   static const String mainScreen = 'main_screen';
   static const String newsDetails = 'news_details';
+  static const String fullImage = 'full_image';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => HomePage(),
@@ -19,6 +21,13 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (_) => NewsDetails(
                   news: _news,
+                ));
+      case fullImage:
+        Map _data = settings.arguments as Map;
+        String _imageUrl = _data['imageUrl'];
+        return MaterialPageRoute(
+            builder: (_) => FullImageView(
+                  imageUrl: _imageUrl,
                 ));
       default:
         return _errorRoute();

@@ -37,27 +37,34 @@ class _NewsPageViewState extends State<NewsPageView> {
         itemCount: widget.news.length,
         itemBuilder: (context, position) {
           News _news = widget.news[position];
-          return GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              if (details.primaryDelta < 0) {
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.newsDetails,
-                  arguments: {'news': _news},
-                );
-              }
-            },
-            onTap: () => _showToast(context),
-            child: StackPageView(
-              index: position,
-              controller: pageController,
-              child: NewsPageItem(
-                title: _news.title,
-                content: _news.content,
-                excerpt: _news.excerpt,
-                media: _news.media,
+          return Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onHorizontalDragUpdate: (details) {
+                    if (details.primaryDelta < 0) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.newsDetails,
+                        arguments: {'news': _news},
+                      );
+                    }
+                  },
+                  onTap: () => _showToast(context),
+                  child: StackPageView(
+                    index: position,
+                    controller: pageController,
+                    child: NewsPageItem(
+                      title: _news.title,
+                      content: _news.content,
+                      excerpt: _news.excerpt,
+                      media: _news.media,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Text("Swipe Left for More Details"),
+            ],
           );
         },
       ),
