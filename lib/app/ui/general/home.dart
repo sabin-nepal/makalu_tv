@@ -19,13 +19,13 @@ class _HomePageState extends State<HomePage> {
     _tabPages = [
       HomeTab(),
       NewsScreen(),
-      VideoScreen(),
+      HomeTab(),
+      //VideoScreen(),
     ];
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
   }
@@ -39,27 +39,6 @@ class _HomePageState extends State<HomePage> {
           index: _selectedIndex,
         ) // This trailing comma makes auto-formatting nicer for build methods.
         );
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    String _title;
-    if (_selectedIndex == 0) {
-      _title = 'Discover';
-    }
-    if (_selectedIndex == 1) {
-      _title = 'News';
-    }
-    if (_selectedIndex == 2) {
-      _title = 'Video';
-    }
-    return AppBar(
-      flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
-      centerTitle: true,
-      title: Text(
-        _title,
-      ),
-    );
   }
 
   Widget _bottomNavigationBar(BuildContext context) {

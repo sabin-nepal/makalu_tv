@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:makalu_tv/app/helpers/news_helper.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
+import 'package:makalu_tv/app/services/news/news_service.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
 
 class NewsScreen extends StatefulWidget {
@@ -9,25 +12,73 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  
-  final _newsHelper = NewsHelper();
+  int _newsLength;
+  int _newNews = 0;
+  @override
+  void initState() {
+    super.initState();
+    //_checkNews();
+  }
+
+  Future<void> _refreshNews(BuildContext context) async {
+    var _news = await NewsService.getNews();
+    return _news;
+  }
+
+  // _checkNews() async {
+  //   Timer.periodic(Duration(seconds: 10), (Timer timer) {
+  //     var _news = NewsService.getNews();
+  //     _news.then((value) {
+  //       if (value.length > _newsLength) {
+  //         _newNews = value.length - _newsLength;
+  //         setState(() {});
+  //       }
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: _newsHelper.newsListView,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Check your connection and try again..'));
-          } else {
-            List<News> news = snapshot.data;
-            return NewsPageView(
-              news: news,
-            );
-          }
-        });
+    return Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+          centerTitle: true,
+          title: Text(
+            'News',
+          ),
+          actions: [
+            Center(child: Text(_newNews > 0 ? _newNews.toString() : '')),
+            IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: AppColors.bgColor,
+              ),
+            )
+          ],
+        ),
+        body: RefreshIndicator(
+          onRefresh: () => _refreshNews(context),
+          child: FutureBuilder(
+              future: NewsService.getNews(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Check your connection and try again..'));
+                } else {
+                  List<News> news = snapshot.data;
+                  _newsLength = news.length;
+                  return NewsPageView(
+                    news: news,
+                  );
+                }
+              }),
+        ));
   }
 }
