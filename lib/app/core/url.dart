@@ -6,5 +6,6 @@ class UrlHelper{
   static const String categoryUrl = '${host}category';
   static const String categoryNewsUrl = '${host}category/news';
   static const String videoNewsUrl = '${host}video';
+  static const String advUrl = '${host}adv';
   
 }

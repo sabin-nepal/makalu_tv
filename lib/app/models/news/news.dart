@@ -6,12 +6,14 @@ class News {
   final String content;
   final String excerpt;
   final List media;
+  final String type;
   final Map pollResult;
   News({
     @required this.id,
     @required this.title,
     @required this.content,
     this.excerpt,
+    this.type,
     this.media,
     this.pollResult,
   });
@@ -22,6 +24,7 @@ class News {
       title: json['title'] as String,
       content: json['content'] as String,
       media: json['media'],
+      type: json['type'] as String,
       excerpt: json['excerpt'] as String,
       pollResult: json['pollResult'],
     );

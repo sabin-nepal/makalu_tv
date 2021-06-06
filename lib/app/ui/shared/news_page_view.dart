@@ -1,12 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
-import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:stacked_page_view/stacked_page_view.dart';
 
 class NewsPageView extends StatefulWidget {
-  final List<News> news;
+  final List news;
   NewsPageView({this.news});
 
   @override
@@ -36,10 +36,23 @@ class _NewsPageViewState extends State<NewsPageView> {
         scrollDirection: Axis.vertical,
         itemCount: widget.news.length,
         itemBuilder: (context, position) {
-          News _news = widget.news[position];
+          var _news = widget.news[position];
+          if(position == widget.news.length + 1){
+            return Container();
+          }
+          if (position.isOdd && _news.type == 'banner') {
+            return InkWell(
+              onTap: () => _showToast(context),
+              child: StackPageView(
+                  controller: pageController,
+                  index: position,
+                  child: CachedNetworkImage(
+                      imageUrl: _news.media['path'], fit: BoxFit.fill)),
+            );
+          }
           return Column(
             children: [
-              Expanded(
+              Flexible(
                 child: GestureDetector(
                   onHorizontalDragUpdate: (details) {
                     if (details.primaryDelta < 0) {
@@ -77,7 +90,9 @@ class _NewsPageViewState extends State<NewsPageView> {
       SnackBar(
         backgroundColor: AppColors.primaryColor,
         duration: Duration(milliseconds: 1000),
-        content: Text(remainingPage==0 ? 'No More News Refresh For New one' :'$remainingPage news is remaining'),
+        content: Text(remainingPage == 0
+            ? 'No More News Refresh For New one'
+            : '$remainingPage news is remaining'),
       ),
     );
   }

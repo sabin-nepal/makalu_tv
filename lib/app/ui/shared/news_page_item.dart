@@ -20,45 +20,47 @@ class NewsPageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 200,
-          child: Card(
-              child: PhotoViewGallery.builder(
-            itemCount: media.length,
-            builder: (context, i) {
-              var _media = media[i];
-              return PhotoViewGalleryPageOptions.customChild(
-                  disableGestures: true,
-                  initialScale: PhotoViewComputedScale.contained * 2.0,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.fullImage,
-                        arguments: {'imageUrl': _media['path']},
-                      );
-                    },
-                    child: CachedNetworkImage(imageUrl: _media['path']),
-                  ));
-            },
-          )),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: boldText,
-              ),
-              isFullContent ? Text(content) : Text(excerpt)
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: 200,
+            child: Card(
+                child: PhotoViewGallery.builder(
+              itemCount: media.length,
+              builder: (context, i) {
+                var _media = media[i];
+                return PhotoViewGalleryPageOptions.customChild(
+                    disableGestures: true,
+                    initialScale: PhotoViewComputedScale.contained * 2.0,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.fullImage,
+                          arguments: {'imageUrl': _media['path']},
+                        );
+                      },
+                      child: CachedNetworkImage(imageUrl: _media['path']),
+                    ));
+              },
+            )),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: boldText,
+                ),
+                isFullContent ? Text(content) : Text(excerpt)
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
