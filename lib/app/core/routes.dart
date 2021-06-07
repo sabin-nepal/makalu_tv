@@ -3,11 +3,13 @@ import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
+import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
 
 class AppRoutes {
   static const String mainScreen = 'main_screen';
   static const String newsDetails = 'news_details';
   static const String fullImage = 'full_image';
+  static const String insightScreen = 'insight_screen';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => HomePage(),
@@ -28,6 +30,13 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (_) => FullImageView(
                   imageUrl: _imageUrl,
+                ));
+      case insightScreen:
+        Map _data = settings.arguments as Map;
+        int _position = _data['position'];
+        return MaterialPageRoute(
+            builder: (_) => InsightScreen(
+                  position: _position,
                 ));
       default:
         return _errorRoute();

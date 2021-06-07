@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:makalu_tv/app/core/feed_item.dart';
+import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
@@ -59,9 +59,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
             IconButton(
               icon: Icon(Icons.bookmark),
-              onPressed: () {
-                
-              },
+              onPressed: () {},
             )
           ],
         ),
@@ -125,7 +123,13 @@ class _HomeTabState extends State<HomeTab> {
                       width: MediaQuery.of(context).size.width / 3,
                       child: Center(
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.insightScreen,
+                                  arguments: {'position': 0},
+                                );
+                              },
                               child: Text(
                                 "View All",
                                 style: boldText,
@@ -136,9 +140,18 @@ class _HomeTabState extends State<HomeTab> {
                   return Container(
                     padding: EdgeInsets.only(left: AppSizes.paddingSm),
                     child: Card(
-                        child: CachedNetworkImage(
-                      imageUrl: _data.media.first['path'],
-                      fit: BoxFit.cover,
+                        child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.insightScreen,
+                          arguments: {'position': i},
+                        );
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: _data.media.first['path'],
+                        fit: BoxFit.cover,
+                      ),
                     )),
                   );
                 });
