@@ -23,7 +23,7 @@ class Video {
       media: json['media'],
       thumbnail: json['thumbnail'],
       category: json['categories'],
-      type: json['categories'] ?? 'video',
+      type: json['type'] ?? 'video',
     );
   }
 }

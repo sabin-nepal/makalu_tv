@@ -2,6 +2,7 @@ import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/services/news/video_service.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -44,34 +45,51 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: BetterPlayer.network(
-              url,
-              betterPlayerConfiguration: BetterPlayerConfiguration(
-                aspectRatio: 16 / 9,
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+            decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+        centerTitle: true,
+        title: Text(
+          'Video',
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: BetterPlayer.network(
+                url,
+                betterPlayerConfiguration: BetterPlayerConfiguration(
+                  aspectRatio: 16 / 9,
+                ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: listVideo(context),
-        )
-      ],
+          Expanded(
+            child: listVideo(context),
+          )
+        ],
+      ),
     );
   }
 
   Widget listVideo(context) {
     List videoList = _mergeList();
+    if (videoList.isEmpty)
+      return Center(
+        child: Text("No video to show"),
+      );
     return ListView.builder(
         itemCount: videoList.length,
         itemBuilder: (context, i) {
           var _video = videoList[i];
+          print(_video.type);
           if (i.isOdd && _video.type == 'banner') {
-            return Container();
+            return Container(
+              child: CachedNetworkImage(imageUrl: _video.media['path']),
+            );
           }
           return Ink(
             color: selectedIndex == i ? Colors.grey : null,
