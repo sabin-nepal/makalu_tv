@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
-import 'package:stacked_page_view/stacked_page_view.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
@@ -43,7 +43,7 @@ class _NewsPageViewState extends State<NewsPageView> {
           if (position.isOdd && _news.type == 'banner') {
             return InkWell(
               onTap: () => _showToast(context),
-              child: StackPageView(
+              child: CustomStackPageView(
                   controller: pageController,
                   index: position,
                   child: CachedNetworkImage(
@@ -64,7 +64,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                     }
                   },
                   onTap: () => _showToast(context),
-                  child: StackPageView(
+                  child: CustomStackPageView(
                     index: position,
                     controller: pageController,
                     child: NewsPageItem(

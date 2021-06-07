@@ -18,7 +18,7 @@ class _InsightScreenState extends State<InsightScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController =  PageController(initialPage: 1,keepPage: true, viewportFraction: 1);
+    _pageController =  PageController(initialPage: widget.position,keepPage: true, viewportFraction: 1);
   }
 
   // @override

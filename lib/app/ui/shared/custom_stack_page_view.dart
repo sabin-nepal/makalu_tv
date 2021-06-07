@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// A Calculator.
 class CustomStackPageView extends StatefulWidget {
   CustomStackPageView({
-    this.initial,
+    this.initial:0,
     this.index,
      this.controller,
     this.child,
