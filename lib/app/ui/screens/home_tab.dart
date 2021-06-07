@@ -43,76 +43,65 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+          centerTitle: true,
+          title: Text(
+            'Discover',
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.bookmark),
+              onPressed: () {
+                
+              },
+            )
+          ],
+        ),
         body: Container(
-      margin: EdgeInsets.all(AppSizes.padding),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(height: 100, child: _buildFeed(context)),
-            Row(
+          margin: EdgeInsets.all(AppSizes.padding),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(left: AppSizes.padding),
+                        child: Text(
+                          "Insight",
+                          style: titleText,
+                        )),
+                  ],
+                ),
+                Container(height: 200.0, child: _buildInsight(context)),
+                SizedBox(height: 50),
                 Container(
                     margin: EdgeInsets.only(left: AppSizes.padding),
                     child: Text(
-                      "Insight",
+                      "Category",
                       style: titleText,
                     )),
+                SizedBox(height: 20),
+                Container(height: 500, child: _buildCategory(context)),
+                SizedBox(height: 20),
+                Container(
+                    margin: EdgeInsets.only(left: AppSizes.padding),
+                    child: Text(
+                      "Poll",
+                      style: titleText,
+                    )),
+                Container(height: 400, child: _buildPoll(context)),
               ],
             ),
-            Container(height: 200.0, child: _buildInsight(context)),
-            SizedBox(height: 50),
-            Container(
-                margin: EdgeInsets.only(left: AppSizes.padding),
-                child: Text(
-                  "Category",
-                  style: titleText,
-                )),
-            SizedBox(height: 20),
-            Container(height: 500, child: _buildCategory(context)),
-            SizedBox(height: 20),
-            Container(
-                margin: EdgeInsets.only(left: AppSizes.padding),
-                child: Text(
-                  "Poll",
-                  style: titleText,
-                )),
-            Container(height: 400, child: _buildPoll(context)),
-          ],
-        ),
-      ),
-    ));
-  }
-
-  _buildFeed(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: feedItem.length,
-        itemBuilder: (context, i) {
-          final _item = feedItem[i];
-          return Column(children: [
-            IconButton(icon: _item.icon, onPressed: () {}),
-            Text(_item.title),
-          ]);
-        });
-  }
-
-  Widget _buildSearch() {
-    return TextField(
-        onTap: () {
-          showSearch(context: context, delegate: DataSearch());
-        },
-        readOnly: true,
-        decoration: InputDecoration(
-          border: new OutlineInputBorder(
-              borderSide: new BorderSide(
-                  style: BorderStyle.solid, color: Colors.white)),
-          hintText: 'Search...',
-          prefixIcon: const Icon(
-            Icons.search,
-            color: AppColors.accentColor,
           ),
         ));
   }
