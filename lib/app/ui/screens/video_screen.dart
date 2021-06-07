@@ -1,11 +1,12 @@
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:makalu_tv/app/models/news/video.dart';
 import 'package:makalu_tv/app/services/news/video_service.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
 class VideoScreen extends StatefulWidget {
+  final List adv;
+  VideoScreen({this.adv});
   @override
   _VideoScreenState createState() => _VideoScreenState();
 }
@@ -27,6 +28,18 @@ class _VideoScreenState extends State<VideoScreen> {
       url = element.media['path'];
       setState(() {});
     });
+  }
+
+  _mergeList() {
+    var j = 0;
+    if (widget.adv.isNotEmpty)
+      for (var i = 0; i < video.length; i++) {
+        if (i % 2 == 1) {
+          video.insert(i, widget.adv[j]);
+          j++;
+        }
+      }
+    return video;
   }
 
   @override
@@ -52,30 +65,38 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Widget listVideo(context) {
-    return ListView.separated(
-      itemCount: video.length,
-      itemBuilder: (context, i) {
-        Video _video = video[i];
-        return Ink(
-          color: selectedIndex == i ? Colors.grey : null,
-          child: ListTile(
-            onTap: () {
-              url = _video.media['path'];
-              setState(() {
-                selectedIndex = i;
-              });
-            },
-            leading: _video.thumbnail != null
-                ? CachedNetworkImage(
-                    imageUrl: _video.thumbnail['path'],
-                  )
-                : null,
-            title: Text(_video.title,style: labelText,),
-            subtitle: Text(_video.category.first['title'],style: subTitleText,),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => Divider(),
-    );
+    List videoList = _mergeList();
+    return ListView.builder(
+        itemCount: videoList.length,
+        itemBuilder: (context, i) {
+          var _video = videoList[i];
+          if (i.isOdd && _video.type == 'banner') {
+            return Container();
+          }
+          return Ink(
+            color: selectedIndex == i ? Colors.grey : null,
+            child: ListTile(
+              onTap: () {
+                url = _video.media['path'];
+                setState(() {
+                  selectedIndex = i;
+                });
+              },
+              leading: _video.thumbnail != null
+                  ? CachedNetworkImage(
+                      imageUrl: _video.thumbnail['path'],
+                    )
+                  : null,
+              title: Text(
+                _video.title,
+                style: labelText,
+              ),
+              subtitle: Text(
+                _video.category.first['title'],
+                style: subTitleText,
+              ),
+            ),
+          );
+        });
   }
 }

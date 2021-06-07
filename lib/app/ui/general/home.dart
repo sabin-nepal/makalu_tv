@@ -22,11 +22,10 @@ class _HomePageState extends State<HomePage> {
     _tabPages = [
       HomeTab(),
       NewsScreen(adv: _adv),
-      HomeTab(),
-      //VideoScreen(),
+      VideoScreen(adv: _adv),
     ];
   }
-  
+
   _fetchAdv() async {
     var adv = await AdvService.getAdv();
     adv.forEach((element) {

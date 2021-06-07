@@ -6,12 +6,14 @@ class Video {
   final Map media;
   final Map thumbnail;
   final List category;
+  final String type;
   Video({
     @required this.id,
     @required this.title,
     this.media,
     this.thumbnail,
     this.category,
+    this.type,
   });
 
   factory Video.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class Video {
       media: json['media'],
       thumbnail: json['thumbnail'],
       category: json['categories'],
+      type: json['categories'] ?? 'video',
     );
   }
 }
