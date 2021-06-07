@@ -56,17 +56,18 @@ class _VideoScreenState extends State<VideoScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: BetterPlayer.network(
-                url,
-                betterPlayerConfiguration: BetterPlayerConfiguration(
-                  aspectRatio: 16 / 9,
+          if (video.isNotEmpty)
+            Container(
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: BetterPlayer.network(
+                  url,
+                  betterPlayerConfiguration: BetterPlayerConfiguration(
+                    aspectRatio: 16 / 9,
+                  ),
                 ),
               ),
             ),
-          ),
           Expanded(
             child: listVideo(context),
           )

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/services/adv_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
-import 'package:makalu_tv/app/ui/screens/home_screen.dart';
-import 'package:makalu_tv/app/ui/screens/news_screen.dart';
+import 'package:makalu_tv/app/ui/screens/home_tab.dart';
+import 'package:makalu_tv/app/ui/screens/news_tab.dart';
 import 'package:makalu_tv/app/ui/screens/video_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     _fetchAdv();
     _tabPages = [
       HomeTab(),
-      NewsScreen(adv: _adv),
+      NewsTab(adv: _adv),
       VideoScreen(adv: _adv),
     ];
   }

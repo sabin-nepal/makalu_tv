@@ -29,12 +29,12 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _insightService = InsightService.getInsight();
     _categoryService = CategoryService.getCategoryNews();
-    _newsService = NewsService.getNewsType('poll',5);
+    _newsService = NewsService.getNewsType('poll', 5);
   }
 
-  List<Widget> indicator(){
+  List<Widget> indicator() {
     var _list = [];
-    for(var i=0;i <10;i++){
+    for (var i = 0; i < 10; i++) {
       _list.add('hello');
     }
     return _list;
@@ -77,7 +77,7 @@ class _HomeTabState extends State<HomeTab> {
                 child: Text(
                   "Poll",
                   style: titleText,
-                )),  
+                )),
             Container(height: 400, child: _buildPoll(context)),
           ],
         ),
@@ -175,7 +175,7 @@ class _HomeTabState extends State<HomeTab> {
     return FutureBuilder<List<News>>(
         future: _newsService,
         builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting){
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Container();
           }
           if (snapshot.hasData) {
