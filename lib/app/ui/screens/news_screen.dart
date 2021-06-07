@@ -7,6 +7,8 @@ import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
 
 class NewsScreen extends StatefulWidget {
+  final List adv;
+  NewsScreen({this.adv});
   @override
   _NewsScreenState createState() => _NewsScreenState();
 }
@@ -14,19 +16,10 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   int _newsLength;
   int _newNews = 0;
-  List _adv = [];
   @override
   void initState() {
     super.initState();
     //_checkNews();
-    _fetchAdv();
-  }
-
-  _fetchAdv() async {
-    var adv = await AdvService.getAdv();
-    adv.forEach((element) {
-      _adv.add(element);
-    });
   }
 
   Future<void> _refreshNews(BuildContext context) async {
@@ -36,13 +29,14 @@ class _NewsScreenState extends State<NewsScreen> {
 
   _mergeList(List news) {
     List _news = List.from(news);
-    var j=0; 
-    for (var i = 0; i < news.length; i++) {
-      if (i % 2 == 1) {
-        _news.insert(i, _adv[j]);
-        j++;
+    var j = 0;
+    if (widget.adv.isNotEmpty)
+      for (var i = 0; i < news.length; i++) {
+        if (i % 2 == 1) {
+          _news.insert(i, widget.adv[j]);
+          j++;
+        }
       }
-    }
     return _news;
   }
 
@@ -92,13 +86,15 @@ class _NewsScreenState extends State<NewsScreen> {
                 if (snapshot.hasError) {
                   return Center(
                       child: Text('Check your connection and try again..'));
-                } else {
+                }
+                if (snapshot.hasData) {
                   List news = _mergeList(snapshot.data);
                   _newsLength = news.length;
                   return NewsPageView(
                     news: news,
                   );
                 }
+                return Center(child: CircularProgressIndicator());
               }),
         ));
   }
