@@ -32,14 +32,6 @@ class _HomeTabState extends State<HomeTab> {
     _newsService = NewsService.getNewsType('poll', 5);
   }
 
-  List<Widget> indicator() {
-    var _list = [];
-    for (var i = 0; i < 10; i++) {
-      _list.add('hello');
-    }
-    return _list;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +90,7 @@ class _HomeTabState extends State<HomeTab> {
                       "Poll",
                       style: titleText,
                     )),
-                //Container(height: 400, child: _buildPoll(context)),
+                Container(height: 400, child: _buildPoll(context)),
               ],
             ),
           ),
@@ -191,8 +183,18 @@ class _HomeTabState extends State<HomeTab> {
                 final _news = snapshot.data[index];
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  child: PollCardView(
-                    news: _news,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppSizes.padding),
+                          child: CachedNetworkImage(
+                              imageUrl: _news.media.first['path'])),
+                      PollCardView(
+                        news: _news,
+                      ),
+                    ],
                   ),
                 );
               },

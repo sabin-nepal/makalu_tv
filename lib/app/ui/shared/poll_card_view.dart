@@ -1,10 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
-import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
 class PollCardView extends StatefulWidget {
@@ -20,7 +18,7 @@ class _PollCardViewState extends State<PollCardView> {
   bool voted = false;
   String yesPercent;
   String noPercent;
-  @override
+   @override
   void initState() {
     super.initState();
     _checkVote();
@@ -35,13 +33,13 @@ class _PollCardViewState extends State<PollCardView> {
     }
   }
 
-  _calculateVote({int value = 0}) {
-    var _yesPercent;
-    var _noPercent;
-    int yesVote = widget.news.pollResult['yesCount'] + value;
-    int noVote = widget.news.pollResult['noCount'] + value;
+  _calculateVote({int positive = 0,int negative=0}) {
+    var _yesPercent = 0;
+    var _noPercent = 0;
+    int yesVote = widget.news.pollResult['yesCount'] + positive;
+    int noVote = widget.news.pollResult['noCount'] + negative;
     int total = yesVote + noVote;
-    if (widget.news.pollResult.isNotEmpty) {
+    if (total > 0 ) {
       _yesPercent = ((yesVote / total) * 100).floor();
       _noPercent = ((noVote / total) * 100).floor();
     }
@@ -49,23 +47,10 @@ class _PollCardViewState extends State<PollCardView> {
     noPercent = '${_noPercent.toStringAsFixed(2)}%';
     setState(() {});
   }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(AppSizes.padding),
-      width: MediaQuery.of(context).size.width,
-      child: Column(children: [
-        Card(
-          child: Container(
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            child: CachedNetworkImage(
-              imageUrl: widget.news.media.first['path'],
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
+    return Column(
+      children: [
         Container(
           child: AutoSizeText(
             widget.news.title,
@@ -76,7 +61,7 @@ class _PollCardViewState extends State<PollCardView> {
         Row(
           children: [
             Container(
-              width: 100,
+              width: MediaQuery.of(context).size.width/2,
               child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
@@ -85,7 +70,7 @@ class _PollCardViewState extends State<PollCardView> {
                   await NewsService().setVote(widget.news.id, 1);
                   await _userPreference.vote(widget.news.id);
                   voted = true;
-                  _calculateVote(value: 1);
+                  _calculateVote(positive: 1);
                   setState(() {});
                 },
                 style: ButtonStyle(
@@ -96,7 +81,7 @@ class _PollCardViewState extends State<PollCardView> {
               ),
             ),
             Container(
-              width: 100,
+              width: MediaQuery.of(context).size.width/2,
               child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
@@ -105,7 +90,7 @@ class _PollCardViewState extends State<PollCardView> {
                   await NewsService().setVote(widget.news.id, 1);
                   await _userPreference.vote(widget.news.id);
                   voted = true;
-                  _calculateVote(value: 1);
+                  _calculateVote(negative: 1);
                   setState(() {});
                 },
                 style: ButtonStyle(
@@ -117,7 +102,8 @@ class _PollCardViewState extends State<PollCardView> {
             ),
           ],
         )
-      ]),
+      ],
+      
     );
   }
 }
