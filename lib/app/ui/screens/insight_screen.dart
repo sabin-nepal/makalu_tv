@@ -18,21 +18,16 @@ class _InsightScreenState extends State<InsightScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController =  PageController(initialPage: widget.position,keepPage: true, viewportFraction: 1);
+    _pageController = PageController(
+        initialPage: widget.position, keepPage: true, viewportFraction: 1);
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (_pageController.hasClients) _pageController.jumpToPage(widget.position);
-  //   });
-  //   super.didChangeDependencies();
-  // }
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

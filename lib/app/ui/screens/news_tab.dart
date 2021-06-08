@@ -28,14 +28,15 @@ class _NewsTabState extends State<NewsTab> {
 
   _mergeList(List news) {
     List _news = List.from(news);
-    var j = 0;
-    if (widget.adv.isNotEmpty)
-      for (var i = 0; i < news.length; i++) {
-        if (i % 2 == 1) {
+    if (widget.adv.isNotEmpty) {
+      var j = 0;
+      for (var i = 0; i < _news.length; i++) {
+        if (i % 2 == 1 && widget.adv.length > j) {
           _news.insert(i, widget.adv[j]);
           j++;
         }
       }
+    }
     return _news;
   }
 

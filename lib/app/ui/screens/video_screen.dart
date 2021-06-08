@@ -35,7 +35,7 @@ class _VideoScreenState extends State<VideoScreen> {
     var j = 0;
     if (widget.adv.isNotEmpty)
       for (var i = 0; i < video.length; i++) {
-        if (i % 2 == 1) {
+        if (i % 2 == 1 && widget.adv.length > j) {
           video.insert(i, widget.adv[j]);
           j++;
         }

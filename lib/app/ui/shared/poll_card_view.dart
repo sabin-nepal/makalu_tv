@@ -7,15 +7,15 @@ import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
-class PrimaryCard extends StatefulWidget {
+class PollCardView extends StatefulWidget {
   final News news;
-  PrimaryCard({this.news});
+  PollCardView({this.news});
 
   @override
-  _PrimaryCardState createState() => _PrimaryCardState();
+  _PollCardViewState createState() => _PollCardViewState();
 }
 
-class _PrimaryCardState extends State<PrimaryCard> {
+class _PollCardViewState extends State<PollCardView> {
   var _userPreference = UserSharePreferences();
   bool voted = false;
   String yesPercent;
@@ -36,11 +36,15 @@ class _PrimaryCardState extends State<PrimaryCard> {
   }
 
   _calculateVote({int value = 0}) {
+    var _yesPercent;
+    var _noPercent;
     int yesVote = widget.news.pollResult['yesCount'] + value;
     int noVote = widget.news.pollResult['noCount'] + value;
     int total = yesVote + noVote;
-    var _yesPercent = ((yesVote / total) * 100).floor();
-    var _noPercent = (noVote / total) * 100;
+    if (widget.news.pollResult.isNotEmpty) {
+      _yesPercent = ((yesVote / total) * 100).floor();
+      _noPercent = ((noVote / total) * 100).floor();
+    }
     yesPercent = '${_yesPercent.toStringAsFixed(2)}%';
     noPercent = '${_noPercent.toStringAsFixed(2)}%';
     setState(() {});
@@ -69,10 +73,11 @@ class _PrimaryCardState extends State<PrimaryCard> {
             maxLines: 2,
           ),
         ),
-        Container(
-          child: Row(
-            children: [
-              OutlinedButton(
+        Row(
+          children: [
+            Container(
+              width: 100,
+              child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
                     return null;
@@ -89,7 +94,10 @@ class _PrimaryCardState extends State<PrimaryCard> {
                 ),
                 child: Text(voted ? yesPercent : "Yes"),
               ),
-              OutlinedButton(
+            ),
+            Container(
+              width: 100,
+              child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
                     return null;
@@ -106,8 +114,8 @@ class _PrimaryCardState extends State<PrimaryCard> {
                 ),
                 child: Text(voted ? noPercent : "No"),
               ),
-            ],
-          ),
+            ),
+          ],
         )
       ]),
     );

@@ -17,7 +17,7 @@ class _CategoryTabViewState extends State<CategoryTabView>
   void initState() {
     super.initState();
     _tabController = TabController(
-        vsync: this, length: widget.category.length, initialIndex: 0); 
+        vsync: this, length: widget.category.length, initialIndex: 0);
   }
 
   @override
@@ -37,15 +37,14 @@ class _CategoryTabViewState extends State<CategoryTabView>
             tabs: widget.category.map<Widget>((e) {
               return Column(
                 children: [
-                  ClipRRect(
-                      child: Container(
-                          child: CachedNetworkImage(
-                        imageUrl: e.media['path'],
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      )),
+                  Container(
+                    child: CachedNetworkImage(
+                      imageUrl: e.media['path'],
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
                     ),
+                  ),
                   Text(e.title)
                 ],
               );
@@ -60,12 +59,16 @@ class _CategoryTabViewState extends State<CategoryTabView>
                   return ListView.separated(
                       shrinkWrap: true,
                       primary: false,
-                      separatorBuilder: (context,index) => Divider(),
+                      separatorBuilder: (context, index) => Divider(),
                       itemCount: e.news.length > 4 ? 4 + 1 : e.news.length + 0,
                       itemBuilder: (context, i) {
                         var _news = e.news[i];
                         if (i == 4) {
-                          return Center(child: Text("View More",style: boldText,));
+                          return Center(
+                              child: Text(
+                            "View More",
+                            style: boldText,
+                          ));
                         }
                         return ListTile(
                           title: AutoSizeText(
@@ -74,7 +77,8 @@ class _CategoryTabViewState extends State<CategoryTabView>
                           ),
                           trailing: CachedNetworkImage(
                             imageUrl: _news['media'].first['path'],
-                            width: 20,
+                            width: 30,
+                            height: 50,
                           ),
                         );
                       });

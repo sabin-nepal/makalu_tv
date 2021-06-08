@@ -11,7 +11,7 @@ import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/category_tab_view.dart';
-import 'package:makalu_tv/app/ui/shared/primary_card.dart';
+import 'package:makalu_tv/app/ui/shared/poll_card_view.dart';
 import 'package:makalu_tv/app/ui/shared/search_bar.dart';
 
 class HomeTab extends StatefulWidget {
@@ -80,6 +80,7 @@ class _HomeTabState extends State<HomeTab> {
                         )),
                   ],
                 ),
+                SizedBox(height: 10),
                 Container(height: 200.0, child: _buildInsight(context)),
                 SizedBox(height: 50),
                 Container(
@@ -97,7 +98,7 @@ class _HomeTabState extends State<HomeTab> {
                       "Poll",
                       style: titleText,
                     )),
-                Container(height: 400, child: _buildPoll(context)),
+                //Container(height: 400, child: _buildPoll(context)),
               ],
             ),
           ),
@@ -114,7 +115,7 @@ class _HomeTabState extends State<HomeTab> {
           if (snapshot.hasData) {
             final _insight = snapshot.data;
             return ListView.builder(
-                shrinkWrap: true,
+                physics: PageScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: _insight.length + 1,
                 itemBuilder: (context, i) {
@@ -138,6 +139,7 @@ class _HomeTabState extends State<HomeTab> {
                   }
                   final _data = _insight[i];
                   return Container(
+                    width: MediaQuery.of(context).size.width / 2,
                     padding: EdgeInsets.only(left: AppSizes.paddingSm),
                     child: Card(
                         child: InkWell(
@@ -182,14 +184,14 @@ class _HomeTabState extends State<HomeTab> {
           }
           if (snapshot.hasData) {
             return ListView.builder(
-              physics: ClampingScrollPhysics(),
+              physics: PageScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 final _news = snapshot.data[index];
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  child: PrimaryCard(
+                  child: PollCardView(
                     news: _news,
                   ),
                 );

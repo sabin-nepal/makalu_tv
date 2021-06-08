@@ -1,13 +1,11 @@
-
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// A Calculator.
 class CustomStackPageView extends StatefulWidget {
   CustomStackPageView({
-    this.initial:0,
+    this.initial: 0,
     this.index,
-     this.controller,
+    this.controller,
     this.child,
   });
   final int initial;
@@ -25,8 +23,8 @@ class _CustomStackPageViewState extends State<CustomStackPageView> {
   @override
   void initState() {
     super.initState();
-    currentPosition = widget.initial??0;
-    pagePosition = widget.initial.toDouble() ?? 0.0;
+    currentPosition = widget.initial;
+    pagePosition = widget.initial.toDouble();
     if (widget.controller.position.haveDimensions) {
       widget.controller.addListener(() {
         _listener();
