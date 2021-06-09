@@ -70,6 +70,17 @@ class _HomeTabState extends State<HomeTab> {
                           "Insight",
                           style: headingStyle,
                         )),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.insightScreen,
+                            arguments: {'position': 0});
+                      },
+                      child: Text(
+                        "view all",
+                        style: boldText,
+                      ),
+                    )
                   ],
                 ),
                 SizedBox(height: 10),
@@ -81,17 +92,32 @@ class _HomeTabState extends State<HomeTab> {
                       "Category",
                       style: headingStyle,
                     )),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Container(height: 500, child: _buildCategory(context)),
                 SizedBox(height: 20),
-                Container(
-                    margin: EdgeInsets.only(left: AppSizes.padding),
-                    child: Text(
-                      "Poll",
-                      style: headingStyle,
-                    )),
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(left: AppSizes.padding),
+                        child: Text(
+                          "Poll",
+                          style: headingStyle,
+                        )),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.pollScreen,
+                            arguments: {'position': 0});
+                      },
+                      child: Text(
+                        "view all",
+                        style: boldText,
+                      ),
+                    )
+                  ],
+                ),
                 SizedBox(height: 10),
-                Container(height: 400, child: _buildPoll(context)),
+                Container(height: 350, child: _buildPoll(context)),
               ],
             ),
           ),
@@ -176,14 +202,14 @@ class _HomeTabState extends State<HomeTab> {
             return Container();
           }
           if (snapshot.hasData) {
+            final _poll = snapshot.data;
             return ListView.builder(
               physics: PageScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data.length,
+              itemCount: _poll.length,
               itemBuilder: (context, index) {
-                final _news = snapshot.data[index];
-                return Container(
-                  width: MediaQuery.of(context).size.width,
+                final _news = _poll[index];
+                return Card(
                   child: Column(
                     children: [
                       Container(
@@ -191,10 +217,16 @@ class _HomeTabState extends State<HomeTab> {
                           padding: EdgeInsets.symmetric(
                               horizontal: AppSizes.padding),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.pollScreen,
+                                  arguments: {'position': index});
+                            },
                             child: CachedNetworkImage(
-                                imageUrl: _news.media.first['path']),
+                              imageUrl: _news.media.first['path'],
+                              fit: BoxFit.cover,
+                            ),
                           )),
+                      SizedBox(height: 20),
                       PollCardView(
                         title: _news.pollTitle,
                         id: _news.id,

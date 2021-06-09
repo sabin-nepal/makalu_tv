@@ -9,20 +9,22 @@ import 'package:makalu_tv/app/ui/shared/poll_card_view.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
-  NewsPageView({this.news});
+  final int position;
+  NewsPageView({this.news, this.position:0});
 
   @override
   _NewsPageViewState createState() => _NewsPageViewState();
 }
 
 class _NewsPageViewState extends State<NewsPageView> {
-  final PageController pageController = PageController();
+  PageController pageController;
   int remainingPage;
   bool _swipeVisible = false;
   @override
   void initState() {
     super.initState();
     remainingPage = widget.news.length - 1;
+    pageController = PageController(initialPage: widget.position);
   }
 
   @override
@@ -70,6 +72,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                   child: CustomStackPageView(
                     index: position,
                     controller: pageController,
+                    initial: widget.position,
                     child: NewsPageItem(
                       title: _news.title,
                       content: _news.content,
