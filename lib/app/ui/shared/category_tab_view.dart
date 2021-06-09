@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
+import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 
 class CategoryTabView extends StatefulWidget {
   final List category;
@@ -65,12 +67,34 @@ class _CategoryTabViewState extends State<CategoryTabView>
                         var _news = e.news[i];
                         if (i == 4) {
                           return Center(
-                              child: Text(
-                            "View More",
-                            style: boldText,
+                              child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.newsScreen,
+                                arguments: {
+                                  'title': 'Category',
+                                  'type': 'category',
+                                  'news': e.news
+                                },
+                              );
+                            },
+                            child: Text(
+                              "View More",
+                              style: boldText,
+                            ),
                           ));
                         }
                         return ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryNewsDetails(
+                                        news: _news,
+                                      )),
+                            );
+                          },
                           title: AutoSizeText(
                             _news['title'],
                             maxLines: 2,

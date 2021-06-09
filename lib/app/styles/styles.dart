@@ -28,3 +28,9 @@ final TextStyle subTitleText = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+final TextStyle headingStyle = TextStyle(
+  color: Colors.black,
+  fontSize: 15.0,
+  fontWeight: FontWeight.w600,
+);
+

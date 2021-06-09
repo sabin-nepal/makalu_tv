@@ -1,13 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
-import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
 class PollCardView extends StatefulWidget {
-  final News news;
-  PollCardView({this.news});
+  final String id;
+  final String title;
+  final int yesCount;
+  final int noCount;
+  PollCardView({this.id,this.title,this.noCount,this.yesCount});
 
   @override
   _PollCardViewState createState() => _PollCardViewState();
@@ -26,7 +28,7 @@ class _PollCardViewState extends State<PollCardView> {
   }
 
   _checkVote() async {
-    final _checkVote = await _userPreference.checkIfVote(widget.news.id);
+    final _checkVote = await _userPreference.checkIfVote(widget.id);
     if (_checkVote) {
       voted = true;
       setState(() {});
@@ -36,8 +38,8 @@ class _PollCardViewState extends State<PollCardView> {
   _calculateVote({int positive = 0,int negative=0}) {
     var _yesPercent = 0;
     var _noPercent = 0;
-    int yesVote = widget.news.pollResult['yesCount'] + positive;
-    int noVote = widget.news.pollResult['noCount'] + negative;
+    int yesVote = widget.yesCount + positive;
+    int noVote = widget.noCount + negative;
     int total = yesVote + noVote;
     if (total > 0 ) {
       _yesPercent = ((yesVote / total) * 100).floor();
@@ -53,7 +55,7 @@ class _PollCardViewState extends State<PollCardView> {
       children: [
         Container(
           child: AutoSizeText(
-            widget.news.title,
+            widget.title,
             style: boldText,
             maxLines: 2,
           ),
@@ -67,8 +69,8 @@ class _PollCardViewState extends State<PollCardView> {
                   if (voted) {
                     return null;
                   }
-                  await NewsService().setVote(widget.news.id, 1);
-                  await _userPreference.vote(widget.news.id);
+                  await NewsService().setVote(widget.id, 1);
+                  await _userPreference.vote(widget.id);
                   voted = true;
                   _calculateVote(positive: 1);
                   setState(() {});
@@ -87,8 +89,8 @@ class _PollCardViewState extends State<PollCardView> {
                   if (voted) {
                     return null;
                   }
-                  await NewsService().setVote(widget.news.id, 1);
-                  await _userPreference.vote(widget.news.id);
+                  await NewsService().setVote(widget.id, 1);
+                  await _userPreference.vote(widget.id);
                   voted = true;
                   _calculateVote(negative: 1);
                   setState(() {});

@@ -68,7 +68,7 @@ class _HomeTabState extends State<HomeTab> {
                         margin: EdgeInsets.only(left: AppSizes.padding),
                         child: Text(
                           "Insight",
-                          style: titleText,
+                          style: headingStyle,
                         )),
                   ],
                 ),
@@ -79,7 +79,7 @@ class _HomeTabState extends State<HomeTab> {
                     margin: EdgeInsets.only(left: AppSizes.padding),
                     child: Text(
                       "Category",
-                      style: titleText,
+                      style: headingStyle,
                     )),
                 SizedBox(height: 20),
                 Container(height: 500, child: _buildCategory(context)),
@@ -88,8 +88,9 @@ class _HomeTabState extends State<HomeTab> {
                     margin: EdgeInsets.only(left: AppSizes.padding),
                     child: Text(
                       "Poll",
-                      style: titleText,
+                      style: headingStyle,
                     )),
+                SizedBox(height: 10),
                 Container(height: 400, child: _buildPoll(context)),
               ],
             ),
@@ -189,10 +190,16 @@ class _HomeTabState extends State<HomeTab> {
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(
                               horizontal: AppSizes.padding),
-                          child: CachedNetworkImage(
-                              imageUrl: _news.media.first['path'])),
+                          child: InkWell(
+                            onTap: () {},
+                            child: CachedNetworkImage(
+                                imageUrl: _news.media.first['path']),
+                          )),
                       PollCardView(
-                        news: _news,
+                        title: _news.pollTitle,
+                        id: _news.id,
+                        yesCount: _news.pollResult['yesCount'],
+                        noCount: _news.pollResult['noCount'],
                       ),
                     ],
                   ),

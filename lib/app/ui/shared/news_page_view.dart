@@ -88,7 +88,10 @@ class _NewsPageViewState extends State<NewsPageView> {
               SizedBox(height: 20),
               if (_news.type == 'poll')
                 PollCardView(
-                  news: _news,
+                  title: _news.pollTitle,
+                  id: _news.id,
+                  yesCount: _news.pollResult['yesCount'],
+                  noCount: _news.pollResult['noCount'],
                 ),
             ],
           );
@@ -105,9 +108,7 @@ class _NewsPageViewState extends State<NewsPageView> {
         duration: Duration(milliseconds: 1000),
         onVisible: () {
           _swipeVisible = true;
-          setState(() {
-            
-          });
+          setState(() {});
         },
         content: Text(remainingPage == 0
             ? 'No More News Refresh For New one'
