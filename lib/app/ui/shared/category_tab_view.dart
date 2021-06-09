@@ -42,14 +42,14 @@ class _CategoryTabViewState extends State<CategoryTabView>
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(
-                                context,
-                                AppRoutes.newsScreen,
-                                arguments: {
-                                  'title': e.title ??'Category',
-                                  'type': 'category',
-                                  'news': e.news
-                                },
-                              );
+                        context,
+                        AppRoutes.newsScreen,
+                        arguments: {
+                          'title': e.title ?? 'Category',
+                          'type': 'category',
+                          'news': e.news
+                        },
+                      );
                     },
                     child: CachedNetworkImage(
                       imageUrl: e.media['path'],
@@ -84,7 +84,7 @@ class _CategoryTabViewState extends State<CategoryTabView>
                                 context,
                                 AppRoutes.newsScreen,
                                 arguments: {
-                                  'title': e.title ??'Category',
+                                  'title': e.title ?? 'Category',
                                   'type': 'category',
                                   'news': e.news
                                 },

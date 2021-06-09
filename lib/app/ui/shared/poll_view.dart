@@ -4,18 +4,18 @@ import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 
-class PollCardView extends StatefulWidget {
+class PollView extends StatefulWidget {
   final String id;
   final String title;
   final int yesCount;
   final int noCount;
-  PollCardView({this.id,this.title,this.noCount,this.yesCount});
+  PollView({this.id,this.title,this.noCount,this.yesCount});
 
   @override
-  _PollCardViewState createState() => _PollCardViewState();
+  _PollViewState createState() => _PollViewState();
 }
 
-class _PollCardViewState extends State<PollCardView> {
+class _PollViewState extends State<PollView> {
   var _userPreference = UserSharePreferences();
   bool voted = false;
   String yesPercent;

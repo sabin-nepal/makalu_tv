@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
-import 'package:makalu_tv/app/ui/shared/poll_card_view.dart';
+import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 
 class CategoryPageView extends StatelessWidget {
   final List news;
@@ -46,7 +46,7 @@ class CategoryPageView extends StatelessWidget {
                   child: Text('Swipe for details')),
               SizedBox(height: 20),
               if (_news['type'] == 'poll')
-                PollCardView(
+                PollView(
                   title: _news['title'],
                   id: _news['id'],
                   noCount: _news['noCount'],

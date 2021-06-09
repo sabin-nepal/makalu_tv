@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
+import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
@@ -11,7 +12,7 @@ import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/category_tab_view.dart';
-import 'package:makalu_tv/app/ui/shared/poll_card_view.dart';
+import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 import 'package:makalu_tv/app/ui/shared/search_bar.dart';
 
 class HomeTab extends StatefulWidget {
@@ -23,6 +24,7 @@ class _HomeTabState extends State<HomeTab> {
   Future _insightService;
   Future _categoryService;
   Future _newsService;
+  var _userPreference = UserSharePreferences();
   int selectedIndex = 1;
   @override
   void initState() {
@@ -30,6 +32,15 @@ class _HomeTabState extends State<HomeTab> {
     _insightService = InsightService.getInsight();
     _categoryService = CategoryService.getCategoryNews();
     _newsService = NewsService.getNewsType('poll', 5);
+  }
+
+  Future<void> _showSearch() async {
+    await showSearch<String>(
+      context: context,
+      delegate: CustomSearch(
+      ),
+    );
+   // await _userPreference.saveToRecentSearches(searchText);
   }
 
   @override
@@ -46,7 +57,7 @@ class _HomeTabState extends State<HomeTab> {
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                showSearch(context: context, delegate: DataSearch());
+                _showSearch();
               },
             ),
             IconButton(
@@ -227,7 +238,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                           )),
                       SizedBox(height: 20),
-                      PollCardView(
+                      PollView(
                         title: _news.pollTitle,
                         id: _news.id,
                         yesCount: _news.pollResult['yesCount'],

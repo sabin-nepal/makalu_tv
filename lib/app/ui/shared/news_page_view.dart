@@ -5,7 +5,7 @@ import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
-import 'package:makalu_tv/app/ui/shared/poll_card_view.dart';
+import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
@@ -90,7 +90,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                   child: Text(_swipeVisible ? 'Swipe for details' : '')),
               SizedBox(height: 20),
               if (_news.type == 'poll')
-                PollCardView(
+                PollView(
                   title: _news.pollTitle,
                   id: _news.id,
                   yesCount: _news.pollResult['yesCount'],
