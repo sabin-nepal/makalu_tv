@@ -28,7 +28,6 @@ class PollScreen extends StatelessWidget {
           }
           if (snapshot.hasData) {
             List<News> news = snapshot.data;
-            print(news);
             return NewsPageView(
               news: news,
               position: position,

@@ -39,7 +39,18 @@ class _CategoryTabViewState extends State<CategoryTabView>
             tabs: widget.category.map<Widget>((e) {
               return Column(
                 children: [
-                  Container(
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                                context,
+                                AppRoutes.newsScreen,
+                                arguments: {
+                                  'title': e.title ??'Category',
+                                  'type': 'category',
+                                  'news': e.news
+                                },
+                              );
+                    },
                     child: CachedNetworkImage(
                       imageUrl: e.media['path'],
                       height: 100,
@@ -73,7 +84,7 @@ class _CategoryTabViewState extends State<CategoryTabView>
                                 context,
                                 AppRoutes.newsScreen,
                                 arguments: {
-                                  'title': 'Category',
+                                  'title': e.title ??'Category',
                                   'type': 'category',
                                   'news': e.news
                                 },
