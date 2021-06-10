@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
       _adv.add(element);
     });
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

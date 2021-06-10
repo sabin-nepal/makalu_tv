@@ -38,9 +38,9 @@ class _HomeTabState extends State<HomeTab> {
     await showSearch<String>(
       context: context,
       delegate: CustomSearch(
+        onSearchChanged: _userPreference.getRecentSearchesLike
       ),
     );
-   // await _userPreference.saveToRecentSearches(searchText);
   }
 
   @override

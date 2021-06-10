@@ -32,4 +32,11 @@ class UserSharePreferences{
     pref.setStringList("recentSearches", allSearches.toList());
   }
 
+  Future deleteRecentSearches(String query) async {
+    final pref = await SharedPreferences.getInstance();   
+    final allSearches = pref.getStringList("recentSearches") ;
+    allSearches.remove(query); 
+    pref.setStringList("recentSearches", allSearches.toList());
+  }
+
 }

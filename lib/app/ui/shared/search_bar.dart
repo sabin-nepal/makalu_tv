@@ -5,16 +5,14 @@ import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 
-//typedef OnSearchChanged = Future<List<String>> Function(String);
+typedef OnSearchChanged = Future<List<String>> Function(String);
 
 class CustomSearch extends SearchDelegate<String> {
-  //final OnSearchChanged onSearchChanged;
   List<String> _oldFilters = const [];
-
-  // CustomSearch({String searchFieldLabel, this.onSearchChanged})
-  //     : super(searchFieldLabel: searchFieldLabel);
   var _userPreference = UserSharePreferences();
-
+  OnSearchChanged onSearchChanged;
+  CustomSearch({String searchFieldLabel, this.onSearchChanged})
+      : super(searchFieldLabel: searchFieldLabel);
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -42,7 +40,7 @@ class CustomSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     if (query == '') return buildSuggestions(context);
     return FutureBuilder(
-        future: NewsService.getNews(),
+        future: NewsService.getSearchResult(query),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -50,6 +48,8 @@ class CustomSearch extends SearchDelegate<String> {
             );
           }
           if (snapshot.hasData) {
+            if (snapshot.data.length < 1)
+              return Center(child: Text("Search Not Found.."));
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -74,6 +74,7 @@ class CustomSearch extends SearchDelegate<String> {
                   );
                 });
           }
+          print(snapshot.data);
           return Center(
             child: Text("No Data"),
           );
@@ -83,9 +84,7 @@ class CustomSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: _userPreference.getRecentSearchesLike(query) != null
-          ? _userPreference.getRecentSearchesLike(query)
-          : null,
+      future: onSearchChanged != null ? onSearchChanged(query) : null,
       builder: (context, snapshot) {
         if (snapshot.hasData) _oldFilters = snapshot.data;
         return ListView.builder(
@@ -94,7 +93,15 @@ class CustomSearch extends SearchDelegate<String> {
             return ListTile(
               leading: Icon(Icons.restore),
               title: Text("${_oldFilters[index]}"),
-              onTap: () => close(context, _oldFilters[index]),
+              onTap: () => query = _oldFilters[index],
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  await _userPreference
+                      .deleteRecentSearches(_oldFilters[index]);
+                  query = _oldFilters[index];
+                },
+              ),
             );
           },
         );

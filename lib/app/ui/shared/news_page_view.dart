@@ -10,7 +10,7 @@ import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 class NewsPageView extends StatefulWidget {
   final List news;
   final int position;
-  NewsPageView({this.news, this.position:0});
+  NewsPageView({this.news, this.position: 0});
 
   @override
   _NewsPageViewState createState() => _NewsPageViewState();

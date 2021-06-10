@@ -9,7 +9,7 @@ class PollView extends StatefulWidget {
   final String title;
   final int yesCount;
   final int noCount;
-  PollView({this.id,this.title,this.noCount,this.yesCount});
+  PollView({this.id, this.title, this.noCount, this.yesCount});
 
   @override
   _PollViewState createState() => _PollViewState();
@@ -20,7 +20,7 @@ class _PollViewState extends State<PollView> {
   bool voted = false;
   String yesPercent;
   String noPercent;
-   @override
+  @override
   void initState() {
     super.initState();
     _checkVote();
@@ -35,13 +35,13 @@ class _PollViewState extends State<PollView> {
     }
   }
 
-  _calculateVote({int positive = 0,int negative=0}) {
+  _calculateVote({int positive = 0, int negative = 0}) {
     var _yesPercent = 0;
     var _noPercent = 0;
     int yesVote = widget.yesCount + positive;
     int noVote = widget.noCount + negative;
     int total = yesVote + noVote;
-    if (total > 0 ) {
+    if (total > 0) {
       _yesPercent = ((yesVote / total) * 100).floor();
       _noPercent = ((noVote / total) * 100).floor();
     }
@@ -49,6 +49,7 @@ class _PollViewState extends State<PollView> {
     noPercent = '${_noPercent.toStringAsFixed(2)}%';
     setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,7 +64,7 @@ class _PollViewState extends State<PollView> {
         Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width/2,
+              width: MediaQuery.of(context).size.width / 2,
               child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
@@ -83,7 +84,7 @@ class _PollViewState extends State<PollView> {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width/2,
+              width: MediaQuery.of(context).size.width / 2,
               child: OutlinedButton(
                 onPressed: () async {
                   if (voted) {
@@ -105,7 +106,6 @@ class _PollViewState extends State<PollView> {
           ],
         )
       ],
-      
     );
   }
 }
