@@ -32,6 +32,7 @@ dependencies:
   shared_preferences: ^2.0.6
   better_player: ^0.0.68
   photo_view: ^0.11.1
+  firebase_messaging: ^10.0.1
 
 dev_dependencies:
   flutter_test:

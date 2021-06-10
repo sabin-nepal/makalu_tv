@@ -74,7 +74,6 @@ class CustomSearch extends SearchDelegate<String> {
                   );
                 });
           }
-          print(snapshot.data);
           return Center(
             child: Text("No Data"),
           );
