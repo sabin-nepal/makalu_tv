@@ -10,19 +10,17 @@ class NewsScreen extends StatelessWidget {
   NewsScreen({this.title, this.type: 'category', this.news});
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-            decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
-        centerTitle: true,
-        title: Text(
-          title,
+        appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
+          centerTitle: true,
+          title: Text(
+            title,
+          ),
         ),
-      ),
-      body: type != 'category'
-          ? NewsPageView(news: news)
-          : CategoryPageView(news:news)
-    );
+        body: type != 'category'
+            ? NewsPageView(news: news)
+            : CategoryPageView(news: news));
   }
 }

@@ -5,7 +5,7 @@ final TextStyle boldText = TextStyle(
 );
 
 final TextStyle titleText = TextStyle(
-  color:Colors.black,
+  color: Colors.black,
   fontSize: 15.0,
   fontWeight: FontWeight.w900,
 );
@@ -33,4 +33,3 @@ final TextStyle headingStyle = TextStyle(
   fontSize: 15.0,
   fontWeight: FontWeight.w600,
 );
-

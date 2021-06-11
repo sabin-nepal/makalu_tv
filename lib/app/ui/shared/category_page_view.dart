@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:makalu_tv/app/ui/shared/poll_view.dart';
@@ -24,7 +25,15 @@ class CategoryPageView extends StatelessWidget {
               Flexible(
                 child: GestureDetector(
                   onHorizontalDragUpdate: (details) {
-                    if (details.primaryDelta < 0) {}
+                    if (details.primaryDelta < 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CategoryNewsDetails(
+                                  news: _news,
+                                )),
+                      );
+                    }
                   },
                   child: CustomStackPageView(
                     index: position,
