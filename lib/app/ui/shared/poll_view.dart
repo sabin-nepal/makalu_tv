@@ -90,7 +90,7 @@ class _PollViewState extends State<PollView> {
                   if (voted) {
                     return null;
                   }
-                  await NewsService().setVote(widget.id, 1);
+                  await NewsService().setVote(widget.id, 0);
                   await _userPreference.vote(widget.id);
                   voted = true;
                   _calculateVote(negative: 1);
