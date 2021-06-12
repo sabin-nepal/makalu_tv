@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/notifiers/open_notifier.dart';
+import 'package:makalu_tv/app/notifiers/search_notifier.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/general/open_first.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,15 @@ import 'app/styles/theme.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<FirstOpenNotifier>(
-      create: (_) => FirstOpenNotifier(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FirstOpenNotifier>(
+          create: (_) => FirstOpenNotifier(),
+        ),
+        ChangeNotifierProvider<SearchNotifier>(
+          create: (_) => SearchNotifier(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Makalu Tv',

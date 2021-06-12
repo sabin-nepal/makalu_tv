@@ -37,9 +37,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<void> _showSearch() async {
     await showSearch<String>(
       context: context,
-      delegate: CustomSearch(
-        onSearchChanged: _userPreference.getRecentSearchesLike
-      ),
+      delegate: CustomSearch(),
     );
   }
 

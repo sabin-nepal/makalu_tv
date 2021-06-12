@@ -54,8 +54,8 @@ class UserSharePreferences {
   Future<void> saveCategoryForNotification(String category) async {
     final pref = await SharedPreferences.getInstance();
     Set<String> allCategory =
-        pref.getStringList("recentSearches")?.toSet() ?? {};
+        pref.getStringList("categoryForNotification")?.toSet() ?? {};
     allCategory = {category, ...allCategory};
-    pref.setStringList("recentSearches", allCategory.toList());
+    pref.setStringList("categoryForNotification", allCategory.toList());
   }
 }

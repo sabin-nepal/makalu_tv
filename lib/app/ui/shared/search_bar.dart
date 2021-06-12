@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
+import 'package:makalu_tv/app/notifiers/search_notifier.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
-
-typedef OnSearchChanged = Future<List<String>> Function(String);
+import 'package:provider/provider.dart';
 
 class CustomSearch extends SearchDelegate<String> {
   List<String> _oldFilters = const [];
   var _userPreference = UserSharePreferences();
-  OnSearchChanged onSearchChanged;
-  CustomSearch({String searchFieldLabel, this.onSearchChanged})
-      : super(searchFieldLabel: searchFieldLabel);
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -82,29 +79,25 @@ class CustomSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder<List<String>>(
-      future: onSearchChanged != null ? onSearchChanged(query) : null,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) _oldFilters = snapshot.data;
-        return ListView.builder(
-          itemCount: _oldFilters.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: Icon(Icons.restore),
-              title: Text("${_oldFilters[index]}"),
-              onTap: () => query = _oldFilters[index],
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () async {
-                  await _userPreference
-                      .deleteRecentSearches(_oldFilters[index]);
-                  query = _oldFilters[index];
-                },
-              ),
-            );
-          },
-        );
-      },
-    );
+    return Consumer(builder: (context, SearchNotifier notifier, _) {
+      notifier.fetchSuggestions(query);
+      _oldFilters = notifier.suggestions ?? [];
+      return ListView.builder(
+        itemCount: _oldFilters.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(Icons.restore),
+            title: Text("${_oldFilters[index]}"),
+            onTap: () => query = _oldFilters[index],
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () async {
+                await _userPreference.deleteRecentSearches(_oldFilters[index]);
+              },
+            ),
+          );
+        },
+      );
+    });
   }
 }
