@@ -15,7 +15,7 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   String url;
   List video = [];
-  int selectedIndex;
+  int selectedIndex = 0;
   @override
   void initState() {
     super.initState();
