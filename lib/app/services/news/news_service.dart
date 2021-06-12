@@ -15,6 +15,16 @@ class NewsService {
     throw _res;
   }
 
+  static Future<List<News>> getSingleNews(String id) async {
+    final _res = await http.get(Uri.parse('${UrlHelper.newsUrl}/$id'));
+    if (_res.statusCode == 200) {
+      final _decoded = jsonDecode(_res.body);
+      final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
+      return _data;
+    }
+    throw _res;
+  }
+
   static Future<List<News>> getNewsType(String type, int limit) async {
     final _res =
         await http.get(Uri.parse('${UrlHelper.newsTypeUrl}/$type/$limit'));
@@ -27,8 +37,7 @@ class NewsService {
   }
 
   static Future<List<News>> getSearchResult(String s) async {
-    final _res =
-        await http.get(Uri.parse('${UrlHelper.newsSearchUrl}/$s'));
+    final _res = await http.get(Uri.parse('${UrlHelper.newsSearchUrl}/$s'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();

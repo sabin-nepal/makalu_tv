@@ -6,7 +6,7 @@ import 'package:makalu_tv/app/notifiers/open_notifier.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
-import 'package:makalu_tv/app/ui/shared/category_item.dart';
+import 'package:makalu_tv/app/ui/shared/category_grid_item_list.dart';
 
 class FirstOpen extends StatelessWidget {
   final FirstOpenNotifier notifier;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/notifiers/push_notification.dart';
 import 'package:makalu_tv/app/services/adv_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/screens/home_tab.dart';
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _tabPages = [];
   int _selectedIndex = 1;
   List _adv = [];
+  bool _isSet = false;
   @override
   void initState() {
     super.initState();
@@ -24,6 +26,25 @@ class _HomePageState extends State<HomePage> {
       NewsTab(adv: _adv),
       VideoScreen(adv: _adv),
     ];
+    _getNotification();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!_isSet) {
+      await initNotification();
+    }
+    if (mounted) setState(() => _isSet = true);
+  }
+
+  initNotification() async {
+    final notificationService = PushNotificationsService();
+    await notificationService.getNotification(context);
+  }
+
+  _getNotification() async {
+    await PushNotificationsService().getNotification(context);
   }
 
   _fetchAdv() async {
@@ -46,8 +67,7 @@ class _HomePageState extends State<HomePage> {
         body: IndexedStack(
           children: _tabPages,
           index: _selectedIndex,
-        ) // This trailing comma makes auto-formatting nicer for build methods.
-        );
+        ));
   }
 
   Widget _bottomNavigationBar(BuildContext context) {
