@@ -58,8 +58,8 @@ class CategoryPageView extends StatelessWidget {
                 PollView(
                   title: _news['title'],
                   id: _news['id'],
-                  noCount: _news['noCount'],
-                  yesCount: _news['yesCount'],
+                  noCount: _news['pollResult']['noCount'],
+                  yesCount: _news['pollResult']['yesCount'],
                 ),
             ],
           );
