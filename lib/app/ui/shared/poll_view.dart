@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
+import 'package:makalu_tv/app/notifiers/news_notifier.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
+import 'package:provider/provider.dart';
 
 class PollView extends StatefulWidget {
   final String id;
@@ -18,13 +20,27 @@ class PollView extends StatefulWidget {
 class _PollViewState extends State<PollView> {
   var _userPreference = UserSharePreferences();
   bool voted = false;
+  bool _isSet = false;
+  int yesVote;
+  int noVote;
   String yesPercent;
   String noPercent;
   @override
   void initState() {
     super.initState();
     _checkVote();
+    yesVote = widget.yesCount ?? 0;
+    noVote = widget.noCount ?? 0;
     _calculateVote();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!_isSet) {
+      await context.read<NewsNotifier>().fetchPolls(widget.id);
+    }
+    if (mounted) setState(() => _isSet = true);
   }
 
   _checkVote() async {
@@ -38,12 +54,12 @@ class _PollViewState extends State<PollView> {
   _calculateVote({int positive = 0, int negative = 0}) {
     var _yesPercent = 0;
     var _noPercent = 0;
-    int yesVote = widget.yesCount + positive;
-    int noVote = widget.noCount + negative;
-    int total = yesVote + noVote;
+    int _yesVote = yesVote + positive;
+    int _noVote = noVote + negative;
+    int total = _yesVote + _noVote;
     if (total > 0) {
-      _yesPercent = ((yesVote / total) * 100).floor();
-      _noPercent = ((noVote / total) * 100).floor();
+      _yesPercent = ((_yesVote / total) * 100).floor();
+      _noPercent = ((_noVote / total) * 100).floor();
     }
     yesPercent = '${_yesPercent.toStringAsFixed(2)}%';
     noPercent = '${_noPercent.toStringAsFixed(2)}%';
@@ -61,50 +77,51 @@ class _PollViewState extends State<PollView> {
             maxLines: 2,
           ),
         ),
-        Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width / 2,
-              child: OutlinedButton(
-                onPressed: () async {
-                  if (voted) {
-                    return null;
-                  }
-                  await NewsService().setVote(widget.id, 1);
-                  await _userPreference.vote(widget.id);
-                  voted = true;
-                  _calculateVote(positive: 1);
-                  setState(() {});
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0))),
+        Consumer<NewsNotifier>(builder: (context, notify, _) {
+          if (notify.getPolls == null)
+            return Center(child: CircularProgressIndicator());
+          yesVote = notify.getPolls['yesCount'];
+          noVote = notify.getPolls['noCount'];
+          return Row(
+              children: [
+                OutlinedButton(
+                  onPressed: () async {
+                    if (voted) {
+                      return null;
+                    }
+                    await NewsService().setVote(widget.id, 1);
+                    await _userPreference.vote(widget.id);
+                    _calculateVote(positive: 1);
+                    voted = true;
+                    setState(() {});
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child: Text(voted ? yesPercent : "Yes"),
                 ),
-                child: Text(voted ? yesPercent : "Yes"),
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width / 2,
-              child: OutlinedButton(
-                onPressed: () async {
-                  if (voted) {
-                    return null;
-                  }
-                  await NewsService().setVote(widget.id, 0);
-                  await _userPreference.vote(widget.id);
-                  voted = true;
-                  _calculateVote(negative: 1);
-                  setState(() {});
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0))),
+                Spacer(),
+                OutlinedButton(
+                  onPressed: () async {
+                    if (voted) {
+                      return null;
+                    }
+                    await NewsService().setVote(widget.id, 0);
+                    await _userPreference.vote(widget.id);
+                    voted = true;
+                    _calculateVote(negative: 1);
+                    setState(() {});
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child: Text(voted ? noPercent : "No"),
                 ),
-                child: Text(voted ? noPercent : "No"),
-              ),
-            ),
-          ],
-        )
+              ],
+            );
+        }),
       ],
     );
   }

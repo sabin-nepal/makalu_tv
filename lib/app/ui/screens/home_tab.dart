@@ -24,7 +24,6 @@ class _HomeTabState extends State<HomeTab> {
   Future _insightService;
   Future _categoryService;
   Future _newsService;
-  var _userPreference = UserSharePreferences();
   int selectedIndex = 1;
   @override
   void initState() {
@@ -212,9 +211,7 @@ class _HomeTabState extends State<HomeTab> {
           }
           if (snapshot.hasData) {
             final _poll = snapshot.data;
-            return ListView.builder(
-              physics: PageScrollPhysics(),
-              scrollDirection: Axis.horizontal,
+            return PageView.builder(
               itemCount: _poll.length,
               itemBuilder: (context, index) {
                 final _news = _poll[index];

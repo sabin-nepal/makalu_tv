@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/notifiers/news_notifier.dart';
 import 'package:makalu_tv/app/notifiers/open_notifier.dart';
 import 'package:makalu_tv/app/notifiers/search_notifier.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<SearchNotifier>(
           create: (_) => SearchNotifier(),
+        ),
+        ChangeNotifierProvider<NewsNotifier>(
+          create: (_) => NewsNotifier(),
         ),
       ],
       child: MaterialApp(

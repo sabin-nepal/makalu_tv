@@ -62,4 +62,13 @@ class NewsService {
       throw Exception('Failed to Vote.');
     }
   }
+
+  static Future getVote(String id) async {
+    final _res = await http.get(Uri.parse('${UrlHelper.newsUrl}/vote/$id'));
+    if (_res.statusCode == 200) {
+      final _decoded = jsonDecode(_res.body);
+      return _decoded;
+    }
+    throw _res;
+  }
 }

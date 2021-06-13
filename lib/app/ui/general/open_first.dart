@@ -50,26 +50,30 @@ class FirstOpen extends StatelessWidget {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        Category category = snapshot.data[index];
-                        return CategoryItem(
-                          category: category,
-                          onSelected: (value) {
-                            if (value) {
-                              _selectedCategories.add(category.id);
-                            } else {
-                              _selectedCategories.remove(category.id);
-                            }
-                          },
-                        );
-                      });
+                  if (snapshot.hasData) {
+                    return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          Category category = snapshot.data[index];
+                          return CategoryItem(
+                            category: category,
+                            onSelected: (value) {
+                              if (value) {
+                                _selectedCategories.add(category.id);
+                              } else {
+                                _selectedCategories.remove(category.id);
+                              }
+                            },
+                          );
+                        });
+                  }
+                  return Center(
+                      child: Text("Please,Check Your Internet Connection.."));
                 },
               ),
             ),
