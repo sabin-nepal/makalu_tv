@@ -50,6 +50,12 @@ class _HomeTabState extends State<HomeTab> {
           title: Text(
             'Discover',
           ),
+          leading: IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.settingScreen);
+            },
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.search),

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 
-class CategoryItem extends StatefulWidget {
+class CategoryGridItem extends StatefulWidget {
   final Category category;
   final ValueChanged<bool> onSelected;
 
-  CategoryItem({this.category, this.onSelected});
+  CategoryGridItem({this.category, this.onSelected});
 
   @override
-  _CategoryItemState createState() => _CategoryItemState();
+  _CategoryGridItemState createState() => _CategoryGridItemState();
 }
 
-class _CategoryItemState extends State<CategoryItem> {
+class _CategoryGridItemState extends State<CategoryGridItem> {
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {

@@ -60,7 +60,7 @@ class FirstOpen extends StatelessWidget {
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
                           Category category = snapshot.data[index];
-                          return CategoryItem(
+                          return CategoryGridItem(
                             category: category,
                             onSelected: (value) {
                               if (value) {

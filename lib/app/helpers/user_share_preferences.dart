@@ -60,4 +60,7 @@ class UserSharePreferences {
     allCategory = {category, ...allCategory};
     pref.setStringList("categoryForNotification", allCategory.toList());
   }
+
+  Future<bool> isNotification() async{} 
+
 }
