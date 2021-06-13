@@ -27,7 +27,8 @@ class FirstOpen extends StatelessWidget {
             margin: EdgeInsets.only(right: 10),
             child: Center(
               child: InkWell(
-                  onTap: () {
+                  onTap: () async{
+                    UserSharePreferences().setNotification(false);
                     notifier.setOpened(true);
                   },
                   child: Text("Skip")),
@@ -99,7 +100,7 @@ class FirstOpen extends StatelessWidget {
       await FirebaseMessaging.instance.subscribeToTopic(item);
       await _userSharePreference.saveCategoryForNotification(item);
     }
-
+    await _userSharePreference.setNotification(true);
     notifier.setOpened(true);
   }
 
@@ -109,7 +110,7 @@ class FirstOpen extends StatelessWidget {
       SnackBar(
         backgroundColor: AppColors.primaryColor,
         duration: Duration(milliseconds: 1000),
-        content: Text("Select Category"),
+        content: Text("Select Items"),
       ),
     );
   }

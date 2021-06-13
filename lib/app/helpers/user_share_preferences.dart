@@ -20,7 +20,7 @@ class UserSharePreferences {
     final allSearches = pref.getStringList("recentSearches");
     if (allSearches != null)
       return allSearches.where((search) => search.startsWith(query)).toList();
-    return [];  
+    return [];
   }
 
   Future<void> saveToRecentSearches(String searchText) async {
@@ -52,15 +52,26 @@ class UserSharePreferences {
     if (data == null) return false;
     return data;
   }
-
+  Future<List<String>> getCategoryForNotification() async {
+    final pref = await SharedPreferences.getInstance();
+    final allCategories = pref.getStringList("categoryForNotification");
+    return allCategories;
+  }
   Future<void> saveCategoryForNotification(String category) async {
     final pref = await SharedPreferences.getInstance();
     Set<String> allCategory =
-        pref.getStringList("categoryForNotification")?.toSet() ?? {};
+        pref.getStringList("categoryForNotification")?.toSet() ?? {}; 
     allCategory = {category, ...allCategory};
     pref.setStringList("categoryForNotification", allCategory.toList());
   }
 
-  Future<bool> isNotification() async{} 
+  Future setNotification(bool value) async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool('isNotification', value);
+  }
 
+  Future<bool> isNotification() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool('isNotification');
+  }
 }
