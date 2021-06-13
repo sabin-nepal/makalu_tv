@@ -18,7 +18,9 @@ class UserSharePreferences {
   Future<List<String>> getRecentSearchesLike(String query) async {
     final pref = await SharedPreferences.getInstance();
     final allSearches = pref.getStringList("recentSearches");
-    return allSearches.where((search) => search.startsWith(query)).toList();
+    if (allSearches != null)
+      return allSearches.where((search) => search.startsWith(query)).toList();
+    return [];  
   }
 
   Future<void> saveToRecentSearches(String searchText) async {
