@@ -7,6 +7,7 @@ class News {
   final String excerpt;
   final List media;
   final String type;
+  final List categories;
   final String pollTitle;
   final Map pollResult;
   News({
@@ -16,6 +17,7 @@ class News {
     this.excerpt,
     this.type,
     this.media,
+    this.categories,
     this.pollTitle,
     this.pollResult,
   });
@@ -26,6 +28,7 @@ class News {
       title: json['title'] as String,
       content: json['content'] as String,
       media: json['media'],
+      categories: json['categories'],
       type: json['type'] as String,
       pollTitle: json['pollTitle'] as String,
       excerpt: json['excerpt'] as String,

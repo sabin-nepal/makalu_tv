@@ -86,7 +86,8 @@ class _CategoryTabViewState extends State<CategoryTabView>
                                 arguments: {
                                   'title': e.title ?? 'Category',
                                   'type': 'category',
-                                  'news': e.news
+                                  'news': e.news,
+                                  'catid': e.id
                                 },
                               );
                             },
@@ -102,8 +103,7 @@ class _CategoryTabViewState extends State<CategoryTabView>
                               context,
                               MaterialPageRoute(
                                   builder: (context) => CategoryNewsDetails(
-                                        news: _news,
-                                      )),
+                                      news: _news, id: e.id)),
                             );
                           },
                           title: AutoSizeText(

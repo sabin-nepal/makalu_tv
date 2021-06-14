@@ -16,6 +16,7 @@ class NewsDetails extends StatelessWidget {
           title: Text("News Detail")),
       body: SingleChildScrollView(
         child: NewsPageItem(
+          catid: news.categories.first['id']??'',
           title: news.title,
           content: news.content,
           media: news.media,

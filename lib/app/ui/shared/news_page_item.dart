@@ -1,18 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
+import 'package:makalu_tv/app/models/news/news.dart';
+import 'package:makalu_tv/app/services/news/news_service.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class NewsPageItem extends StatelessWidget {
+  final String catid;
   final String title;
   final String content;
   final List media;
   final String excerpt;
   final bool isFullContent;
   NewsPageItem(
-      {this.title,
+      {this.catid,
+      this.title,
       this.media,
       this.content,
       this.excerpt,
@@ -59,8 +65,77 @@ class NewsPageItem extends StatelessWidget {
               ],
             ),
           ),
+          if (isFullContent) _similarNewsHeading(),
+          if (isFullContent) Container(height: 300, child: _similarNews()),
         ],
       ),
     );
+  }
+
+  Widget _similarNewsHeading() {
+    return Column(
+      children: [
+        Divider(),
+        SizedBox(height: 20),
+        Row(children: <Widget>[
+          Expanded(
+              child: Divider(
+            color: AppColors.primaryColor,
+            thickness: 2,
+          )),
+          Text(
+            "News to read",
+            style: headingStyle,
+          ),
+          Expanded(
+              child: Divider(
+            color: AppColors.primaryColor,
+            thickness: 2,
+          )),
+        ]),
+      ],
+    );
+  }
+
+  Widget _similarNews() {
+    return FutureBuilder(
+        future: NewsService.getCategoryNews(catid, 3),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData)
+            return ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, i) {
+                  News news = snapshot.data[i];
+                  return Container(
+                    margin: EdgeInsets.all(AppSizes.padding),
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.newsDetails,
+                          arguments: {'news': news},
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Card(
+                            child: CachedNetworkImage(
+                              imageUrl: news.media.first['path'],
+                            ),
+                          ),
+                          Text(news.title, style: boldText),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          return Text('Connection Failed.');
+        });
   }
 }

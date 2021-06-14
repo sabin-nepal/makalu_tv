@@ -7,7 +7,8 @@ import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 
 class CategoryPageView extends StatelessWidget {
   final List news;
-  CategoryPageView({this.news});
+  final String catid;
+  CategoryPageView({this.news,this.catid});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class CategoryPageView extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => CategoryNewsDetails(
                                   news: _news,
+                                  id: catid,
                                 )),
                       );
                     }

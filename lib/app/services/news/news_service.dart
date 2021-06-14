@@ -46,6 +46,17 @@ class NewsService {
     throw _res;
   }
 
+  static Future<List<News>> getCategoryNews(String id, int limit) async {
+    final _res =
+        await http.get(Uri.parse('${UrlHelper.newsCategoryUrl}/$id/$limit'));
+    if (_res.statusCode == 200) {
+      final _decoded = jsonDecode(_res.body);
+      final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
+      return _data;
+    }
+    throw _res;
+  }
+
   Future<News> setVote(String id, int choice) async {
     final response = await http.post(
       Uri.parse('${UrlHelper.newsUrl}/vote/$id'),

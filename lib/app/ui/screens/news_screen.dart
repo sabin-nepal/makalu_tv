@@ -7,7 +7,8 @@ class NewsScreen extends StatelessWidget {
   final String title;
   final String type;
   final List news;
-  NewsScreen({this.title, this.type: 'category', this.news});
+  final String catid;
+  NewsScreen({this.title, this.type: 'category', this.news, this.catid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +22,9 @@ class NewsScreen extends StatelessWidget {
         ),
         body: type != 'category'
             ? NewsPageView(news: news)
-            : CategoryPageView(news: news));
+            : CategoryPageView(
+                news: news,
+                catid: catid,
+              ));
   }
 }
