@@ -10,7 +10,9 @@ class InsightItemView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(insight.background['path']),
+          image: NetworkImage(insight.background != null
+              ? insight.background['path']
+              : insight.media.first['path']),
           fit: BoxFit.cover,
         ),
       ),
