@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/notification_helper.dart';
+import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
@@ -16,7 +17,10 @@ class PushNotificationsService {
 
   Future<void> init() async {
     // For iOS request permission first.
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    var isNotification = await UserSharePreferences().isNotification();
+    if (isNotification)
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
   }
 
   getNotification(BuildContext context) async {
