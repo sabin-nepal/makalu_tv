@@ -59,6 +59,7 @@ class UserSharePreferences {
   }
   Future<void> saveCategoryForNotification(String category) async {
     final pref = await SharedPreferences.getInstance();
+    pref.remove('categoryForNotification');
     Set<String> allCategory =
         pref.getStringList("categoryForNotification")?.toSet() ?? {}; 
     allCategory = {category, ...allCategory};
