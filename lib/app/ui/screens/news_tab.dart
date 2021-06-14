@@ -32,7 +32,7 @@ class _NewsTabState extends State<NewsTab> {
       var j = 0;
       for (var i = 0; i < _news.length; i++) {
         if (i % 2 == 1 && widget.adv.length > j) {
-          _news.insert(i, widget.adv[j]);
+          if (widget.adv[j].type == 'full') _news.insert(i, widget.adv[j]);
           j++;
         }
       }

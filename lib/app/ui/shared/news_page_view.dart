@@ -45,7 +45,7 @@ class _NewsPageViewState extends State<NewsPageView> {
           if (position == widget.news.length + 1) {
             return Container();
           }
-          if (position.isOdd && _news.type == 'banner') {
+          if (position.isOdd && _news.type == 'full') {
             return InkWell(
               onTap: () => _showToast(context),
               child: CustomStackPageView(
