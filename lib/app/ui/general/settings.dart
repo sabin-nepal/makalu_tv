@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/ui/shared/category_name_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -17,6 +22,7 @@ class _SettingsState extends State<Settings> {
   UserSharePreferences _userSharePreferences = UserSharePreferences();
   List _selectedCategories;
   List _oldSelectedCategories;
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   @override
   void initState() {
     super.initState();
@@ -36,6 +42,72 @@ class _SettingsState extends State<Settings> {
     setState(() {
       _notification = value;
     });
+  }
+
+  _subscribeForNotification() async {
+    if (_selectedCategories.isEmpty) return _showToast(context);
+    for (var item in _selectedCategories) {
+      if (!_oldSelectedCategories.contains(item)) {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(item);
+      } else {
+        await FirebaseMessaging.instance.subscribeToTopic(item);
+      }
+      await _userSharePreferences.saveCategoryForNotification(item);
+    }
+    setState(() {});
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: AppColors.primaryColor,
+        duration: Duration(milliseconds: 1000),
+        content: Text("Select Items"),
+      ),
+    );
+  }
+
+  void _sendFeedback() async {
+    String subject;
+    String bodyText;
+    try {
+      if (Platform.isAndroid) {
+        subject = '${DateTime.now()} Feedback of Makalu Tv Android App';
+        AndroidDeviceInfo _androidDeviceInfo =
+            await deviceInfoPlugin.androidInfo;
+        bodyText = 'Device: ${_androidDeviceInfo.device} \n';
+        bodyText += 'Android Id: ${_androidDeviceInfo.androidId} \n ';
+        bodyText += 'Hardware: ${_androidDeviceInfo.hardware} \n ';
+        bodyText += 'Brand: ${_androidDeviceInfo.brand} \n ';
+        bodyText += 'Model: ${_androidDeviceInfo.model} \n ';
+        bodyText += 'Device Width: ${MediaQuery.of(context).size.width} \n ';
+        bodyText += 'Device Height: ${MediaQuery.of(context).size.height} \n ';
+        bodyText += "--Please don't delete anything above this line to help us serve you better--";
+      }
+      if (Platform.isIOS) {
+        subject = '${DateTime.now()} Feedback of Makalu Tv Ios App';
+        IosDeviceInfo _iosDeviceInfo = await deviceInfoPlugin.iosInfo;
+        bodyText = 'Device Name: ${_iosDeviceInfo.name} \n';
+        bodyText += 'System Name: ${_iosDeviceInfo.systemName} \n ';
+        bodyText += 'System Version: ${_iosDeviceInfo.systemVersion} \n ';
+        bodyText += 'Model: ${_iosDeviceInfo.model} \n ';
+        bodyText += 'Width: ${MediaQuery.of(context).size.width} \n ';
+        bodyText += 'Height: ${MediaQuery.of(context).size.height} \n ';
+        bodyText += "--Please don't delete anything above this line to help us serve you better--";
+      }
+    } on PlatformException {
+      print('Error on getting device Information');
+    }
+
+    if (!mounted) return;
+    String uri =
+        'mailto:test@gmail.com?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(bodyText)}';
+    if (await canLaunch(uri)) {
+      await launch(uri);
+    } else {
+      print("No email client found");
+    }
   }
 
   @override
@@ -69,6 +141,7 @@ class _SettingsState extends State<Settings> {
             ),
             _notification ? _categoryList() : Container(),
             ListTile(
+              onTap: _sendFeedback,
               title: Text("FeedBack"),
               subtitle: Text("We appreciate your feedback"),
             )
@@ -117,30 +190,6 @@ class _SettingsState extends State<Settings> {
         }
         return Center(child: Text("Please,Check Your Internet Connection.."));
       },
-    );
-  }
-
-  _subscribeForNotification() async {
-    if (_selectedCategories.isEmpty) return _showToast(context);
-    for (var item in _selectedCategories) {
-      if (!_oldSelectedCategories.contains(item)) {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(item);
-      } else {
-        await FirebaseMessaging.instance.subscribeToTopic(item);
-      }
-      await _userSharePreferences.saveCategoryForNotification(item);
-    }
-    setState(() {});
-  }
-
-  void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: AppColors.primaryColor,
-        duration: Duration(milliseconds: 1000),
-        content: Text("Select Items"),
-      ),
     );
   }
 }
