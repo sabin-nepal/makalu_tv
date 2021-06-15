@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
-import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 
 class CategoryTabView extends StatefulWidget {
   final List category;
@@ -47,7 +46,8 @@ class _CategoryTabViewState extends State<CategoryTabView>
                         arguments: {
                           'title': e.title ?? 'Category',
                           'type': 'category',
-                          'news': e.news
+                          'news': e.news,
+                          'catid': e.id,
                         },
                       );
                     },
@@ -99,11 +99,10 @@ class _CategoryTabViewState extends State<CategoryTabView>
                         }
                         return ListTile(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushNamed(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => CategoryNewsDetails(
-                                      news: _news, id: e.id)),
+                              AppRoutes.categoryDetails,
+                              arguments: {'news': _news, 'catid': e.id},
                             );
                           },
                           title: AutoSizeText(

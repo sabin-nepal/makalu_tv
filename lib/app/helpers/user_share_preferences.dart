@@ -54,16 +54,18 @@ class UserSharePreferences {
     if (data == null) return false;
     return data;
   }
+
   Future<List<String>> getCategoryForNotification() async {
     final pref = await SharedPreferences.getInstance();
     final allCategories = pref.getStringList("categoryForNotification");
     return allCategories;
   }
+
   Future<void> saveCategoryForNotification(String category) async {
     final pref = await SharedPreferences.getInstance();
     pref.remove('categoryForNotification');
     Set<String> allCategory =
-        pref.getStringList("categoryForNotification")?.toSet() ?? {}; 
+        pref.getStringList("categoryForNotification")?.toSet() ?? {};
     allCategory = {category, ...allCategory};
     pref.setStringList("categoryForNotification", allCategory.toList());
   }
@@ -80,35 +82,32 @@ class UserSharePreferences {
 
   //for bookmark
 
-  Future saveBookMark(String id,Map value) async{
+  Future saveBookMark(String id, Map value) async {
     final pref = await SharedPreferences.getInstance();
     String encoded = json.encode(value);
-    Set<String> allNews =
-        pref.getStringList("bookmark")?.toSet() ?? {}; 
-    allNews = {encoded,...allNews};
+    Set<String> allNews = pref.getStringList("bookmark")?.toSet() ?? {};
+    allNews = {encoded, ...allNews};
     pref.setBool('bookmarkId$id', true);
-    pref.setStringList('bookmark',allNews.toList());
+    pref.setStringList('bookmark', allNews.toList());
   }
 
-  Future getBookMark() async{
+  Future getBookMark() async {
     final pref = await SharedPreferences.getInstance();
     final allNews = pref.getStringList('bookmark');
     return allNews;
   }
 
-  Future<bool>  hasBookMark(String id) async{
+  Future<bool> hasBookMark(String id) async {
     final pref = await SharedPreferences.getInstance();
-    return pref.getBool('bookmarkId$id') ?? false;
+    return pref.getBool('bookmarkId$id');
   }
 
-  Future removeBookMark(String id,Map value) async{
+  Future removeBookMark(String id, Map value) async {
     final pref = await SharedPreferences.getInstance();
     pref.setBool('bookmarkId$id', false);
     final allNews = pref.getStringList("bookmark");
     String encoded = json.encode(value);
     allNews.remove(encoded);
-    pref.setStringList("recentNews", allNews.toList());
+    pref.setStringList("bookmark", allNews.toList());
   }
-
-
 }

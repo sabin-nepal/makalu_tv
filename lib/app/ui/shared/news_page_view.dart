@@ -74,6 +74,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                     controller: pageController,
                     initial: widget.position,
                     child: NewsPageItem(
+                      catid: _news.categories.first['id'] ?? '',
                       title: _news.title,
                       newsId: _news.id,
                       content: _news.content,

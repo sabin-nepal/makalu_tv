@@ -3,6 +3,7 @@ import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/general/settings.dart';
 import 'package:makalu_tv/app/ui/screens/bookmark_screen.dart';
+import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
@@ -12,6 +13,7 @@ import 'package:makalu_tv/app/ui/screens/poll_screen.dart';
 class AppRoutes {
   static const String mainScreen = 'main_screen';
   static const String newsDetails = 'news_details';
+  static const String categoryDetails = 'category_details';
   static const String fullImage = 'full_image';
   static const String newsScreen = 'news_screen';
   static const String pollScreen = 'poll_screen';
@@ -21,7 +23,7 @@ class AppRoutes {
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => HomePage(),
-    settingScreen: (_) => Settings(), 
+    settingScreen: (_) => Settings(),
     bookMarkScreen: (_) => BookMakrkScreen(),
   };
 
@@ -44,11 +46,13 @@ class AppRoutes {
       case newsScreen:
         Map _data = settings.arguments as Map;
         String _title = _data['title'];
+        String _catid = _data['catid'];
         List _news = _data['news'];
         String _type = _data['type'];
         return MaterialPageRoute(
             builder: (_) => NewsScreen(
                   title: _title,
+                  catid: _catid,
                   news: _news,
                   type: _type,
                 ));
@@ -65,6 +69,15 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (_) => InsightScreen(
                   position: _position,
+                ));
+      case categoryDetails:
+        Map _data = settings.arguments as Map;
+        Map _news = _data['news'];
+        String _catid = _data['catid'];
+        return MaterialPageRoute(
+            builder: (_) => CategoryNewsDetails(
+                news: _news,
+                id: _catid,
                 ));
       default:
         return _errorRoute();

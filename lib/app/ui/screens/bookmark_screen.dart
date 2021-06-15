@@ -1,12 +1,10 @@
 import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
-import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
-import 'package:makalu_tv/app/styles/styles.dart';
+import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 
 class BookMakrkScreen extends StatefulWidget {
   @override
@@ -27,6 +25,7 @@ class _BookMakrkScreenState extends State<BookMakrkScreen> {
     for (var i in data) {
       news.add(json.decode(i));
     }
+    setState(() {});
   }
 
   @override
@@ -42,20 +41,59 @@ class _BookMakrkScreenState extends State<BookMakrkScreen> {
       ),
       body: Container(
         margin: EdgeInsets.all(AppSizes.padding),
-        child: ListView.builder(
-          itemCount: news.length,
-          itemBuilder: (context,i){
-            var _news = news[i];
-            return Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CachedNetworkImage(imageUrl: _news['media'].first['path']),
-                  Text(_news['title'],style: boldText,),
-                ],
-              ),
-            );
-          }),
+        child: news.length < 1
+            ? Center(child: Text("No news added as bookmark"))
+            : ListView.separated(
+                separatorBuilder: (context, i) => SizedBox(height: 15),
+                itemCount: news.length,
+                itemBuilder: (context, i) {
+                  var _news = news[i];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.categoryDetails,
+                        arguments: {'news': _news, 'catid': _news['catid']},
+                      );
+                    },
+                    child: Container(
+                      height: 200,
+                      alignment: Alignment.bottomLeft,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(AppSizes.paddingSm),
+                              child: Text(
+                                _news['title'] ?? '',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                _userSharePreferences.removeBookMark(
+                                    _news['id'], _news);
+                                news.removeAt(i);
+                                setState(() {});
+                              },
+                              icon: Icon(Icons.bookmark_added,
+                                  color: Colors.white))
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: AppColors.accentColor,
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.7),
+                                  BlendMode.dstATop),
+                              image:
+                                  NetworkImage(_news['media'].first['path'])),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                  );
+                }),
       ),
     );
   }
