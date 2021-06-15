@@ -65,7 +65,9 @@ class _HomeTabState extends State<HomeTab> {
             ),
             IconButton(
               icon: Icon(Icons.bookmark),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.bookMarkScreen);
+              },
             )
           ],
         ),

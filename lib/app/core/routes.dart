@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/general/settings.dart';
+import 'package:makalu_tv/app/ui/screens/bookmark_screen.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
@@ -16,10 +17,12 @@ class AppRoutes {
   static const String pollScreen = 'poll_screen';
   static const String insightScreen = 'insight_screen';
   static const String settingScreen = 'setting_screen';
+  static const String bookMarkScreen = 'bookmark_screen';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => HomePage(),
     settingScreen: (_) => Settings(), 
+    bookMarkScreen: (_) => BookMakrkScreen(),
   };
 
   static Route generateRoute(RouteSettings settings) {

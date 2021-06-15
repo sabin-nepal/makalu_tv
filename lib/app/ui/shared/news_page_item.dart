@@ -91,18 +91,18 @@ class _NewsPageItemState extends State<NewsPageItem> {
                         ? Icons.bookmark_added
                         : Icons.bookmark_add_outlined),
                     onPressed: () async {
-                      if (isBookMark) {
-                        await _userSharePreferences
-                            .removeBookMark(widget.newsId);
-                      } else {
-                        Map<String, dynamic> _news = {
+                      Map<String, dynamic> _news = {
                           'id': widget.newsId,
                           'catid': widget.catid,
                           'title': widget.title,
+                          'media': widget.media,                          
                           'excerpt': widget.excerpt,
                           'content': widget.content,
-                          'media': widget.media,
                         };
+                      if (isBookMark) {
+                        await _userSharePreferences
+                            .removeBookMark(widget.newsId,_news);
+                      } else {
                         await _userSharePreferences.saveBookMark(
                             widget.newsId, _news);
                       }

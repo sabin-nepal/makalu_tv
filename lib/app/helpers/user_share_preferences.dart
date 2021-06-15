@@ -83,15 +83,17 @@ class UserSharePreferences {
   Future saveBookMark(String id,Map value) async{
     final pref = await SharedPreferences.getInstance();
     String encoded = json.encode(value);
+    Set<String> allNews =
+        pref.getStringList("bookmark")?.toSet() ?? {}; 
+    allNews = {encoded,...allNews};
     pref.setBool('bookmarkId$id', true);
-    pref.setString('bookmark$id',encoded);
+    pref.setStringList('bookmark',allNews.toList());
   }
 
   Future getBookMark() async{
     final pref = await SharedPreferences.getInstance();
-    String encodedMap = pref.getString('bookmark');
-    Map<String,dynamic> news = json.decode(encodedMap);
-    return news;
+    final allNews = pref.getStringList('bookmark');
+    return allNews;
   }
 
   Future<bool>  hasBookMark(String id) async{
@@ -99,10 +101,13 @@ class UserSharePreferences {
     return pref.getBool('bookmarkId$id') ?? false;
   }
 
-  Future removeBookMark(String id) async{
+  Future removeBookMark(String id,Map value) async{
     final pref = await SharedPreferences.getInstance();
     pref.setBool('bookmarkId$id', false);
-    pref.remove('bookmark$id');
+    final allNews = pref.getStringList("bookmark");
+    String encoded = json.encode(value);
+    allNews.remove(encoded);
+    pref.setStringList("recentNews", allNews.toList());
   }
 
 
