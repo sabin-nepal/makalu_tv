@@ -75,6 +75,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                     initial: widget.position,
                     child: NewsPageItem(
                       title: _news.title,
+                      newsId: _news.id,
                       content: _news.content,
                       excerpt: _news.excerpt,
                       media: _news.media,

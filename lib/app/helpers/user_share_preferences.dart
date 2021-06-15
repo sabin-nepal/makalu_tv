@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSharePreferences {
@@ -75,4 +77,33 @@ class UserSharePreferences {
     final pref = await SharedPreferences.getInstance();
     return pref.getBool('isNotification');
   }
+
+  //for bookmark
+
+  Future saveBookMark(String id,Map value) async{
+    final pref = await SharedPreferences.getInstance();
+    String encoded = json.encode(value);
+    pref.setBool('bookmarkId$id', true);
+    pref.setString('bookmark$id',encoded);
+  }
+
+  Future getBookMark() async{
+    final pref = await SharedPreferences.getInstance();
+    String encodedMap = pref.getString('bookmark');
+    Map<String,dynamic> news = json.decode(encodedMap);
+    return news;
+  }
+
+  Future<bool>  hasBookMark(String id) async{
+    final pref = await SharedPreferences.getInstance();
+    return pref.getBool('bookmarkId$id') ?? false;
+  }
+
+  Future removeBookMark(String id) async{
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool('bookmarkId$id', false);
+    pref.remove('bookmark$id');
+  }
+
+
 }
