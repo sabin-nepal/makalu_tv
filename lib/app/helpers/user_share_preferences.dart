@@ -77,7 +77,7 @@ class UserSharePreferences {
 
   Future<bool> isNotification() async {
     final pref = await SharedPreferences.getInstance();
-    return pref.getBool('isNotification');
+    return pref.getBool('isNotification')??false;
   }
 
   //for bookmark
