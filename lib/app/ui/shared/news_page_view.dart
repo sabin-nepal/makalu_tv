@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
@@ -20,105 +21,113 @@ class _NewsPageViewState extends State<NewsPageView> {
   PageController pageController;
   int remainingPage;
   bool _swipeVisible = false;
+  FToast fToast;
   @override
   void initState() {
     super.initState();
     remainingPage = widget.news.length - 1;
     pageController = PageController(initialPage: widget.position);
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PageView.builder(
-        onPageChanged: (index) {
-          int value = index + 1;
-          remainingPage = widget.news.length - value;
-          setState(() {});
-        },
-        controller: pageController,
-        pageSnapping: true,
-        scrollDirection: Axis.vertical,
-        itemCount: widget.news.length,
-        itemBuilder: (context, position) {
-          var _news = widget.news[position];
-          if (position == widget.news.length + 1) {
-            return Container();
-          }
-          if (position.isOdd && _news.type == 'full') {
-            return InkWell(
-              onTap: () => _showToast(context),
-              child: CustomStackPageView(
-                  controller: pageController,
+    return PageView.builder(
+      onPageChanged: (index) {
+        int value = index + 1;
+        remainingPage = widget.news.length - value;
+        setState(() {});
+      },
+      controller: pageController,
+      pageSnapping: true,
+      scrollDirection: Axis.vertical,
+      itemCount: widget.news.length,
+      itemBuilder: (context, position) {
+        var _news = widget.news[position];
+        if (position == widget.news.length + 1) {
+          return Container();
+        }
+        if (position.isOdd && _news.type == 'full') {
+          return InkWell(
+            onTap: () => _showToast(context),
+            child: CustomStackPageView(
+                controller: pageController,
+                index: position,
+                child: CachedNetworkImage(
+                    imageUrl: _news.media['path'], fit: BoxFit.fill)),
+          );
+        }
+        return Column(
+          children: [
+            Flexible(
+              child: GestureDetector(
+                onHorizontalDragUpdate: (details) {
+                  if (details.primaryDelta < 0) {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.newsDetails,
+                      arguments: {'news': _news},
+                    );
+                  }
+                },
+                onTap: () => _showToast(context),
+                child: CustomStackPageView(
                   index: position,
-                  child: CachedNetworkImage(
-                      imageUrl: _news.media['path'], fit: BoxFit.fill)),
-            );
-          }
-          return Column(
-            children: [
-              Flexible(
-                child: GestureDetector(
-                  onHorizontalDragUpdate: (details) {
-                    if (details.primaryDelta < 0) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.newsDetails,
-                        arguments: {'news': _news},
-                      );
-                    }
-                  },
-                  onTap: () => _showToast(context),
-                  child: CustomStackPageView(
-                    index: position,
-                    controller: pageController,
-                    initial: widget.position,
-                    child: NewsPageItem(
-                      catid: _news.categories.first['id'] ?? '',
-                      title: _news.title,
-                      newsId: _news.id,
-                      content: _news.content,
-                      excerpt: _news.excerpt,
-                      media: _news.media,
-                    ),
+                  controller: pageController,
+                  initial: widget.position,
+                  child: NewsPageItem(
+                    catid: _news.categories.first['id'] ?? '',
+                    title: _news.title,
+                    newsId: _news.id,
+                    content: _news.content,
+                    excerpt: _news.excerpt,
+                    media: _news.media,
                   ),
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(left: AppSizes.padding),
-                  alignment: _news.type == 'poll'
-                      ? Alignment.topLeft
-                      : Alignment.bottomCenter,
-                  child: Text(_swipeVisible ? 'Swipe for details' : '')),
-              SizedBox(height: 20),
-              if (_news.type == 'poll')
-                PollView(
-                  title: _news.pollTitle,
-                  id: _news.id,
-                  yesCount: _news.pollResult['yesCount'],
-                  noCount: _news.pollResult['noCount'],
-                ),
-            ],
-          );
-        },
-      ),
+            ),
+            Container(
+                padding: EdgeInsets.only(left: AppSizes.padding),
+                alignment: Alignment.bottomCenter,
+                child: Text(_swipeVisible ? 'Swipe for details' : '')),
+            SizedBox(height: 20),
+            if (_news.type == 'poll')
+              PollView(
+                title: _news.pollTitle,
+                id: _news.id,
+                yesCount: _news.pollResult['yesCount'],
+                noCount: _news.pollResult['noCount'],
+              ),
+          ],
+        );
+      },
     );
   }
 
   void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: AppColors.primaryColor,
-        duration: Duration(milliseconds: 1000),
-        onVisible: () {
-          _swipeVisible = true;
-          setState(() {});
-        },
-        content: Text(remainingPage == 0
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Color(0xffff7000),
+      ),
+      child: Text(
+        remainingPage == 0
             ? 'No More News Refresh For New one'
-            : '$remainingPage news is remaining'),
+            : '$remainingPage news remaining',
       ),
     );
+    fToast.showToast(
+        child: toast,
+        toastDuration: Duration(seconds: 2),
+        positionedToastBuilder: (context, child) {
+          return Positioned(
+            child: child,
+            bottom: MediaQuery.of(context).size.height / 3.5,
+            left: 16.0,
+            right: 16.0,
+          );
+        });
   }
 }

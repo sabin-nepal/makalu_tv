@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
 
 final TextStyle boldText = TextStyle(
   fontWeight: FontWeight.bold,
@@ -6,8 +7,13 @@ final TextStyle boldText = TextStyle(
 
 final TextStyle titleText = TextStyle(
   color: Colors.black,
-  fontSize: 15.0,
-  fontWeight: FontWeight.w900,
+  fontSize: 16.0,
+  fontWeight: FontWeight.w400,
+);
+
+final TextStyle descriptionText = TextStyle(
+  color: AppColors.dexcriptionColor,
+  fontWeight: FontWeight.w300,
 );
 
 final TextStyle smallBoldText = TextStyle(

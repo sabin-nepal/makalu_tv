@@ -35,7 +35,6 @@ class _NewsPageItemState extends State<NewsPageItem> {
   UserSharePreferences _userSharePreferences = UserSharePreferences();
 
   bool isBookMark = false;
-  bool bookMarkIcon = false;
   @override
   void initState() {
     super.initState();
@@ -51,84 +50,79 @@ class _NewsPageItemState extends State<NewsPageItem> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: GestureDetector(
-        onTap: () {
-          bookMarkIcon = !bookMarkIcon;
-          setState(() {});
-        },
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              child: Card(
-                  child: PhotoViewGallery.builder(
-                itemCount: widget.media.length,
-                builder: (context, i) {
-                  var _media = widget.media[i];
-                  return PhotoViewGalleryPageOptions.customChild(
-                      disableGestures: true,
-                      initialScale: PhotoViewComputedScale.contained * 2.0,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.fullImage,
-                            arguments: {'imageUrl': _media['path']},
-                          );
-                        },
-                        child: CachedNetworkImage(imageUrl: _media['path']),
-                      ));
-                },
-              )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      widget.title,
-                      style: boldText,
-                    ),
-                  ),
-                  if (!widget.isFullContent && bookMarkIcon)
-                    IconButton(
-                      icon: Icon(isBookMark
-                          ? Icons.bookmark_added
-                          : Icons.bookmark_add_outlined),
-                      onPressed: () async {
-                        Map<String, dynamic> _news = {
-                          'id': widget.newsId,
-                          'catid': widget.catid,
-                          'title': widget.title,
-                          'media': widget.media,
-                          'excerpt': widget.excerpt,
-                          'content': widget.content,
-                        };
-                        if (isBookMark) {
-                          await _userSharePreferences.removeBookMark(
-                              widget.newsId, _news);
-                        } else {
-                          await _userSharePreferences.saveBookMark(
-                              widget.newsId, _news);
-                        }
-                        isBookMark = !isBookMark;
-                        setState(() {});
+      child: Column(
+        children: [
+          Container(
+            height: 200,
+            child: PhotoViewGallery.builder(
+              itemCount: widget.media.length,
+              builder: (context, i) {
+                var _media = widget.media[i];
+                return PhotoViewGalleryPageOptions.customChild(
+                    disableGestures: true,
+                    initialScale: PhotoViewComputedScale.contained * 2.0,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.fullImage,
+                          arguments: {'imageUrl': _media['path']},
+                        );
                       },
-                    )
-                ],
-              ),
+                      child: CachedNetworkImage(imageUrl: _media['path']),
+                    ));
+              },
             ),
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: widget.isFullContent
-                    ? Text(widget.content)
-                    : Text(widget.excerpt)),
-            if (widget.isFullContent) _similarNewsHeading(),
-            if (widget.isFullContent)
-              Container(height: 300, child: _similarNews()),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    widget.title,
+                    style: titleText,
+                  ),
+                ),
+                if (!widget.isFullContent)
+                  IconButton(
+                    icon: Icon(isBookMark
+                        ? Icons.bookmark_added
+                        : Icons.bookmark_add_outlined),
+                    onPressed: () async {
+                      Map<String, dynamic> _news = {
+                        'id': widget.newsId,
+                        'catid': widget.catid,
+                        'title': widget.title,
+                        'media': widget.media,
+                        'excerpt': widget.excerpt,
+                        'content': widget.content,
+                      };
+                      if (isBookMark) {
+                        await _userSharePreferences.removeBookMark(
+                            widget.newsId, _news);
+                      } else {
+                        await _userSharePreferences.saveBookMark(
+                            widget.newsId, _news);
+                      }
+                      isBookMark = !isBookMark;
+                      setState(() {});
+                    },
+                  )
+              ],
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: widget.isFullContent
+                  ? Text(widget.content,style: descriptionText,)
+                  : Text(widget.excerpt,style: descriptionText)),
+          if (widget.isFullContent) _similarNewsHeading(),
+          if (widget.isFullContent)
+            Container(height: 300, child: _similarNews()),
+        ],
       ),
     );
   }
@@ -145,7 +139,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
             thickness: 2,
           )),
           Text(
-            "News to read",
+            "News to read".toUpperCase(),
             style: headingStyle,
           ),
           Expanded(

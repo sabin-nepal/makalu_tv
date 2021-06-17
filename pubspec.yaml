@@ -35,6 +35,7 @@ dependencies:
   firebase_messaging: ^10.0.1
   device_info_plus: ^1.0.1
   url_launcher: ^6.0.6
+  fluttertoast: ^8.0.7
 
 dev_dependencies:
   flutter_test:
@@ -48,5 +49,6 @@ flutter:
       fonts:
         - asset: assets/fonts/Mukta/Mukta-Regular.ttf
         - asset: assets/fonts/Mukta/Mukta-Bold.ttf
+        - asset: assets/fonts/Mukta/Mukta-Light.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

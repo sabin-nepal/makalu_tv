@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/notifiers/news_notifier.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
+import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,7 @@ class _PollViewState extends State<PollView> {
         Container(
           child: AutoSizeText(
             widget.title,
-            style: boldText,
+            style: titleText,
             maxLines: 2,
           ),
         ),
@@ -82,45 +83,48 @@ class _PollViewState extends State<PollView> {
             return Center(child: CircularProgressIndicator());
           yesVote = notify.getPolls['yesCount'];
           noVote = notify.getPolls['noCount'];
-          return Row(
-              children: [
-                OutlinedButton(
-                  onPressed: () async {
-                    if (voted) {
-                      return null;
-                    }
-                    await NewsService().setVote(widget.id, 1);
-                    await _userPreference.vote(widget.id);
-                    _calculateVote(positive: 1);
-                    voted = true;
-                    setState(() {});
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
+          return Container(
+            padding :EdgeInsets.symmetric(horizontal:AppSizes.padding),
+            child: Row(
+                children: [
+                  OutlinedButton(
+                    onPressed: () async {
+                      if (voted) {
+                        return null;
+                      }
+                      await NewsService().setVote(widget.id, 1);
+                      await _userPreference.vote(widget.id);
+                      _calculateVote(positive: 1);
+                      voted = true;
+                      setState(() {});
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                    ),
+                    child: Text(voted ? yesPercent : "Yes"),
                   ),
-                  child: Text(voted ? yesPercent : "Yes"),
-                ),
-                Spacer(),
-                OutlinedButton(
-                  onPressed: () async {
-                    if (voted) {
-                      return null;
-                    }
-                    await NewsService().setVote(widget.id, 0);
-                    await _userPreference.vote(widget.id);
-                    voted = true;
-                    _calculateVote(negative: 1);
-                    setState(() {});
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
+                  Spacer(),
+                  OutlinedButton(
+                    onPressed: () async {
+                      if (voted) {
+                        return null;
+                      }
+                      await NewsService().setVote(widget.id, 0);
+                      await _userPreference.vote(widget.id);
+                      voted = true;
+                      _calculateVote(negative: 1);
+                      setState(() {});
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                    ),
+                    child: Text(voted ? noPercent : "No"),
                   ),
-                  child: Text(voted ? noPercent : "No"),
-                ),
-              ],
-            );
+                ],
+              ),
+          );
         }),
       ],
     );
