@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
-import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
@@ -224,6 +223,7 @@ class _HomeTabState extends State<HomeTab> {
               itemBuilder: (context, index) {
                 final _news = _poll[index];
                 return Card(
+                  color: AppColors.bgColor,
                   child: Column(
                     children: [
                       Container(

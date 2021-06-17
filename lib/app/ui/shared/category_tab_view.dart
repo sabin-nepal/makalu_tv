@@ -58,7 +58,10 @@ class _CategoryTabViewState extends State<CategoryTabView>
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Text(e.title)
+                  Text(
+                    e.title,
+                    style: titleText,
+                  )
                 ],
               );
             }).toList(),
@@ -108,11 +111,10 @@ class _CategoryTabViewState extends State<CategoryTabView>
                           title: AutoSizeText(
                             _news['title'],
                             maxLines: 2,
+                            style: titleText,
                           ),
-                          trailing: CachedNetworkImage(
+                          leading: CachedNetworkImage(
                             imageUrl: _news['media'].first['path'],
-                            width: 30,
-                            height: 50,
                           ),
                         );
                       });

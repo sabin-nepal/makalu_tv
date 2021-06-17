@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 
 final TextStyle boldText = TextStyle(
+  color: Colors.black,
   fontWeight: FontWeight.bold,
 );
 

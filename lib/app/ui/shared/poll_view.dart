@@ -84,46 +84,59 @@ class _PollViewState extends State<PollView> {
           yesVote = notify.getPolls['yesCount'];
           noVote = notify.getPolls['noCount'];
           return Container(
-            padding :EdgeInsets.symmetric(horizontal:AppSizes.padding),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.padding),
             child: Row(
-                children: [
-                  OutlinedButton(
-                    onPressed: () async {
-                      if (voted) {
-                        return null;
-                      }
-                      await NewsService().setVote(widget.id, 1);
-                      await _userPreference.vote(widget.id);
-                      _calculateVote(positive: 1);
-                      voted = true;
-                      setState(() {});
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                    ),
-                    child: Text(voted ? yesPercent : "Yes"),
+              children: [
+                OutlinedButton(
+                  onPressed: () async {
+                    if (voted) {
+                      return null;
+                    }
+                    await NewsService().setVote(widget.id, 1);
+                    await _userPreference.vote(widget.id);
+                    _calculateVote(positive: 1);
+                    voted = true;
+                    setState(() {});
+                  },
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(BorderSide(
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                      width: 0.8,
+                    )),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
                   ),
-                  Spacer(),
-                  OutlinedButton(
-                    onPressed: () async {
-                      if (voted) {
-                        return null;
-                      }
-                      await NewsService().setVote(widget.id, 0);
-                      await _userPreference.vote(widget.id);
-                      voted = true;
-                      _calculateVote(negative: 1);
-                      setState(() {});
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                    ),
-                    child: Text(voted ? noPercent : "No"),
+                  child: Text(
+                    voted ? yesPercent : "Yes",
+                    style: smallBoldText,
                   ),
-                ],
-              ),
+                ),
+                Spacer(),
+                OutlinedButton(
+                  onPressed: () async {
+                    if (voted) {
+                      return null;
+                    }
+                    await NewsService().setVote(widget.id, 0);
+                    await _userPreference.vote(widget.id);
+                    voted = true;
+                    _calculateVote(negative: 1);
+                    setState(() {});
+                  },
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(BorderSide(
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                      width: 0.8,
+                    )),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child: Text(voted ? noPercent : "No", style: smallBoldText),
+                ),
+              ],
+            ),
           );
         }),
       ],
