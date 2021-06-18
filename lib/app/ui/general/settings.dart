@@ -9,6 +9,7 @@ import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/category_name_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -83,7 +84,8 @@ class _SettingsState extends State<Settings> {
         bodyText += 'Model: ${_androidDeviceInfo.model} \n ';
         bodyText += 'Device Width: ${MediaQuery.of(context).size.width} \n ';
         bodyText += 'Device Height: ${MediaQuery.of(context).size.height} \n ';
-        bodyText += "--Please don't delete anything above this line to help us serve you better--";
+        bodyText +=
+            "--Please don't delete anything above this line to help us serve you better--";
       }
       if (Platform.isIOS) {
         subject = '${DateTime.now()} Feedback of Makalu Tv Ios App';
@@ -94,7 +96,8 @@ class _SettingsState extends State<Settings> {
         bodyText += 'Model: ${_iosDeviceInfo.model} \n ';
         bodyText += 'Width: ${MediaQuery.of(context).size.width} \n ';
         bodyText += 'Height: ${MediaQuery.of(context).size.height} \n ';
-        bodyText += "--Please don't delete anything above this line to help us serve you better--";
+        bodyText +=
+            "--Please don't delete anything above this line to help us serve you better--";
       }
     } on PlatformException {
       print('Error on getting device Information');
@@ -135,15 +138,24 @@ class _SettingsState extends State<Settings> {
         child: Column(
           children: [
             SwitchListTile(
-              title: Text("Notification"),
+              title: Text(
+                "Notification",
+                style: boldText,
+              ),
               value: _notification,
               onChanged: _onChanged,
             ),
             _notification ? _categoryList() : Container(),
             ListTile(
               onTap: _sendFeedback,
-              title: Text("FeedBack"),
-              subtitle: Text("We appreciate your feedback"),
+              title: Text(
+                "FeedBack",
+                style: boldText,
+              ),
+              subtitle: Text(
+                "We appreciate your feedback",
+                style: descriptionText,
+              ),
             )
           ],
         ),

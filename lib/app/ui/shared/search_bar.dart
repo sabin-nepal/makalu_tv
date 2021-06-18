@@ -5,6 +5,7 @@ import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/notifiers/search_notifier.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class CustomSearch extends SearchDelegate<String> {
@@ -46,7 +47,11 @@ class CustomSearch extends SearchDelegate<String> {
           }
           if (snapshot.hasData) {
             if (snapshot.data.length < 1)
-              return Center(child: Text("Search Not Found.."));
+              return Center(
+                  child: Text(
+                "Search Not Found..",
+                style: boldText,
+              ));
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -59,7 +64,10 @@ class CustomSearch extends SearchDelegate<String> {
                         imageUrl: news.media.first['path'],
                       ),
                     ),
-                    title: Text(news.title),
+                    title: Text(
+                      news.title,
+                      style: titleText,
+                    ),
                     onTap: () async {
                       await _userPreference.saveToRecentSearches(query);
                       Navigator.pushNamed(
@@ -72,7 +80,10 @@ class CustomSearch extends SearchDelegate<String> {
                 });
           }
           return Center(
-            child: Text("No Data"),
+            child: Text(
+              "No Data",
+              style: boldText,
+            ),
           );
         });
   }
@@ -87,7 +98,10 @@ class CustomSearch extends SearchDelegate<String> {
         itemBuilder: (context, index) {
           return ListTile(
             leading: Icon(Icons.restore),
-            title: Text("${_oldFilters[index]}"),
+            title: Text(
+              "${_oldFilters[index]}",
+              style: titleText,
+            ),
             onTap: () => query = _oldFilters[index],
             trailing: IconButton(
               icon: Icon(Icons.delete),

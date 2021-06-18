@@ -4,6 +4,7 @@ import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 
 class BookMakrkScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _BookMakrkScreenState extends State<BookMakrkScreen> {
       body: Container(
         margin: EdgeInsets.all(AppSizes.padding),
         child: news.length < 1
-            ? Center(child: Text("No news added as bookmark"))
+            ? Center(child: Text("No news added as bookmark",style: titleText,))
             : ListView.separated(
                 separatorBuilder: (context, i) => SizedBox(height: 15),
                 itemCount: news.length,

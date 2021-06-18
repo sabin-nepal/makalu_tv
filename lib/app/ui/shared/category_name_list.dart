@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 
 class CategoryNameList extends StatefulWidget {
   final Category category;
@@ -16,13 +17,13 @@ class _CategoryNameListState extends State<CategoryNameList> {
   bool isSelected = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _setSelectedItems();
   }
 
-  _setSelectedItems(){
-    if(widget.selectedItems.contains(widget.category.id)){
+  _setSelectedItems() {
+    if (widget.selectedItems.contains(widget.category.id)) {
       isSelected = true;
     }
   }
@@ -32,7 +33,10 @@ class _CategoryNameListState extends State<CategoryNameList> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Row(children: [
-        Text(widget.category.title ?? ''),
+        Text(
+          widget.category.title ?? '',
+          style: titleText,
+        ),
         Spacer(),
         Container(
           child: IconButton(

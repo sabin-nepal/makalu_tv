@@ -88,6 +88,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
                 ),
                 if (!widget.isFullContent)
                   IconButton(
+                    color: AppColors.textColor,
                     icon: Icon(isBookMark
                         ? Icons.bookmark_added
                         : Icons.bookmark_add_outlined),
@@ -117,8 +118,11 @@ class _NewsPageItemState extends State<NewsPageItem> {
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: widget.isFullContent
-                  ? Text(widget.content,style: descriptionText,)
-                  : Text(widget.excerpt,style: descriptionText)),
+                  ? Text(
+                      widget.content,
+                      style: descriptionText,
+                    )
+                  : Text(widget.excerpt, style: descriptionText)),
           if (widget.isFullContent) _similarNewsHeading(),
           if (widget.isFullContent)
             Container(height: 300, child: _similarNews()),
@@ -132,22 +136,25 @@ class _NewsPageItemState extends State<NewsPageItem> {
       children: [
         Divider(),
         SizedBox(height: 20),
-        Row(children: <Widget>[
-          Expanded(
-              child: Divider(
-            color: AppColors.primaryColor,
-            thickness: 2,
-          )),
-          Text(
-            "News to read".toUpperCase(),
-            style: headingStyle,
-          ),
-          Expanded(
-              child: Divider(
-            color: AppColors.primaryColor,
-            thickness: 2,
-          )),
-        ]),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal:120),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: Divider(
+              color: AppColors.accentColor,
+              thickness: 2,
+            )),
+            Text(
+              "News to read".toUpperCase(),
+              style: headingStyle,
+            ),
+            Expanded(
+                child: Divider(
+              color: AppColors.accentColor,
+              thickness: 2,
+            )),
+          ]),
+        ),
         SizedBox(height: 10),
       ],
     );
