@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        elevation: 0,
         unselectedItemColor: Colors.white,
         selectedItemColor: AppColors.iconColor,
         items: [

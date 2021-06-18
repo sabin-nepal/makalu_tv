@@ -32,6 +32,12 @@ class _NewsPageViewState extends State<NewsPageView> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PageView.builder(
       onPageChanged: (index) {

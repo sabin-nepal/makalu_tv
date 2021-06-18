@@ -144,10 +144,12 @@ class _NewsPageItemState extends State<NewsPageItem> {
               color: AppColors.accentColor,
               thickness: 2,
             )),
+            SizedBox(width:10),
             Text(
               "News to read".toUpperCase(),
               style: headingStyle,
             ),
+            SizedBox(width:10),
             Expanded(
                 child: Divider(
               color: AppColors.accentColor,
