@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
-import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:makalu_tv/app/ui/shared/poll_view.dart';
@@ -11,7 +11,8 @@ import 'package:makalu_tv/app/ui/shared/poll_view.dart';
 class NewsPageView extends StatefulWidget {
   final List news;
   final int position;
-  NewsPageView({this.news, this.position: 0});
+  final showRemaining;
+  NewsPageView({this.news, this.position: 0, this.showRemaining: true});
 
   @override
   _NewsPageViewState createState() => _NewsPageViewState();
@@ -43,6 +44,7 @@ class _NewsPageViewState extends State<NewsPageView> {
       onPageChanged: (index) {
         int value = index + 1;
         remainingPage = widget.news.length - value;
+        _swipeVisible = false;
         setState(() {});
       },
       controller: pageController,
@@ -77,7 +79,12 @@ class _NewsPageViewState extends State<NewsPageView> {
                     );
                   }
                 },
-                onTap: () => _showToast(context),
+                onTap: () {
+                  setState(() {
+                    _swipeVisible = true;
+                  });
+                  if (widget.showRemaining) _showToast(context);
+                },
                 child: CustomStackPageView(
                   index: position,
                   controller: pageController,
@@ -96,7 +103,10 @@ class _NewsPageViewState extends State<NewsPageView> {
             Container(
                 padding: EdgeInsets.only(left: AppSizes.padding),
                 alignment: Alignment.bottomCenter,
-                child: Text(_swipeVisible ? 'Swipe for details' : '')),
+                child: Text(
+                  _swipeVisible ? 'Swipe for details' : '',
+                  style: titleText,
+                )),
             SizedBox(height: 20),
             if (_news.type == 'poll')
               PollView(

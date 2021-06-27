@@ -28,7 +28,7 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _insightService = InsightService.getInsight();
-    _categoryService = CategoryService.getCategoryNews();
+    _categoryService = CategoryService.getCategoryNews(5);
     _newsService = NewsService.getNewsType('poll', 5);
   }
 

@@ -3,11 +3,11 @@ import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/general/settings.dart';
 import 'package:makalu_tv/app/ui/screens/bookmark_screen.dart';
+import 'package:makalu_tv/app/ui/screens/category_screen.dart';
 import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
-import 'package:makalu_tv/app/ui/screens/news_screen.dart';
 import 'package:makalu_tv/app/ui/screens/poll_screen.dart';
 
 class AppRoutes {
@@ -15,7 +15,7 @@ class AppRoutes {
   static const String newsDetails = 'news_details';
   static const String categoryDetails = 'category_details';
   static const String fullImage = 'full_image';
-  static const String newsScreen = 'news_screen';
+  static const String categoryScreen = 'category_screen';
   static const String pollScreen = 'poll_screen';
   static const String insightScreen = 'insight_screen';
   static const String settingScreen = 'setting_screen';
@@ -43,18 +43,14 @@ class AppRoutes {
             builder: (_) => FullImageView(
                   imageUrl: _imageUrl,
                 ));
-      case newsScreen:
+      case categoryScreen:
         Map _data = settings.arguments as Map;
         String _title = _data['title'];
         String _catid = _data['catid'];
-        List _news = _data['news'];
-        String _type = _data['type'];
         return MaterialPageRoute(
-            builder: (_) => NewsScreen(
+            builder: (_) => CategoryScreen(
                   title: _title,
                   catid: _catid,
-                  news: _news,
-                  type: _type,
                 ));
       case pollScreen:
         Map _data = settings.arguments as Map;

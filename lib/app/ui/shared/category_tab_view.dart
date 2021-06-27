@@ -42,11 +42,9 @@ class _CategoryTabViewState extends State<CategoryTabView>
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        AppRoutes.newsScreen,
+                        AppRoutes.categoryScreen,
                         arguments: {
                           'title': e.title ?? 'Category',
-                          'type': 'category',
-                          'news': e.news,
                           'catid': e.id,
                         },
                       );
@@ -85,11 +83,9 @@ class _CategoryTabViewState extends State<CategoryTabView>
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
-                                AppRoutes.newsScreen,
+                                AppRoutes.categoryScreen,
                                 arguments: {
                                   'title': e.title ?? 'Category',
-                                  'type': 'category',
-                                  'news': e.news,
                                   'catid': e.id
                                 },
                               );

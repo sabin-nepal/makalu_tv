@@ -16,9 +16,9 @@ class CategoryService {
     throw _res;
   }
 
-  static Future<List<Category>> getCategoryNews() async {
+  static Future<List<Category>> getCategoryNews(int limit) async {
     final _res =
-        await http.get(Uri.parse(UrlHelper.categoryNewsUrl));
+        await http.get(Uri.parse('${UrlHelper.categoryNewsUrl}/$limit'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<Category>((e) => Category.fromJson(e)).toList();
