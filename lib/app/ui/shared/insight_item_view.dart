@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
+import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class InsightItemView extends StatelessWidget {
   final Insight insight;
   InsightItemView({this.insight});
   @override
   Widget build(BuildContext context) {
+    PageController _pageController = PageController();
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -16,16 +19,33 @@ class InsightItemView extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: PageView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: insight.media.length,
-          itemBuilder: (context, index) {
-            var media = insight.media[index];
-            return CachedNetworkImage(
-              imageUrl: media['path'],
-              width: MediaQuery.of(context).size.width,
-            );
-          }),
+      child: Stack(
+        children: [
+          PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.horizontal,
+              itemCount: insight.media.length,
+              itemBuilder: (context, index) {
+                var media = insight.media[index];
+                return CachedNetworkImage(
+                  imageUrl: media['path'],
+                  width: MediaQuery.of(context).size.width,
+                );
+              }),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.all(AppSizes.padding),
+                child: Center(
+                    child: SmoothPageIndicator(
+                        controller: _pageController,
+                        count: insight.media.length)),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

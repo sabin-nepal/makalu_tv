@@ -35,7 +35,6 @@ dependencies:
   device_info_plus: ^1.0.1
   url_launcher: ^6.0.6
   fluttertoast: ^8.0.7
-  flutter_html: ^2.1.0
   smooth_page_indicator: ^0.2.3
 
 dev_dependencies:
