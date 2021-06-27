@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/notifiers/news_notifier.dart';
@@ -72,10 +71,9 @@ class _PollViewState extends State<PollView> {
     return Column(
       children: [
         Container(
-          child: AutoSizeText(
+          child: Text(
             widget.title,
             style: titleText,
-            maxLines: 2,
           ),
         ),
         Consumer<NewsNotifier>(builder: (context, notify, _) {

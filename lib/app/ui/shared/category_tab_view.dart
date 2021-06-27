@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
@@ -104,9 +103,8 @@ class _CategoryTabViewState extends State<CategoryTabView>
                               arguments: {'news': _news, 'catid': e.id},
                             );
                           },
-                          title: AutoSizeText(
+                          title: Text(
                             _news['title'],
-                            maxLines: 2,
                             style: titleText,
                           ),
                           leading: CachedNetworkImage(
