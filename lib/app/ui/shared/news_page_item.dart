@@ -194,7 +194,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
                               imageUrl: news.media.first['path'],
                             ),
                           ),
-                          Text(news.title, style: boldText),
+                          Text(news.title, style: titleText),
                         ],
                       ),
                     ),
