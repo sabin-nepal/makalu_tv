@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
@@ -115,14 +116,27 @@ class _NewsPageItemState extends State<NewsPageItem> {
               ],
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: widget.isFullContent
-                  ? Text(
-                      widget.content,
-                      style: descriptionText,
+          widget.isFullContent
+              ? Html(
+                  data: widget.content,
+                  style: {
+                    "body": Style(
+                      color: AppColors.dexcriptionColor,
+                      fontWeight: FontWeight.w300,
+                      lineHeight: LineHeight.number(1.5),
                     )
-                  : Text(widget.excerpt, style: descriptionText)),
+                  },
+                )
+              : Html(
+                  data: widget.excerpt,
+                  style: {
+                    "body": Style(
+                      color: AppColors.dexcriptionColor,
+                      fontWeight: FontWeight.w300,
+                      lineHeight: LineHeight.number(1.5),
+                    )
+                  },
+                ),
           if (widget.isFullContent) _similarNewsHeading(),
           if (widget.isFullContent)
             Container(height: 300, child: _similarNews()),
@@ -137,19 +151,19 @@ class _NewsPageItemState extends State<NewsPageItem> {
         Divider(),
         SizedBox(height: 20),
         Container(
-          margin: EdgeInsets.symmetric(horizontal:120),
+          margin: EdgeInsets.symmetric(horizontal: 120),
           child: Row(children: <Widget>[
             Expanded(
                 child: Divider(
               color: AppColors.accentColor,
               thickness: 2,
             )),
-            SizedBox(width:10),
+            SizedBox(width: 10),
             Text(
               "News to read".toUpperCase(),
               style: headingStyle,
             ),
-            SizedBox(width:10),
+            SizedBox(width: 10),
             Expanded(
                 child: Divider(
               color: AppColors.accentColor,
