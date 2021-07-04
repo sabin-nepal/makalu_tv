@@ -5,7 +5,7 @@ import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 class CategoryNewsDetails extends StatelessWidget {
   final String id;
   final Map news;
-  CategoryNewsDetails({this.news,this.id});
+  CategoryNewsDetails({this.news, this.id});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +17,7 @@ class CategoryNewsDetails extends StatelessWidget {
       body: SingleChildScrollView(
         child: NewsPageItem(
           catid: id,
+          newsId: news['id'],
           title: news['title'],
           content: news['content'],
           media: news['media'],

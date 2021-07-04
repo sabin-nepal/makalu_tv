@@ -179,7 +179,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
 
   Widget _similarNews() {
     return FutureBuilder(
-        future: NewsService.getCategoryNews(widget.catid, 3),
+        future: NewsService.getCategoryNews(widget.catid, 4),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -191,6 +191,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, i) {
                   News news = snapshot.data[i];
+                  if (news.id == widget.newsId) return Container();
                   return Container(
                     margin: EdgeInsets.all(AppSizes.padding),
                     width: MediaQuery.of(context).size.width / 3,
