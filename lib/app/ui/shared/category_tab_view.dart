@@ -50,8 +50,8 @@ class _CategoryTabViewState extends State<CategoryTabView>
                     },
                     child: CachedNetworkImage(
                       imageUrl: e.media['path'],
-                      height: 100,
-                      width: 100,
+                      height: 70,
+                      width: 70,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -108,6 +108,7 @@ class _CategoryTabViewState extends State<CategoryTabView>
                             style: titleText,
                           ),
                           leading: CachedNetworkImage(
+                            width: 60,
                             imageUrl: _news['media'].first['path'],
                           ),
                         );

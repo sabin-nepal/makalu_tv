@@ -13,7 +13,7 @@ class NewsTab extends StatefulWidget {
 }
 
 class _NewsTabState extends State<NewsTab> {
-  int _newsLength;
+  //int _newsLength;
   int _newNews = 0;
   @override
   void initState() {
@@ -89,7 +89,7 @@ class _NewsTabState extends State<NewsTab> {
                 }
                 if (snapshot.hasData) {
                   List news = _mergeList(snapshot.data);
-                  _newsLength = news.length;
+                  //_newsLength = news.length;
                   return NewsPageView(
                     news: news,
                   );

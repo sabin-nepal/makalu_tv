@@ -32,15 +32,17 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   _mergeList() {
-    var j = 0;
-    if (widget.adv.isNotEmpty)
+    List _video = List.from(video);
+    if (widget.adv.isNotEmpty) {
+      var j = 0;
       for (var i = 0; i < video.length; i++) {
         if (i % 2 == 1 && widget.adv.length > j) {
-          video.insert(i, widget.adv[j]);
+          if (widget.adv[j].type == 'banner') _video.insert(i, widget.adv[j]);
           j++;
         }
       }
-    return video;
+    }
+    return _video;
   }
 
   @override
@@ -86,7 +88,6 @@ class _VideoScreenState extends State<VideoScreen> {
         itemCount: videoList.length,
         itemBuilder: (context, i) {
           var _video = videoList[i];
-          print(_video.type);
           if (i.isOdd && _video.type == 'banner') {
             return Container(
               child: CachedNetworkImage(imageUrl: _video.media['path']),
@@ -103,6 +104,7 @@ class _VideoScreenState extends State<VideoScreen> {
               },
               leading: _video.thumbnail != null
                   ? CachedNetworkImage(
+                      width: 70,
                       imageUrl: _video.thumbnail['path'],
                     )
                   : null,

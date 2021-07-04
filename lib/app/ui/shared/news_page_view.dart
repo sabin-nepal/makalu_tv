@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,8 +63,21 @@ class _NewsPageViewState extends State<NewsPageView> {
             child: CustomStackPageView(
                 controller: pageController,
                 index: position,
-                child: CachedNetworkImage(
-                    imageUrl: _news.media['path'], fit: BoxFit.fill)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(_news.media['path']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Center(
+                      child: CachedNetworkImage(
+                          imageUrl: _news.media['path'], fit: BoxFit.fill),
+                    ),
+                  ),
+                )),
           );
         }
         return Column(

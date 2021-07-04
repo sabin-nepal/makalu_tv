@@ -75,8 +75,9 @@ class _NewsPageItemState extends State<NewsPageItem> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+          Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.padding, vertical: AppSizes.paddingSm),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
