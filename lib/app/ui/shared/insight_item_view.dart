@@ -22,7 +22,7 @@ class InsightItemView extends StatelessWidget {
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Stack(
+        child: Stack(
           children: [
             PageView.builder(
                 controller: _pageController,
@@ -30,9 +30,12 @@ class InsightItemView extends StatelessWidget {
                 itemCount: insight.media.length,
                 itemBuilder: (context, index) {
                   var media = insight.media[index];
-                  return CachedNetworkImage(
-                    imageUrl: media['path'],
-                    width: MediaQuery.of(context).size.width,
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: AppSizes.padding),
+                    child: CachedNetworkImage(
+                      imageUrl: media['path'],
+                      width: MediaQuery.of(context).size.width,
+                    ),
                   );
                 }),
             Column(

@@ -73,8 +73,12 @@ class _NewsPageViewState extends State<NewsPageView> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Center(
-                      child: CachedNetworkImage(
-                          imageUrl: _news.media['path'], fit: BoxFit.fill),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: AppSizes.padding),
+                        child: CachedNetworkImage(
+                            imageUrl: _news.media['path'], fit: BoxFit.fill),
+                      ),
                     ),
                   ),
                 )),
