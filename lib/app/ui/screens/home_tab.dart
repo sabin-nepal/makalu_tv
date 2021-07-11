@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/core/feed_item.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
@@ -29,7 +30,7 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _insightService = InsightService.getInsight();
     _categoryService = CategoryService.getCategoryNews(5);
-    _newsService = NewsService.getNewsType('poll', 5);
+    _newsService = NewsService.getNewsType(type: 'poll', limit: 5, order: true);
   }
 
   Future<void> _showSearch() async {
@@ -62,12 +63,6 @@ class _HomeTabState extends State<HomeTab> {
                 _showSearch();
               },
             ),
-            IconButton(
-              icon: Icon(Icons.bookmark),
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.bookMarkScreen);
-              },
-            )
           ],
         ),
         body: Container(
@@ -101,6 +96,8 @@ class _HomeTabState extends State<HomeTab> {
                 SizedBox(height: 10),
                 Container(height: 200.0, child: _buildInsight(context)),
                 SizedBox(height: 50),
+                Container(height: 120.0, child: _buildfeed(context)),
+                SizedBox(height: 40),
                 Container(
                     margin: EdgeInsets.only(left: AppSizes.padding),
                     child: Text(
@@ -194,6 +191,36 @@ class _HomeTabState extends State<HomeTab> {
           }
           return Container();
         });
+  }
+
+  Widget _buildfeed(BuildContext context) {
+    return ListView.builder(
+      itemCount: feedItems.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, i) {
+        FeedItem item = feedItems[i];
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal:AppSizes.padding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, item.key);
+                },
+                icon: item.icon,
+                color: AppColors.accentColor,
+                iconSize: 60,
+              ),
+              Text(
+                item.title,
+                style: titleText,
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildCategory(BuildContext context) {
