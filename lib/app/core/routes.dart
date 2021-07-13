@@ -8,6 +8,7 @@ import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
+import 'package:makalu_tv/app/ui/screens/news_screen.dart';
 import 'package:makalu_tv/app/ui/screens/poll_screen.dart';
 
 class AppRoutes {
@@ -17,6 +18,7 @@ class AppRoutes {
   static const String fullImage = 'full_image';
   static const String categoryScreen = 'category_screen';
   static const String pollScreen = 'poll_screen';
+  static const String newsScreen = 'news_screen';
   static const String insightScreen = 'insight_screen';
   static const String settingScreen = 'setting_screen';
   static const String bookMarkScreen = 'bookmark_screen';
@@ -59,6 +61,15 @@ class AppRoutes {
             builder: (_) => PollScreen(
                   position: _position,
                 ));
+      case newsScreen:
+        Map _data = settings.arguments as Map;
+        String _title = _data['title'];
+        String _type = _data['type'];
+        return MaterialPageRoute(
+            builder: (_) => NewsScreen(
+                  title: _title,
+                  type: _type,
+                ));          
       case insightScreen:
         Map _data = settings.arguments as Map;
         int _position = _data['position'];

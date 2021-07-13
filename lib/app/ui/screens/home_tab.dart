@@ -72,6 +72,8 @@ class _HomeTabState extends State<HomeTab> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(height: 120.0, child: _buildfeed(context)),
+                SizedBox(height: 10),
                 Row(
                   children: [
                     Container(
@@ -95,8 +97,6 @@ class _HomeTabState extends State<HomeTab> {
                 ),
                 SizedBox(height: 10),
                 Container(height: 200.0, child: _buildInsight(context)),
-                SizedBox(height: 50),
-                Container(height: 120.0, child: _buildfeed(context)),
                 SizedBox(height: 40),
                 Container(
                     margin: EdgeInsets.only(left: AppSizes.padding),
@@ -105,7 +105,7 @@ class _HomeTabState extends State<HomeTab> {
                       style: headingStyle,
                     )),
                 SizedBox(height: 10),
-                Container(height: 500, child: _buildCategory(context)),
+                Container(height: 450, child: _buildCategory(context)),
                 SizedBox(height: 20),
                 Row(
                   children: [
@@ -200,13 +200,13 @@ class _HomeTabState extends State<HomeTab> {
       itemBuilder: (context, i) {
         FeedItem item = feedItems[i];
         return Container(
-          padding: EdgeInsets.symmetric(horizontal:AppSizes.padding),
+          padding: EdgeInsets.symmetric(horizontal: AppSizes.padding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, item.key);
+                  Navigator.pushNamed(context, item.key, arguments: item.data);
                 },
                 icon: item.icon,
                 color: AppColors.accentColor,
