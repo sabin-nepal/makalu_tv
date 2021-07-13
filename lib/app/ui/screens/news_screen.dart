@@ -48,8 +48,9 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   Future<void> _refreshNews(BuildContext context) async {
-    var _news =
-        await NewsService.getNewsType(type: "", limit: limit, order: order);
+    var _news = widget.type == "unread"
+        ? await NewsService.getDailyNews()
+        : await NewsService.getNewsType(type: "", limit: limit, order: order);
     return _news;
   }
 
