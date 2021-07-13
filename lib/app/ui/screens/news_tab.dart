@@ -22,7 +22,8 @@ class _NewsTabState extends State<NewsTab> {
   }
 
   Future<void> _refreshNews(BuildContext context) async {
-    var _news = await NewsService.getNews();
+    var _news =
+        await NewsService.getNewsType(type: "", limit: 100, order: true);
     return _news;
   }
 
@@ -78,7 +79,8 @@ class _NewsTabState extends State<NewsTab> {
         body: RefreshIndicator(
           onRefresh: () => _refreshNews(context),
           child: FutureBuilder(
-              future: NewsService.getNews(),
+              future:
+                  NewsService.getNewsType(type: "", limit: 100, order: true),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

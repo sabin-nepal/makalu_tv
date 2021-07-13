@@ -11,6 +11,11 @@ final TextStyle titleText = TextStyle(
   fontSize: 16.0,
   fontWeight: FontWeight.w400,
 );
+final TextStyle bookmarkTitleText = TextStyle(
+  color: AppColors.primaryColor,
+  fontSize: 16.0,
+  fontWeight: FontWeight.w400,
+);
 
 final TextStyle descriptionText = TextStyle(
   color: AppColors.dexcriptionColor,

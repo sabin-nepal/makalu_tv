@@ -52,6 +52,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 200,
@@ -78,44 +79,30 @@ class _NewsPageItemState extends State<NewsPageItem> {
           Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.padding, vertical: AppSizes.paddingSm),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: Text(
-                    widget.title,
-                    style: titleText,
-                  ),
-                ),
-                if (!widget.isFullContent)
-                  IconButton(
-                    color: AppColors.textColor,
-                    icon: Icon(isBookMark
-                        ? Icons.bookmark_added
-                        : Icons.bookmark_add_outlined),
-                    onPressed: () async {
-                      Map<String, dynamic> _news = {
-                        'id': widget.newsId,
-                        'catid': widget.catid,
-                        'title': widget.title,
-                        'media': widget.media,
-                        'excerpt': widget.excerpt,
-                        'content': widget.content,
-                      };
-                      if (isBookMark) {
-                        await _userSharePreferences.removeBookMark(
-                            widget.newsId, _news);
-                      } else {
-                        await _userSharePreferences.saveBookMark(
-                            widget.newsId, _news);
-                      }
-                      isBookMark = !isBookMark;
-                      setState(() {});
-                    },
-                  )
-              ],
-            ),
+            child: GestureDetector(
+                onTap: () async {
+                  Map<String, dynamic> _news = {
+                    'id': widget.newsId,
+                    'catid': widget.catid,
+                    'title': widget.title,
+                    'media': widget.media,
+                    'excerpt': widget.excerpt,
+                    'content': widget.content,
+                  };
+                  if (isBookMark) {
+                    await _userSharePreferences.removeBookMark(
+                        widget.newsId, _news);
+                  } else {
+                    await _userSharePreferences.saveBookMark(
+                        widget.newsId, _news);
+                  }
+                  isBookMark = !isBookMark;
+                  setState(() {});
+                },
+                child: Text(
+                  widget.title,
+                  style: isBookMark ? bookmarkTitleText : titleText,
+                )),
           ),
           widget.isFullContent
               ? Html(
