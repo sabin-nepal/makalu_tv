@@ -11,7 +11,14 @@ class FeedItem {
 }
 
 final List<FeedItem> feedItems = [
-  FeedItem(icon: Icon(Icons.book), title: "My feed", key: AppRoutes.mainScreen),
+  FeedItem(
+      icon: Icon(Icons.book),
+      title: "My feed",
+      key: AppRoutes.newsScreen,
+      data: {
+        'title': "My Feed",
+        'type': "feed",
+      }),
   FeedItem(
       icon: Icon(Icons.chrome_reader_mode),
       title: "All News",
@@ -46,6 +53,6 @@ final List<FeedItem> feedItems = [
       key: AppRoutes.newsScreen,
       data: {
         'title': "Unread",
-        'type': "trending",
+        'type': "unread",
       }),
 ];

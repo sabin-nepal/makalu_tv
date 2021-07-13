@@ -26,9 +26,21 @@ class NewsService {
   }
 
   static Future<List<News>> getNewsType(
-      {String type, int limit, bool order}) async {
+      {String type, var limit, bool order}) async {
     final _res = await http.get(Uri.parse(
         '${UrlHelper.newsTypeUrl}?type=$type&size=$limit&order=${order ? order : ""}'));
+    if (_res.statusCode == 200) {
+      final _decoded = jsonDecode(_res.body);
+      final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
+      return _data;
+    }
+    throw _res;
+  }
+
+  static Future<List<News>> getDailyNews(
+      {String type}) async {
+    final _res = await http.get(Uri.parse(
+        '${UrlHelper.newsUrl}/daily'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();

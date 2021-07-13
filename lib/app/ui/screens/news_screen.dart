@@ -13,8 +13,8 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  bool order;
-  int limit;
+  bool order = false;
+  var limit;
   List _adv = [];
   @override
   void initState() {
@@ -25,15 +25,18 @@ class _NewsScreenState extends State<NewsScreen> {
 
   void _setStatus() {
     if (widget.type == "trending") {
-      order = false;
-      limit = 3;
+      limit = 10;
     }
     if (widget.type == "top") {
-      order = false;
       limit = 10;
     }
     if (widget.type == "news") {
       order = true;
+      limit = "";
+    }
+    if (widget.type == "feed") {
+      order = true;
+      limit = 100;
     }
   }
 
@@ -89,8 +92,9 @@ class _NewsScreenState extends State<NewsScreen> {
       body: RefreshIndicator(
         onRefresh: () => _refreshNews(context),
         child: FutureBuilder(
-            future:
-                NewsService.getNewsType(type: "", limit: limit, order: order),
+            future: widget.type == "unread"
+                ? NewsService.getDailyNews()
+                : NewsService.getNewsType(type: "", limit: limit, order: order),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
