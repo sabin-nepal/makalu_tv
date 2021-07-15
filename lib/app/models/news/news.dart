@@ -10,6 +10,7 @@ class News {
   final List categories;
   final String pollTitle;
   final Map pollResult;
+  final String url;
   News({
     @required this.id,
     @required this.title,
@@ -20,6 +21,7 @@ class News {
     this.categories,
     this.pollTitle,
     this.pollResult,
+    this.url,
   });
 
   factory News.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class News {
       id: json['id'] as String,
       title: json['title'] as String,
       content: json['content'] as String,
+      url: json['url'] as String,
       media: json['media'],
       categories: json['categories'],
       type: json['type'] as String,

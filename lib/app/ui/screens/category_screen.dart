@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
-import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/page_pagination.dart';
 
 class CategoryScreen extends StatelessWidget {

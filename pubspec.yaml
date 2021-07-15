@@ -34,6 +34,7 @@ dependencies:
   firebase_messaging: ^10.0.1
   device_info_plus: ^1.0.1
   url_launcher: ^6.0.6
+  webview_flutter: ^2.0.10
   fluttertoast: ^8.0.7
   smooth_page_indicator: ^0.2.3
   flutter_html: ^2.1.0

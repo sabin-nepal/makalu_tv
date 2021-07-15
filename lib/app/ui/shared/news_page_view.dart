@@ -8,6 +8,7 @@ import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:makalu_tv/app/ui/shared/poll_view.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
@@ -16,7 +17,11 @@ class NewsPageView extends StatefulWidget {
   final pagination;
   final Function paginateQuery;
   NewsPageView(
-      {this.news, this.position: 0, this.showRemaining: true,this.pagination:false,this.paginateQuery});
+      {this.news,
+      this.position: 0,
+      this.showRemaining: true,
+      this.pagination: false,
+      this.paginateQuery});
 
   @override
   _NewsPageViewState createState() => _NewsPageViewState();
@@ -51,7 +56,7 @@ class _NewsPageViewState extends State<NewsPageView> {
         _swipeVisible = false;
         if (remainingPage == 10 && widget.pagination) {
           widget.paginateQuery();
-        }        
+        }
         setState(() {});
       },
       controller: pageController,
@@ -61,31 +66,28 @@ class _NewsPageViewState extends State<NewsPageView> {
       itemBuilder: (context, position) {
         var _news = widget.news[position];
         if (position.isOdd && _news.type == 'full') {
-          return InkWell(
-            onTap: () => _showToast(context),
-            child: CustomStackPageView(
-                controller: pageController,
-                index: position,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(_news.media['path']),
-                      fit: BoxFit.cover,
+          return CustomStackPageView(
+              controller: pageController,
+              index: position,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(_news.media['path']),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Center(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: AppSizes.padding),
+                      child: CachedNetworkImage(
+                          imageUrl: _news.media['path'], fit: BoxFit.fill),
                     ),
                   ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Center(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: AppSizes.padding),
-                        child: CachedNetworkImage(
-                            imageUrl: _news.media['path'], fit: BoxFit.fill),
-                      ),
-                    ),
-                  ),
-                )),
-          );
+                ),
+              ));
         }
         return Column(
           children: [
@@ -93,11 +95,18 @@ class _NewsPageViewState extends State<NewsPageView> {
               child: GestureDetector(
                 onHorizontalDragUpdate: (details) {
                   if (details.primaryDelta < 0) {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.newsDetails,
-                      arguments: {'news': _news},
-                    );
+                    if (_news.url.isEmpty) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.newsDetails,
+                        arguments: {'news': _news},
+                      );
+                    } else {
+                      return WebView(
+                        initialUrl: _news.url,
+                        javascriptMode: JavascriptMode.unrestricted,
+                      );
+                    }
                   }
                 },
                 onTap: () {
