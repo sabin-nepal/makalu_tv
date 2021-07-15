@@ -34,7 +34,7 @@ class _NewsScreenState extends State<NewsScreen> {
     }
     if (widget.type == "news") {
       order = true;
-      limit = 2;
+      limit = 20;
     }
     if (widget.type == "feed") {
       order = true;

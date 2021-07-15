@@ -49,11 +49,10 @@ class _NewsPageViewState extends State<NewsPageView> {
         int value = index + 1;
         remainingPage = widget.news.length - value;
         _swipeVisible = false;
-        setState(() {});
-        if (remainingPage == 2 && widget.pagination) {
-          print('here');
+        if (remainingPage == 10 && widget.pagination) {
           widget.paginateQuery();
-        }
+        }        
+        setState(() {});
       },
       controller: pageController,
       pageSnapping: true,

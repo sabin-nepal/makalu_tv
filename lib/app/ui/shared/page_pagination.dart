@@ -19,7 +19,7 @@ class _PagePaginationState extends State<PagePagination> {
   Widget build(BuildContext context) {
     return NewsPageView(
       news: widget.news,
-      showRemaining: false,
+      showRemaining: true,
       pagination: true,
       paginateQuery: () {
         setState(() {

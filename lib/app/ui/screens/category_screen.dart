@@ -20,7 +20,7 @@ class CategoryScreen extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-          future: NewsService.getCategoryNews(id: catid, limit: 5),
+          future: NewsService.getCategoryNews(id: catid, limit: 20),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -30,7 +30,7 @@ class CategoryScreen extends StatelessWidget {
               return PagePagination(
                 news: news,
                 id: catid,
-                limit: 5,
+                limit: 20,
                 type: 'category',
               );
             }
