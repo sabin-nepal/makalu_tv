@@ -15,15 +15,9 @@ class NewsTab extends StatefulWidget {
 class _NewsTabState extends State<NewsTab> {
   //int _newsLength;
   int _newNews = 0;
-  @override
-  void initState() {
-    super.initState();
-    //_checkNews();
-  }
-
   Future<void> _refreshNews(BuildContext context) async {
     var _news =
-        await NewsService.getNewsType(type: "", limit: 100, order: true);
+        await NewsService.getNewsType(type: "", limit: 100,offset: 0, order: true);
     return _news;
   }
 
@@ -80,7 +74,7 @@ class _NewsTabState extends State<NewsTab> {
           onRefresh: () => _refreshNews(context),
           child: FutureBuilder(
               future:
-                  NewsService.getNewsType(type: "", limit: 100, order: true),
+                  NewsService.getNewsType(type: "", limit: 100, offset: 0,order: true),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

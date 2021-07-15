@@ -19,7 +19,7 @@ class CategoryScreen extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-          future: NewsService.getCategoryNews(catid, -1),
+          future: NewsService.getCategoryNews(catid, 0),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

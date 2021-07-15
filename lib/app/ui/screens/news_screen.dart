@@ -15,6 +15,8 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   bool order = false;
   var limit;
+  var offset = 0;
+  int position = 0;
   List _adv = [];
   @override
   void initState() {
@@ -28,11 +30,11 @@ class _NewsScreenState extends State<NewsScreen> {
       limit = 10;
     }
     if (widget.type == "top") {
-      limit = 10;
+      limit = 15;
     }
     if (widget.type == "news") {
       order = true;
-      limit = "";
+      limit = 1;
     }
     if (widget.type == "feed") {
       order = true;
@@ -50,7 +52,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Future<void> _refreshNews(BuildContext context) async {
     var _news = widget.type == "unread"
         ? await NewsService.getDailyNews()
-        : await NewsService.getNewsType(type: "", limit: limit, order: order);
+        : await NewsService.getNewsType(type: "", limit: limit, offset: offset, order: order);
     return _news;
   }
 
@@ -95,7 +97,8 @@ class _NewsScreenState extends State<NewsScreen> {
         child: FutureBuilder(
             future: widget.type == "unread"
                 ? NewsService.getDailyNews()
-                : NewsService.getNewsType(type: "", limit: limit, order: order),
+                : NewsService.getNewsType(
+                    type: "", limit: limit, offset: offset, order: order),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -104,6 +107,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 List news = _mergeList(snapshot.data);
                 return NewsPageView(
                   news: news,
+                  type:widget.type,
                   showRemaining: true,
                 );
               }

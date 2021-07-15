@@ -5,7 +5,7 @@ import 'package:makalu_tv/app/core/url.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 
 class NewsService {
-  static Future<List<News>> getNews() async {
+  static Future<List<News>> getNews({int limit, int offset}) async {
     final _res = await http.get(Uri.parse(UrlHelper.newsUrl));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
@@ -26,9 +26,9 @@ class NewsService {
   }
 
   static Future<List<News>> getNewsType(
-      {String type, var limit, bool order}) async {
+      {String type, var limit, var offset, bool order}) async {
     final _res = await http.get(Uri.parse(
-        '${UrlHelper.newsTypeUrl}?type=$type&size=$limit&order=${order ? order : ""}'));
+        '${UrlHelper.newsTypeUrl}?type=$type&size=$limit&page=$offset&order=${order ? order : ""}'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
@@ -37,10 +37,8 @@ class NewsService {
     throw _res;
   }
 
-  static Future<List<News>> getDailyNews(
-      {String type}) async {
-    final _res = await http.get(Uri.parse(
-        '${UrlHelper.newsUrl}/daily'));
+  static Future<List<News>> getDailyNews({String type}) async {
+    final _res = await http.get(Uri.parse('${UrlHelper.newsUrl}/daily'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
@@ -59,9 +57,9 @@ class NewsService {
     throw _res;
   }
 
-  static Future<List<News>> getCategoryNews(String id, int limit) async {
+  static Future<List<News>> getCategoryNews(String id, int page,) async {
     final _res =
-        await http.get(Uri.parse('${UrlHelper.newsCategoryUrl}/$id/$limit'));
+        await http.get(Uri.parse('${UrlHelper.newsCategoryUrl}/$id?page=$page'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
