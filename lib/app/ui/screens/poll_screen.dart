@@ -19,7 +19,7 @@ class PollScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: NewsService.getNewsType(type: 'poll', limit: -1, order: true),
+        future: NewsService.getNewsType(type: 'poll', order: true),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(

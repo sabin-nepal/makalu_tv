@@ -30,7 +30,8 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _insightService = InsightService.getInsight();
     _categoryService = CategoryService.getCategoryNews(5);
-    _newsService = NewsService.getNewsType(type: 'poll', limit: 5, order: true);
+    _newsService =
+        NewsService.getNewsType(type: 'poll', limit: 5, offset: 0, order: true);
   }
 
   Future<void> _showSearch() async {

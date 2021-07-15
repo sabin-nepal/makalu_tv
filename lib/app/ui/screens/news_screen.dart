@@ -3,6 +3,7 @@ import 'package:makalu_tv/app/services/adv_service.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
+import 'package:makalu_tv/app/ui/shared/page_pagination.dart';
 
 class NewsScreen extends StatefulWidget {
   final String title;
@@ -15,7 +16,6 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   bool order = false;
   var limit;
-  var offset = 0;
   int position = 0;
   List _adv = [];
   @override
@@ -34,7 +34,7 @@ class _NewsScreenState extends State<NewsScreen> {
     }
     if (widget.type == "news") {
       order = true;
-      limit = 1;
+      limit = 2;
     }
     if (widget.type == "feed") {
       order = true;
@@ -52,7 +52,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Future<void> _refreshNews(BuildContext context) async {
     var _news = widget.type == "unread"
         ? await NewsService.getDailyNews()
-        : await NewsService.getNewsType(type: "", limit: limit, offset: offset, order: order);
+        : await NewsService.getNewsType(limit: limit, order: order);
     return _news;
   }
 
@@ -81,15 +81,16 @@ class _NewsScreenState extends State<NewsScreen> {
           widget.title,
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {});
-            },
-            icon: Icon(
-              Icons.refresh,
-              color: AppColors.bgColor,
-            ),
-          )
+          if (widget.type != 'trending')
+            IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: AppColors.bgColor,
+              ),
+            )
         ],
       ),
       body: RefreshIndicator(
@@ -97,17 +98,22 @@ class _NewsScreenState extends State<NewsScreen> {
         child: FutureBuilder(
             future: widget.type == "unread"
                 ? NewsService.getDailyNews()
-                : NewsService.getNewsType(
-                    type: "", limit: limit, offset: offset, order: order),
+                : NewsService.getNewsType(limit: limit, order: order),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasData) {
                 List news = _mergeList(snapshot.data);
+                if (widget.type == 'news') {
+                  return PagePagination(
+                    news: news,
+                    type: 'news',
+                    limit: limit,
+                  );
+                }
                 return NewsPageView(
                   news: news,
-                  type:widget.type,
                   showRemaining: true,
                 );
               }

@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
-import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
@@ -14,9 +13,10 @@ class NewsPageView extends StatefulWidget {
   final List news;
   final int position;
   final showRemaining;
-  final String type;
+  final pagination;
+  final Function paginateQuery;
   NewsPageView(
-      {this.news, this.position: 0, this.showRemaining: true, this.type});
+      {this.news, this.position: 0, this.showRemaining: true,this.pagination:false,this.paginateQuery});
 
   @override
   _NewsPageViewState createState() => _NewsPageViewState();
@@ -27,7 +27,6 @@ class _NewsPageViewState extends State<NewsPageView> {
   int remainingPage;
   bool _swipeVisible = false;
   FToast fToast;
-  int currentpage = 1;
   @override
   void initState() {
     super.initState();
@@ -51,9 +50,9 @@ class _NewsPageViewState extends State<NewsPageView> {
         remainingPage = widget.news.length - value;
         _swipeVisible = false;
         setState(() {});
-        if (remainingPage == 5) {
-          print(currentpage);
-          _paginationQuery();
+        if (remainingPage == 2 && widget.pagination) {
+          print('here');
+          widget.paginateQuery();
         }
       },
       controller: pageController,
@@ -142,20 +141,6 @@ class _NewsPageViewState extends State<NewsPageView> {
         );
       },
     );
-  }
-
-  _paginationQuery() {
-    if (widget.type == 'news') {
-      NewsService.getNewsType(
-              type: "", limit: 1, offset: currentpage, order: true)
-          .then((val) {
-        print(val);
-        currentpage++;
-        setState(() {
-          widget.news.addAll(val);
-        });
-      });
-    }
   }
 
   void _showToast(BuildContext context) {

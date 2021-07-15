@@ -166,7 +166,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
 
   Widget _similarNews() {
     return FutureBuilder(
-        future: NewsService.getCategoryNews(widget.catid, 4),
+        future: NewsService.getCategoryNews(id: widget.catid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
+import 'package:makalu_tv/app/ui/shared/page_pagination.dart';
 
 class CategoryScreen extends StatelessWidget {
   final String title;
@@ -19,16 +20,18 @@ class CategoryScreen extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-          future: NewsService.getCategoryNews(catid, 0),
+          future: NewsService.getCategoryNews(id: catid, limit: 5),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasData) {
               var news = snapshot.data;
-              return NewsPageView(
+              return PagePagination(
                 news: news,
-                showRemaining: false,
+                id: catid,
+                limit: 5,
+                type: 'category',
               );
             }
             return Container();
