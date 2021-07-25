@@ -16,33 +16,30 @@ class _VideoScreenState extends State<VideoScreen> {
   String url;
   List video = [];
   int selectedIndex = 0;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     _fetchData();
-  }
+      _scrollController
+    ..addListener(() {
+      var triggerFetchMoreSize =
+          0.9 * _scrollController.position.maxScrollExtent;
 
-  void _fetchData() async {
-    final _service = await VideoService.getVideo();
-    _service.forEach((element) {
-      video.add(element);
-      url = element.media['path'];
-      setState(() {});
+      if (_scrollController.position.pixels >
+          triggerFetchMoreSize) {
+        print("get more data");
+      }
     });
   }
 
-  _mergeList() {
-    List _video = List.from(video);
-    if (widget.adv.isNotEmpty) {
-      var j = 0;
-      for (var i = 0; i < video.length; i++) {
-        if (i % 2 == 1 && widget.adv.length > j) {
-          if (widget.adv[j].type == 'banner') _video.insert(i, widget.adv[j]);
-          j++;
-        }
-      }
-    }
-    return _video;
+  void _fetchData() async {
+    var _service = await VideoService.getVideo(0);
+    url = _service.first.media['path'];
+    _service.forEach((element) {
+      video.add(element);
+    });
+    setState(() {});
   }
 
   @override
@@ -79,18 +76,21 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Widget listVideo(context) {
-    List videoList = _mergeList();
-    if (videoList.isEmpty)
+    if (video.isEmpty)
       return Center(
         child: Text("No video to show"),
       );
-    return ListView.builder(
-        itemCount: videoList.length,
+    return ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+              color: Colors.black,
+            ),
+        controller: _scrollController,
+        itemCount: video.length,
         itemBuilder: (context, i) {
-          var _video = videoList[i];
-          if (i.isOdd && _video.type == 'banner') {
+          var _video = video[i];
+          if (_video.type == 'banner') {
             return Container(
-              child: CachedNetworkImage(imageUrl: _video.media['path']),
+              child: CachedNetworkImage(imageUrl: _video.medium['path']),
             );
           }
           return Ink(

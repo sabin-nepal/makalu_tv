@@ -8,7 +8,6 @@ import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:makalu_tv/app/ui/shared/poll_view.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
@@ -95,18 +94,8 @@ class _NewsPageViewState extends State<NewsPageView> {
               child: GestureDetector(
                 onHorizontalDragUpdate: (details) {
                   if (details.primaryDelta < 0) {
-                    if (_news.url.isEmpty) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.newsDetails,
-                        arguments: {'news': _news},
-                      );
-                    } else {
-                      return WebView(
-                        initialUrl: _news.url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                      );
-                    }
+                    Navigator.pushNamed(context, AppRoutes.newsDetails,
+                        arguments: {'news': _news});
                   }
                 },
                 onTap: () {
