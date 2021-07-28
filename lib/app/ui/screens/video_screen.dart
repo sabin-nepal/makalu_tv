@@ -16,21 +16,14 @@ class _VideoScreenState extends State<VideoScreen> {
   String url;
   List video = [];
   int selectedIndex = 0;
+  bool isLoading = false;
+  int currentPage = 1;
+  bool noData = false;
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     _fetchData();
-      _scrollController
-    ..addListener(() {
-      var triggerFetchMoreSize =
-          0.9 * _scrollController.position.maxScrollExtent;
-
-      if (_scrollController.position.pixels >
-          triggerFetchMoreSize) {
-        print("get more data");
-      }
-    });
   }
 
   void _fetchData() async {
@@ -85,8 +78,38 @@ class _VideoScreenState extends State<VideoScreen> {
               color: Colors.black,
             ),
         controller: _scrollController,
-        itemCount: video.length,
+        itemCount: video.length + 1,
         itemBuilder: (context, i) {
+          if (i == video.length) {
+            return Container(
+              height: 50,
+              child: Center(
+                  child: noData? Text("No More Video",style: titleText,) :InkWell(
+                onTap: () {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Future.delayed(Duration(seconds: 3), () {
+                    VideoService.getVideo(currentPage).then((value) {
+                      currentPage++;
+                      if(value.isEmpty){
+                        noData = true;
+                      }
+                      value.forEach((element) {
+                        video.add(element);
+                      });
+                      isLoading = false;
+                      setState(() {});
+                    });
+                  });
+                },
+                child: Text(
+                  isLoading ? "Loading.." : "Load More",
+                  style: boldText,
+                ),
+              )),
+            );
+          }
           var _video = video[i];
           if (_video.type == 'banner') {
             return Container(

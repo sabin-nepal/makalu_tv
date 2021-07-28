@@ -5,12 +5,15 @@ import 'package:makalu_tv/app/models/advertisment.dart';
 import 'package:http/http.dart' as http;
 
 class AdvService {
-  static Future<List<Advertisement>> getAdv() async {
-    final _res = await http.get(Uri.parse(UrlHelper.advUrl));
+  static Future<List<Advertisement>> getAdv(
+      {var size, var page, var type}) async {
+    final _res = await http
+        .get(Uri.parse('${UrlHelper.advUrl}?size=$size&page=$page&type=$type'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
-      final _data =
-          _decoded.map<Advertisement>((e) => Advertisement.fromJson(e)).toList();
+      final _data = _decoded
+          .map<Advertisement>((e) => Advertisement.fromJson(e))
+          .toList();
       return _data;
     }
     throw _res;
