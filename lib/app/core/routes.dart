@@ -49,10 +49,12 @@ class AppRoutes {
         Map _data = settings.arguments as Map;
         String _title = _data['title'];
         String _catid = _data['catid'];
+        int _position = _data['position']??0;
         return MaterialPageRoute(
             builder: (_) => CategoryScreen(
                   title: _title,
                   catid: _catid,
+                  position: _position,
                 ));
       case pollScreen:
         Map _data = settings.arguments as Map;

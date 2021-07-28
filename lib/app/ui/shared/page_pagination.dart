@@ -7,7 +7,8 @@ class PagePagination extends StatefulWidget {
   final String id;
   final String type;
   final int limit;
-  const PagePagination({this.news, this.id, this.type, this.limit});
+  final int position;
+  const PagePagination({this.news, this.id, this.type, this.limit,this.position=0});
 
   @override
   _PagePaginationState createState() => _PagePaginationState();
@@ -19,6 +20,7 @@ class _PagePaginationState extends State<PagePagination> {
   Widget build(BuildContext context) {
     return NewsPageView(
       news: widget.news,
+      position: widget.position,
       showRemaining: true,
       pagination: true,
       paginateQuery: () {

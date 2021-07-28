@@ -6,7 +6,8 @@ import 'package:makalu_tv/app/ui/shared/page_pagination.dart';
 class CategoryScreen extends StatelessWidget {
   final String title;
   final String catid;
-  CategoryScreen({this.title, this.catid});
+  final int position;
+  CategoryScreen({this.title, this.catid,this.position=0});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +30,7 @@ class CategoryScreen extends StatelessWidget {
               return PagePagination(
                 news: news,
                 id: catid,
+                position: position,
                 limit: 20,
                 type: 'category',
               );
