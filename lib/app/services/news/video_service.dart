@@ -8,7 +8,7 @@ class VideoService{
 
   static Future<List<Video>> getVideo(var page) async{
 
-    final _res = await http.get(Uri.parse('${UrlHelper.videoNewsUrl}/get?size=4&page=$page'));
+    final _res = await http.get(Uri.parse('${UrlHelper.videoNewsUrl}?size=4&page=$page'));
     if(_res.statusCode == 200){
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded

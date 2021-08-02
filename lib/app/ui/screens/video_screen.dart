@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -13,22 +15,39 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  String url;
+  BetterPlayerController _betterPlayerController;
   List video = [];
   int selectedIndex = 0;
   bool isLoading = false;
   int currentPage = 1;
   bool noData = false;
-  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
+    BetterPlayerConfiguration betterPlayerConfiguration =
+        BetterPlayerConfiguration(
+            aspectRatio: 16 / 9, fit: BoxFit.contain, handleLifecycle: true);
+    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     super.initState();
     _fetchData();
   }
 
+  _setUrl(var _url, {bool play = true}) async {
+    BetterPlayerDataSource dataSource =
+        BetterPlayerDataSource(BetterPlayerDataSourceType.network, _url,
+            cacheConfiguration: BetterPlayerCacheConfiguration(
+              useCache: true,
+              preCacheSize: 10 * 1024 * 1024,
+              maxCacheSize: 10 * 1024 * 1024,
+              maxCacheFileSize: 10 * 1024 * 1024,
+            ));
+    _betterPlayerController.setupDataSource(dataSource);
+    if (play) _betterPlayerController.play();
+    setState(() {});
+  }
+
   void _fetchData() async {
     var _service = await VideoService.getVideo(0);
-    url = _service.first.media['path'];
+    _setUrl(_service.first.media['path'], play: false);
     _service.forEach((element) {
       video.add(element);
     });
@@ -52,11 +71,8 @@ class _VideoScreenState extends State<VideoScreen> {
             Container(
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: BetterPlayer.network(
-                  url,
-                  betterPlayerConfiguration: BetterPlayerConfiguration(
-                    aspectRatio: 16 / 9,
-                  ),
+                child: BetterPlayer(
+                  controller: _betterPlayerController,
                 ),
               ),
             ),
@@ -77,37 +93,41 @@ class _VideoScreenState extends State<VideoScreen> {
         separatorBuilder: (context, index) => Divider(
               color: Colors.black,
             ),
-        controller: _scrollController,
         itemCount: video.length + 1,
         itemBuilder: (context, i) {
           if (i == video.length) {
             return Container(
               height: 50,
               child: Center(
-                  child: noData? Text("No More Video",style: titleText,) :InkWell(
-                onTap: () {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  Future.delayed(Duration(seconds: 3), () {
-                    VideoService.getVideo(currentPage).then((value) {
-                      currentPage++;
-                      if(value.isEmpty){
-                        noData = true;
-                      }
-                      value.forEach((element) {
-                        video.add(element);
-                      });
-                      isLoading = false;
-                      setState(() {});
-                    });
-                  });
-                },
-                child: Text(
-                  isLoading ? "Loading.." : "Load More",
-                  style: boldText,
-                ),
-              )),
+                  child: noData
+                      ? Text(
+                          "No More Video",
+                          style: titleText,
+                        )
+                      : InkWell(
+                          onTap: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            Future.delayed(Duration(seconds: 3), () {
+                              VideoService.getVideo(currentPage).then((value) {
+                                currentPage++;
+                                if (value.isEmpty) {
+                                  noData = true;
+                                }
+                                value.forEach((element) {
+                                  video.add(element);
+                                });
+                                isLoading = false;
+                                setState(() {});
+                              });
+                            });
+                          },
+                          child: Text(
+                            isLoading ? "Loading.." : "Load More",
+                            style: boldText,
+                          ),
+                        )),
             );
           }
           var _video = video[i];
@@ -120,7 +140,7 @@ class _VideoScreenState extends State<VideoScreen> {
             color: selectedIndex == i ? Colors.grey : null,
             child: ListTile(
               onTap: () {
-                url = _video.media['path'];
+                _setUrl(_video.media['path']);
                 setState(() {
                   selectedIndex = i;
                 });
