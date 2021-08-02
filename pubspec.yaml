@@ -43,10 +43,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/makalu.png"
+
 flutter:
   uses-material-design: true
   assets:
-    - assets/ 
+    - assets/
   fonts:
     - family: Mukta
       fonts:
