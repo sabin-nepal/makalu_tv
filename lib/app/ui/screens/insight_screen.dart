@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/insight.dart';
 import 'package:makalu_tv/app/services/news/insight_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/insight_item_view.dart';
 
@@ -44,7 +45,10 @@ class _InsightScreenState extends State<InsightScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                  child: Text("Somethings went wrong.."),
+                  child: Text(
+                    "Somethings went wrong..",
+                    style: boldText,
+                  ),
                 );
               }
               if (snapshot.hasData)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
 
 class PollScreen extends StatelessWidget {
@@ -23,7 +24,10 @@ class PollScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
-              child: Text("Somethings went wrong.."),
+              child: Text(
+                "Somethings went wrong..",
+                style: boldText,
+              ),
             );
           }
           if (snapshot.hasData) {

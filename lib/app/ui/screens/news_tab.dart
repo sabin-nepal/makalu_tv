@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_view.dart';
 
 class NewsTab extends StatefulWidget {
@@ -79,7 +80,8 @@ class _NewsTabState extends State<NewsTab> {
                 }
                 if (snapshot.hasError) {
                   return Center(
-                      child: Text('Check your connection and try again..'));
+                      child: Text('Check your connection and try again..',
+                          style: boldText));
                 }
                 if (snapshot.hasData) {
                   List news = _mergeList(snapshot.data);

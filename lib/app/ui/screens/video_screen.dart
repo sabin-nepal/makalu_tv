@@ -87,7 +87,10 @@ class _VideoScreenState extends State<VideoScreen> {
   Widget listVideo(context) {
     if (video.isEmpty)
       return Center(
-        child: Text("No video to show"),
+        child: Text(
+          "No video to show",
+          style: boldText,
+        ),
       );
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
