@@ -19,6 +19,7 @@ class NewsPageItem extends StatefulWidget {
   final List media;
   final String excerpt;
   final bool isFullContent;
+  final Function onBookMark;
   NewsPageItem(
       {this.catid,
       this.newsId,
@@ -26,7 +27,8 @@ class NewsPageItem extends StatefulWidget {
       this.media,
       this.content,
       this.excerpt,
-      this.isFullContent: false});
+      this.isFullContent: false,
+      this.onBookMark});
 
   @override
   _NewsPageItemState createState() => _NewsPageItemState();
@@ -97,6 +99,7 @@ class _NewsPageItemState extends State<NewsPageItem> {
                         widget.newsId, _news);
                   }
                   isBookMark = !isBookMark;
+                  if (!widget.isFullContent) widget.onBookMark(isBookMark);
                   setState(() {});
                 },
                 child: Text(

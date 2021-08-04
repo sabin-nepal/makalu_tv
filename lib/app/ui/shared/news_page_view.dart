@@ -115,6 +115,17 @@ class _NewsPageViewState extends State<NewsPageView> {
                     content: _news.content,
                     excerpt: _news.excerpt,
                     media: _news.media,
+                    onBookMark: (value) {
+                      var setMessage;
+                      if (value) {
+                        setMessage = "Bookmark added";
+                      } else {
+                        setMessage = "Bookmark Removed";
+                      }
+                      setState(() {});
+                      _showToast(context,
+                          isBookMark: true, message: setMessage);
+                    },
                   ),
                 ),
               ),
@@ -140,7 +151,8 @@ class _NewsPageViewState extends State<NewsPageView> {
     );
   }
 
-  void _showToast(BuildContext context) {
+  void _showToast(BuildContext context,
+      {var isBookMark = false, var message = ""}) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
       decoration: BoxDecoration(
@@ -148,9 +160,11 @@ class _NewsPageViewState extends State<NewsPageView> {
         color: Color(0xffff7000),
       ),
       child: Text(
-        remainingPage == 0
-            ? 'No More News Refresh For New one'
-            : '$remainingPage news remaining',
+        isBookMark
+            ? message
+            : remainingPage == 0
+                ? 'No More News Refresh For New one'
+                : '$remainingPage news remaining',
       ),
     );
     fToast.showToast(
