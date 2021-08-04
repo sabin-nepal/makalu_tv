@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
@@ -34,7 +35,7 @@ class AppRoutes {
       case newsDetails:
         Map _data = settings.arguments as Map;
         News _news = _data['news'];
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (_) => NewsDetails(
                   news: _news,
                 ));
@@ -49,7 +50,7 @@ class AppRoutes {
         Map _data = settings.arguments as Map;
         String _title = _data['title'];
         String _catid = _data['catid'];
-        int _position = _data['position']??0;
+        int _position = _data['position'] ?? 0;
         return MaterialPageRoute(
             builder: (_) => CategoryScreen(
                   title: _title,
@@ -71,7 +72,7 @@ class AppRoutes {
             builder: (_) => NewsScreen(
                   title: _title,
                   type: _type,
-                ));          
+                ));
       case insightScreen:
         Map _data = settings.arguments as Map;
         int _position = _data['position'];
@@ -85,8 +86,8 @@ class AppRoutes {
         String _catid = _data['catid'];
         return MaterialPageRoute(
             builder: (_) => CategoryNewsDetails(
-                news: _news,
-                id: _catid,
+                  news: _news,
+                  id: _catid,
                 ));
       default:
         return _errorRoute();
