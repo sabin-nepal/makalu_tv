@@ -15,23 +15,30 @@ class CategoryNewsDetails extends StatelessWidget {
               decoration: BoxDecoration(gradient: AppColors.primaryGradient)),
           centerTitle: true,
           title: Text("News Detail")),
-      body: news["url"].isNotEmpty
-          ? Builder(builder: (BuildContext context) {
-              return WebView(
-                initialUrl: news["url"],
-                javascriptMode: JavascriptMode.unrestricted,
-              );
-            })
-          : SingleChildScrollView(
-              child: NewsPageItem(
-                catid: id,
-                newsId: news['id'],
-                title: news['title'],
-                content: news['content'],
-                media: news['media'],
-                isFullContent: true,
+      body: GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.primaryDelta > 0) {
+            Navigator.pop(context);
+          }
+        },
+        child: news["url"].isNotEmpty
+            ? Builder(builder: (BuildContext context) {
+                return WebView(
+                  initialUrl: news["url"],
+                  javascriptMode: JavascriptMode.unrestricted,
+                );
+              })
+            : SingleChildScrollView(
+                child: NewsPageItem(
+                  catid: id,
+                  newsId: news['id'],
+                  title: news['title'],
+                  content: news['content'],
+                  media: news['media'],
+                  isFullContent: true,
+                ),
               ),
-            ),
+      ),
     );
   }
 }
