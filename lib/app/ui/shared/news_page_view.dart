@@ -112,6 +112,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                     catid: _news.categories.first['id'] ?? '',
                     title: _news.title,
                     newsId: _news.id,
+                    newsUrl: _news.url,
                     content: _news.content,
                     excerpt: _news.excerpt,
                     media: _news.media,

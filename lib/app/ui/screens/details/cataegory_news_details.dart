@@ -32,6 +32,7 @@ class CategoryNewsDetails extends StatelessWidget {
                 child: NewsPageItem(
                   catid: id,
                   newsId: news['id'],
+                  newsUrl: news['url'],
                   title: news['title'],
                   content: news['content'],
                   media: news['media'],

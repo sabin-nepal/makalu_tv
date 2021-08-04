@@ -14,6 +14,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 class NewsPageItem extends StatefulWidget {
   final String catid;
   final String newsId;
+  final String newsUrl;
   final String title;
   final String content;
   final List media;
@@ -23,6 +24,7 @@ class NewsPageItem extends StatefulWidget {
   NewsPageItem(
       {this.catid,
       this.newsId,
+      this.newsUrl,
       this.title,
       this.media,
       this.content,
@@ -83,24 +85,27 @@ class _NewsPageItemState extends State<NewsPageItem> {
                 horizontal: AppSizes.padding, vertical: AppSizes.paddingSm),
             child: GestureDetector(
                 onTap: () async {
-                  Map<String, dynamic> _news = {
-                    'id': widget.newsId,
-                    'catid': widget.catid,
-                    'title': widget.title,
-                    'media': widget.media,
-                    'excerpt': widget.excerpt,
-                    'content': widget.content,
-                  };
-                  if (isBookMark) {
-                    await _userSharePreferences.removeBookMark(
-                        widget.newsId, _news);
-                  } else {
-                    await _userSharePreferences.saveBookMark(
-                        widget.newsId, _news);
+                  if (!widget.isFullContent) {
+                    Map<String, dynamic> _news = {
+                      'id': widget.newsId,
+                      'url': widget.newsUrl,
+                      'catid': widget.catid,
+                      'title': widget.title,
+                      'media': widget.media,
+                      'excerpt': widget.excerpt,
+                      'content': widget.content,
+                    };
+                    if (isBookMark) {
+                      await _userSharePreferences.removeBookMark(
+                          widget.newsId, _news);
+                    } else {
+                      await _userSharePreferences.saveBookMark(
+                          widget.newsId, _news);
+                    }
+                    isBookMark = !isBookMark;
+                    widget.onBookMark(isBookMark);
+                    setState(() {});
                   }
-                  isBookMark = !isBookMark;
-                  if (!widget.isFullContent) widget.onBookMark(isBookMark);
-                  setState(() {});
                 },
                 child: Text(
                   widget.title,

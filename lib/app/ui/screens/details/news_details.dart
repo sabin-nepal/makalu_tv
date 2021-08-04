@@ -33,6 +33,7 @@ class NewsDetails extends StatelessWidget {
                   catid: news.categories.first['id'] ?? '',
                   title: news.title,
                   newsId: news.id,
+                  newsUrl: news.url,
                   content: news.content,
                   media: news.media,
                   isFullContent: true,
