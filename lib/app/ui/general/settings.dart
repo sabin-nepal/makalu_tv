@@ -200,7 +200,9 @@ class _SettingsState extends State<Settings> {
             ],
           );
         }
-        return Center(child: Text("Please,Check Your Internet Connection.."));
+        return Center(
+            child: Text("Please,Check Your Internet Connection..",
+                style: boldText));
       },
     );
   }

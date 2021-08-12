@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
+import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
@@ -131,13 +132,29 @@ class _NewsPageViewState extends State<NewsPageView> {
                 ),
               ),
             ),
-            Container(
-                padding: EdgeInsets.only(left: AppSizes.padding),
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  _swipeVisible ? 'Swipe for details' : '',
-                  style: titleText,
-                )),
+            if (_swipeVisible)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () => _showBottomModel(context),
+                    icon: Icon(
+                      Icons.circle,
+                      color: Colors.green,
+                    ),
+                  ),
+                  Text(
+                    'Swipe for details',
+                    style: titleText,
+                  ),
+                  IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.share,
+                        color: AppColors.iconColor,
+                      ))
+                ],
+              ),
             SizedBox(height: 20),
             if (_news.type == 'poll')
               PollView(
@@ -177,6 +194,72 @@ class _NewsPageViewState extends State<NewsPageView> {
             bottom: MediaQuery.of(context).size.height / 3.5,
             left: 16.0,
             right: 16.0,
+          );
+        });
+  }
+
+  void _showBottomModel(BuildContext context) {
+    showModalBottomSheet(
+        elevation: 2.0,
+        backgroundColor: AppColors.bgColor,
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(AppSizes.padding),
+            child: Wrap(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.circle,
+                              color: AppColors.allNewsColor,
+                            )),
+                        Text("All News", style: titleText)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.circle,
+                              color: AppColors.majorNewsColor,
+                            )),
+                        Text("Major News", style: titleText)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.circle,
+                              color: AppColors.noNewsColor,
+                            )),
+                        Text("No News", style: titleText)
+                      ],
+                    ),
+                  ],
+                ),
+                Center(
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                          backgroundColor: AppColors.accentColor),
+                      onPressed: (){
+                        Navigator.pushNamed(context, AppRoutes.filterScreen);
+                      },
+                      child: Text(
+                        "All",
+                        style: TextStyle(color: AppColors.bgColor),
+                      )),
+                )
+              ],
+            ),
           );
         });
   }

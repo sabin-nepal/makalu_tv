@@ -4,6 +4,7 @@ import 'package:makalu_tv/app/models/news/news.dart';
 import 'package:makalu_tv/app/ui/general/home.dart';
 import 'package:makalu_tv/app/ui/general/settings.dart';
 import 'package:makalu_tv/app/ui/screens/bookmark_screen.dart';
+import 'package:makalu_tv/app/ui/screens/category_filter.dart';
 import 'package:makalu_tv/app/ui/screens/category_screen.dart';
 import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
 import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
@@ -23,11 +24,13 @@ class AppRoutes {
   static const String insightScreen = 'insight_screen';
   static const String settingScreen = 'setting_screen';
   static const String bookMarkScreen = 'bookmark_screen';
+  static const String filterScreen = 'filter_screen';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => HomePage(),
     settingScreen: (_) => Settings(),
     bookMarkScreen: (_) => BookMakrkScreen(),
+    filterScreen: (_) => CategoryFilter(),
   };
 
   static Route generateRoute(RouteSettings settings) {

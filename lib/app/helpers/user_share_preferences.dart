@@ -110,4 +110,14 @@ class UserSharePreferences {
     allNews.remove(encoded);
     pref.setStringList("bookmark", allNews.toList());
   }
+
+  //display news by category filter
+  Future saveFilter(String id, int value) async{
+    final pref = await SharedPreferences.getInstance();
+    pref.setInt(id, value);
+  }
+  Future<int> getFilter(String id) async{
+    final pref = await SharedPreferences.getInstance();
+    return pref.getInt(id);
+  }
 }
