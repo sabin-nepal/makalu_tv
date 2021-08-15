@@ -4,6 +4,7 @@ import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
+import 'package:makalu_tv/app/ui/shared/filter_list.dart';
 
 class CategoryFilter extends StatefulWidget {
   @override
@@ -46,8 +47,6 @@ class _CategoryFilterState extends State<CategoryFilter> {
                 children: [
                   Icon(Icons.circle, color: AppColors.allNewsColor),
                   Text("All News", style: titleText),
-                  Icon(Icons.circle, color: AppColors.majorNewsColor),
-                  Text("Major News", style: titleText),
                   Icon(Icons.circle, color: AppColors.noNewsColor),
                   Text("No News", style: titleText),
                 ],
@@ -77,7 +76,9 @@ class _CategoryFilterState extends State<CategoryFilter> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   Category category = snapshot.data[index];
-                  return Container();
+                  return FilterList(
+                    category:category
+                  );
                 });
           }
           return Center(
