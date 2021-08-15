@@ -9,6 +9,7 @@ import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/custom_stack_page_view.dart';
 import 'package:makalu_tv/app/ui/shared/news_page_item.dart';
 import 'package:makalu_tv/app/ui/shared/poll_view.dart';
+import 'package:share/share.dart';
 
 class NewsPageView extends StatefulWidget {
   final List news;
@@ -32,6 +33,8 @@ class _NewsPageViewState extends State<NewsPageView> {
   int remainingPage;
   bool _swipeVisible = false;
   FToast fToast;
+
+  List<String> _images = [];
   @override
   void initState() {
     super.initState();
@@ -148,7 +151,12 @@ class _NewsPageViewState extends State<NewsPageView> {
                     style: titleText,
                   ),
                   IconButton(
-                      onPressed: null,
+                      onPressed: () async {
+                        await Share.share(
+                          _news.url,
+                          subject: _news.title,
+                        );
+                      },
                       icon: Icon(
                         Icons.share,
                         color: AppColors.iconColor,
@@ -250,7 +258,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                   child: TextButton(
                       style: TextButton.styleFrom(
                           backgroundColor: AppColors.accentColor),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pushNamed(context, AppRoutes.filterScreen);
                       },
                       child: Text(
