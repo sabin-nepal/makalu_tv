@@ -22,19 +22,6 @@ class FirstOpen extends StatelessWidget {
         title: Text(
           'Choose Category',
         ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Center(
-              child: InkWell(
-                  onTap: () async {
-                    UserSharePreferences().setNotification(false);
-                    notifier.setOpened(true);
-                  },
-                  child: Text("Skip")),
-            ),
-          )
-        ],
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: AppSizes.padding),
