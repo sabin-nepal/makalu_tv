@@ -7,7 +7,7 @@ class CategoryScreen extends StatelessWidget {
   final String title;
   final String catid;
   final int position;
-  CategoryScreen({this.title, this.catid,this.position=0});
+  CategoryScreen({this.title, this.catid, this.position = 0});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

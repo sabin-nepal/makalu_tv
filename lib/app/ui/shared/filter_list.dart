@@ -43,27 +43,33 @@ class _FilterListState extends State<FilterList> {
             ),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences().saveFilter(widget.category.id, 1);
+                  await UserSharePreferences()
+                      .saveFilter(widget.category.id, 1);
                   checkFilter = 1;
                   setState(() {});
                 },
-                icon: Icon(checkFilter == 1 ? Icons.circle : Icons.circle_outlined,
+                icon: Icon(
+                    checkFilter == 1 ? Icons.circle : Icons.circle_outlined,
                     color: AppColors.allNewsColor)),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences().saveFilter(widget.category.id, 2);
+                  await UserSharePreferences()
+                      .saveFilter(widget.category.id, 2);
                   checkFilter = 2;
                   setState(() {});
                 },
-                icon: Icon(checkFilter == 2 ? Icons.circle : Icons.circle_outlined,
+                icon: Icon(
+                    checkFilter == 2 ? Icons.circle : Icons.circle_outlined,
                     color: AppColors.majorNewsColor)),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences().saveFilter(widget.category.id, 3);
+                  await UserSharePreferences()
+                      .saveFilter(widget.category.id, 3);
                   checkFilter = 3;
                   setState(() {});
                 },
-                icon: Icon(checkFilter == 3 ? Icons.circle : Icons.circle_outlined,
+                icon: Icon(
+                    checkFilter == 3 ? Icons.circle : Icons.circle_outlined,
                     color: AppColors.noNewsColor)),
           ],
         ),

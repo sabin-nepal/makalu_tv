@@ -6,12 +6,7 @@ import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/filter_list.dart';
 
-class CategoryFilter extends StatefulWidget {
-  @override
-  _CategoryFilterState createState() => _CategoryFilterState();
-}
-
-class _CategoryFilterState extends State<CategoryFilter> {
+class CategoryFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,9 +73,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   Category category = snapshot.data[index];
-                  return FilterList(
-                    category:category
-                  );
+                  return FilterList(category: category);
                 });
           }
           return Center(
