@@ -27,7 +27,7 @@ class FirstOpen extends StatelessWidget {
             margin: EdgeInsets.only(right: 10),
             child: Center(
               child: InkWell(
-                  onTap: () async{
+                  onTap: () async {
                     UserSharePreferences().setNotification(false);
                     notifier.setOpened(true);
                   },
@@ -61,6 +61,7 @@ class FirstOpen extends StatelessWidget {
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
                           Category category = snapshot.data[index];
+                          _saveFilterCat(category.id);
                           return CategoryGridItem(
                             category: category,
                             onSelected: (value) {
@@ -102,6 +103,10 @@ class FirstOpen extends StatelessWidget {
     }
     await _userSharePreference.setNotification(true);
     notifier.setOpened(true);
+  }
+
+  _saveFilterCat(var id) async {
+    await UserSharePreferences().saveFilter(id, 2);
   }
 
   void _showToast(BuildContext context) {

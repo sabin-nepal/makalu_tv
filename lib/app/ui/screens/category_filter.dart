@@ -30,7 +30,7 @@ class CategoryFilter extends StatelessWidget {
                         color: AppColors.accentColor,
                       )),
                   Text(
-                    "Filter for news here you can",
+                    "Filter For News",
                     style: boldText,
                     textAlign: TextAlign.center,
                   ),

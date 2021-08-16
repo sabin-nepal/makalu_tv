@@ -15,6 +15,7 @@ class FilterList extends StatefulWidget {
 
 class _FilterListState extends State<FilterList> {
   int checkFilter = 3;
+  UserSharePreferences _userSharePreferences = UserSharePreferences();
   @override
   void initState() {
     super.initState();
@@ -43,8 +44,7 @@ class _FilterListState extends State<FilterList> {
             ),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences()
-                      .saveFilter(widget.category.id, 1);
+                  await _userSharePreferences.saveFilter(widget.category.id, 1);
                   checkFilter = 1;
                   setState(() {});
                 },
@@ -53,8 +53,7 @@ class _FilterListState extends State<FilterList> {
                     color: AppColors.allNewsColor)),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences()
-                      .saveFilter(widget.category.id, 2);
+                  await _userSharePreferences.saveFilter(widget.category.id, 2);
                   checkFilter = 2;
                   setState(() {});
                 },
@@ -63,8 +62,8 @@ class _FilterListState extends State<FilterList> {
                     color: AppColors.majorNewsColor)),
             IconButton(
                 onPressed: () async {
-                  await UserSharePreferences()
-                      .saveFilter(widget.category.id, 3);
+                  await _userSharePreferences.saveFilter(widget.category.id, 3);
+                  await _userSharePreferences.deleteFilterCategory(widget.category.id);
                   checkFilter = 3;
                   setState(() {});
                 },

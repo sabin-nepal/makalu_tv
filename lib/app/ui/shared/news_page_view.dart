@@ -46,8 +46,6 @@ class _NewsPageViewState extends State<NewsPageView> {
 
   _getFilters(var id) async {
     _checked = await _userSharePreferences.getFilter(id) ?? 2;
-    var da = await _userSharePreferences.getFilterCategory();
-    print(da);
   }
 
   @override
@@ -273,6 +271,8 @@ class _NewsPageViewState extends State<NewsPageView> {
                         IconButton(
                             onPressed: () async {
                               await _userSharePreferences.saveFilter(catId, 3);
+                              await _userSharePreferences
+                                  .deleteFilterCategory(catId);
                               _checked = 3;
                               setState(() {});
                               Navigator.pop(context);

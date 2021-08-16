@@ -77,7 +77,7 @@ class UserSharePreferences {
 
   Future<bool> isNotification() async {
     final pref = await SharedPreferences.getInstance();
-    return pref.getBool('isNotification')??false;
+    return pref.getBool('isNotification') ?? false;
   }
 
   //for bookmark
@@ -112,22 +112,29 @@ class UserSharePreferences {
   }
 
   //display news by category filter
-  Future saveFilter(String id, int value) async{
+  Future saveFilter(String id, int value) async {
     final pref = await SharedPreferences.getInstance();
     pref.setInt('filter$id', value);
-    pref.remove('filterCat');
-    Set<String> allCategory =
-        pref.getStringList("filterCat")?.toSet() ?? {};
+    Set<String> allCategory = pref.getStringList("filterCat")?.toSet() ?? {};
     allCategory = {id, ...allCategory};
     pref.setStringList("filterCat", allCategory.toList());
   }
-  Future<int> getFilter(String id) async{
+
+  Future<int> getFilter(String id) async {
     final pref = await SharedPreferences.getInstance();
     return pref.getInt('filter$id');
   }
+
   Future<List<String>> getFilterCategory() async {
     final pref = await SharedPreferences.getInstance();
     final allCategories = pref.getStringList("filterCat");
     return allCategories;
+  }
+
+  Future deleteFilterCategory(String query) async {
+    final pref = await SharedPreferences.getInstance();
+    final allSearches = pref.getStringList("filterCat");
+    allSearches.remove(query);
+    pref.setStringList("filterCat", allSearches.toList());
   }
 }
