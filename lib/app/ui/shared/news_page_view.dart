@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
+import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -33,14 +34,20 @@ class _NewsPageViewState extends State<NewsPageView> {
   int remainingPage;
   bool _swipeVisible = false;
   FToast fToast;
-
-  List<String> _images = [];
+  int _checked = 3;
+  UserSharePreferences _userSharePreferences = UserSharePreferences();
   @override
   void initState() {
     super.initState();
     remainingPage = widget.news.length - 1;
     pageController = PageController(initialPage: widget.position);
     fToast = FToast();
+  }
+
+  _getFilters(var id) async {
+    _checked = await _userSharePreferences.getFilter(id) ?? 2;
+    var da = await _userSharePreferences.getFilterCategory();
+    print(da);
   }
 
   @override
@@ -104,6 +111,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                 },
                 onTap: () {
                   setState(() {
+                    _getFilters(_news.categories.first['id']);
                     _swipeVisible = true;
                   });
                   if (widget.showRemaining) _showToast(context);
@@ -140,10 +148,15 @@ class _NewsPageViewState extends State<NewsPageView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () => _showBottomModel(context),
+                    onPressed: () =>
+                        _showBottomModel(context, _news.categories.first['id']),
                     icon: Icon(
                       Icons.circle,
-                      color: Colors.green,
+                      color: _checked == 1
+                          ? AppColors.allNewsColor
+                          : _checked == 2
+                              ? AppColors.majorNewsColor
+                              : AppColors.noNewsColor,
                     ),
                   ),
                   Text(
@@ -206,7 +219,7 @@ class _NewsPageViewState extends State<NewsPageView> {
         });
   }
 
-  void _showBottomModel(BuildContext context) {
+  void _showBottomModel(BuildContext context, var catId) {
     showModalBottomSheet(
         elevation: 2.0,
         backgroundColor: AppColors.bgColor,
@@ -222,9 +235,16 @@ class _NewsPageViewState extends State<NewsPageView> {
                     Column(
                       children: [
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _userSharePreferences.saveFilter(catId, 1);
+                              _checked = 1;
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
                             icon: Icon(
-                              Icons.circle,
+                              _checked == 1
+                                  ? Icons.circle
+                                  : Icons.circle_outlined,
                               color: AppColors.allNewsColor,
                             )),
                         Text("All News", style: titleText)
@@ -233,9 +253,16 @@ class _NewsPageViewState extends State<NewsPageView> {
                     Column(
                       children: [
                         IconButton(
-                            onPressed: null,
+                            onPressed: () async {
+                              await _userSharePreferences.saveFilter(catId, 2);
+                              _checked = 2;
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
                             icon: Icon(
-                              Icons.circle,
+                              _checked == 2
+                                  ? Icons.circle
+                                  : Icons.circle_outlined,
                               color: AppColors.majorNewsColor,
                             )),
                         Text("Major News", style: titleText)
@@ -244,9 +271,16 @@ class _NewsPageViewState extends State<NewsPageView> {
                     Column(
                       children: [
                         IconButton(
-                            onPressed: null,
+                            onPressed: () async {
+                              await _userSharePreferences.saveFilter(catId, 3);
+                              _checked = 3;
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
                             icon: Icon(
-                              Icons.circle,
+                              _checked == 3
+                                  ? Icons.circle
+                                  : Icons.circle_outlined,
                               color: AppColors.noNewsColor,
                             )),
                         Text("No News", style: titleText)

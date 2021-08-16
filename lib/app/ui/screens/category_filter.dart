@@ -45,9 +45,11 @@ class _CategoryFilterState extends State<CategoryFilter> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(Icons.circle, color: AppColors.allNewsColor),
+                  Icon(Icons.circle_outlined, color: AppColors.allNewsColor),
                   Text("All News", style: titleText),
-                  Icon(Icons.circle, color: AppColors.noNewsColor),
+                  Icon(Icons.circle_outlined, color: AppColors.majorNewsColor),
+                  Text("Major News", style: titleText),
+                  Icon(Icons.circle_outlined, color: AppColors.noNewsColor),
                   Text("No News", style: titleText),
                 ],
               ),

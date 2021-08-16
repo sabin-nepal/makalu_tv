@@ -114,10 +114,20 @@ class UserSharePreferences {
   //display news by category filter
   Future saveFilter(String id, int value) async{
     final pref = await SharedPreferences.getInstance();
-    pref.setInt(id, value);
+    pref.setInt('filter$id', value);
+    pref.remove('filterCat');
+    Set<String> allCategory =
+        pref.getStringList("filterCat")?.toSet() ?? {};
+    allCategory = {id, ...allCategory};
+    pref.setStringList("filterCat", allCategory.toList());
   }
   Future<int> getFilter(String id) async{
     final pref = await SharedPreferences.getInstance();
-    return pref.getInt(id);
+    return pref.getInt('filter$id');
+  }
+  Future<List<String>> getFilterCategory() async {
+    final pref = await SharedPreferences.getInstance();
+    final allCategories = pref.getStringList("filterCat");
+    return allCategories;
   }
 }
