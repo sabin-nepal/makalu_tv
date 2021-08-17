@@ -35,6 +35,7 @@ class _NewsPageViewState extends State<NewsPageView> {
   bool _swipeVisible = false;
   FToast fToast;
   int _checked = 3;
+  String _filterText = "";
   UserSharePreferences _userSharePreferences = UserSharePreferences();
   @override
   void initState() {
@@ -46,6 +47,13 @@ class _NewsPageViewState extends State<NewsPageView> {
 
   _getFilters(var id) async {
     _checked = await _userSharePreferences.getFilter(id) ?? 2;
+    if (_checked == 1) {
+      _filterText = "all";
+    } else if (_checked == 2) {
+      _filterText = "major";
+    } else {
+      _filterText = "no any";
+    }
   }
 
   @override
@@ -147,7 +155,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                 children: [
                   IconButton(
                     onPressed: () =>
-                        _showBottomModel(context, _news.categories.first['id']),
+                        _showBottomModel(context, _news.categories.first),
                     icon: Icon(
                       Icons.circle,
                       color: _checked == 1
@@ -217,7 +225,7 @@ class _NewsPageViewState extends State<NewsPageView> {
         });
   }
 
-  void _showBottomModel(BuildContext context, var catId) {
+  void _showBottomModel(BuildContext context, var category) {
     showModalBottomSheet(
         elevation: 2.0,
         backgroundColor: AppColors.bgColor,
@@ -227,6 +235,19 @@ class _NewsPageViewState extends State<NewsPageView> {
             padding: const EdgeInsets.all(AppSizes.padding),
             child: Wrap(
               children: [
+                Center(
+                  child: Text(
+                    category['title'] ?? "",
+                    style: boldText,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'You will get $_filterText stories related to \n ${category['title']}',
+                    style: titleText,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -234,8 +255,10 @@ class _NewsPageViewState extends State<NewsPageView> {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              await _userSharePreferences.saveFilter(catId, 1);
+                              await _userSharePreferences.saveFilter(
+                                  category['id'], 1);
                               _checked = 1;
+                              _filterText = "all";
                               setState(() {});
                               Navigator.pop(context);
                             },
@@ -252,8 +275,10 @@ class _NewsPageViewState extends State<NewsPageView> {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              await _userSharePreferences.saveFilter(catId, 2);
+                              await _userSharePreferences.saveFilter(
+                                  category['id'], 2);
                               _checked = 2;
+                              _filterText = "major";
                               setState(() {});
                               Navigator.pop(context);
                             },
@@ -270,10 +295,12 @@ class _NewsPageViewState extends State<NewsPageView> {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              await _userSharePreferences.saveFilter(catId, 3);
+                              await _userSharePreferences.saveFilter(
+                                  category['id'], 3);
                               await _userSharePreferences
-                                  .deleteFilterCategory(catId);
+                                  .deleteFilterCategory(category['id']);
                               _checked = 3;
+                              _filterText = "no any";
                               setState(() {});
                               Navigator.pop(context);
                             },

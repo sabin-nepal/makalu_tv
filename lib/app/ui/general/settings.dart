@@ -106,7 +106,7 @@ class _SettingsState extends State<Settings> {
 
     if (!mounted) return;
     String uri =
-        'mailto:test@gmail.com?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(bodyText)}';
+        'mailto:sabinnepal2k17@gmail.com?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(bodyText)}';
     if (await canLaunch(uri)) {
       await launch(uri);
     } else {
@@ -141,7 +141,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               onTap: () => Navigator.pushNamed(context, AppRoutes.filterScreen),
               title: Text(
-                "Select Category",
+                "Personalize Your Feed",
                 style: boldText,
               ),
             ),
