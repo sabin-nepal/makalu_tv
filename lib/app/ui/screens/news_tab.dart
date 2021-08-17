@@ -73,7 +73,7 @@ class _NewsTabState extends State<NewsTab> {
         body: RefreshIndicator(
           onRefresh: () => _refreshNews(context),
           child: FutureBuilder(
-              future: NewsService.getNewsType(limit: 100, order: true),
+              future: NewsService.getNewsType(limit: 95, order: true),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

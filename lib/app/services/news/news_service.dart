@@ -27,7 +27,7 @@ class NewsService {
   }
 
   static Future<List<News>> getNewsType(
-      {String type = "", var limit = "", var offset = "", bool order}) async {
+      {String type = "", int limit = 10, int offset = 0, bool order}) async {
     var categories = await UserSharePreferences().getFilterCategory();
     var uri = Uri(
       scheme: 'https',
@@ -36,10 +36,12 @@ class NewsService {
       queryParameters: {
         'categories': categories,
         'type': type,
+        'size': limit.toString(),
+        'page': offset.toString(),
+        'order': order ? order.toString() : "",
       },
     );
-    final _res = await http.get(
-        Uri.parse('$uri?size=$limit&page=$offset&order=${order ? order : ""}'));
+    final _res = await http.get(uri);
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
@@ -71,7 +73,7 @@ class NewsService {
   static Future<List<News>> getCategoryNews(
       {String id, var limit = "", var page = ""}) async {
     final _res = await http.get(
-        Uri.parse('${UrlHelper.newsCategoryUrl}/$id?size=$limit&page=$page'));
+        Uri.parse('${UrlHelper.newsCategoryUrl}?catid=$id&size=$limit&page=$page'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
