@@ -296,7 +296,7 @@ class _NewsPageViewState extends State<NewsPageView> {
                         Navigator.pushNamed(context, AppRoutes.filterScreen);
                       },
                       child: Text(
-                        "All",
+                        "View All",
                         style: TextStyle(color: AppColors.bgColor),
                       )),
                 )

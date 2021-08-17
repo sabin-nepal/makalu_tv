@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/category.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
@@ -137,6 +138,13 @@ class _SettingsState extends State<Settings> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            ListTile(
+              onTap: () => Navigator.pushNamed(context, AppRoutes.filterScreen),
+              title: Text(
+                "Select Category",
+                style: boldText,
+              ),
+            ),
             SwitchListTile(
               title: Text(
                 "Notification",
