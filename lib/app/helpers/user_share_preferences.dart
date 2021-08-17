@@ -115,9 +115,11 @@ class UserSharePreferences {
   Future saveFilter(String id, int value) async {
     final pref = await SharedPreferences.getInstance();
     pref.setInt('filter$id', value);
-    Set<String> allCategory = pref.getStringList("filterCat")?.toSet() ?? {};
-    allCategory = {id, ...allCategory};
-    pref.setStringList("filterCat", allCategory.toList());
+    if (value != 3) {
+      Set<String> allCategory = pref.getStringList("filterCat")?.toSet() ?? {};
+      allCategory = {id, ...allCategory};
+      pref.setStringList("filterCat", allCategory.toList());
+    }
   }
 
   Future<int> getFilter(String id) async {

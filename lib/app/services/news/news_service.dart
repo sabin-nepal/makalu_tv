@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:makalu_tv/app/core/url.dart';
+import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/models/news/news.dart';
 
 class NewsService {
@@ -26,9 +27,19 @@ class NewsService {
   }
 
   static Future<List<News>> getNewsType(
-      {String type="", var limit = "", var offset = "", bool order}) async {
-    final _res = await http.get(Uri.parse(
-        '${UrlHelper.newsTypeUrl}?type=$type&size=$limit&page=$offset&order=${order ? order : ""}'));
+      {String type = "", var limit = "", var offset = "", bool order}) async {
+    var categories = await UserSharePreferences().getFilterCategory();
+    var uri = Uri(
+      scheme: 'https',
+      host: UrlHelper.url,
+      path: '/api/v1/news/type',
+      queryParameters: {
+        'categories': categories,
+        'type': type,
+      },
+    );
+    final _res = await http.get(
+        Uri.parse('$uri?size=$limit&page=$offset&order=${order ? order : ""}'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();

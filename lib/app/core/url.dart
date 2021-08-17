@@ -1,5 +1,6 @@
 class UrlHelper{
-  static const String host = "https://lae.prolificdevs.net/api/v1/";
+  static const String url = "lae.prolificdevs.net";
+  static const String host = 'https://$url/api/v1/';
   static const String newsUrl = '${host}news';
   static const String newsTypeUrl = '${host}news/type';
   static const String newsSearchUrl = '${host}news/search';
