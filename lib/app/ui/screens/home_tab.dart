@@ -73,6 +73,8 @@ class _HomeTabState extends State<HomeTab> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(height: 100.0, child: _newsCategory()),
+                SizedBox(height: 10),
                 Container(height: 120.0, child: _buildfeed(context)),
                 SizedBox(height: 10),
                 Row(
@@ -137,6 +139,40 @@ class _HomeTabState extends State<HomeTab> {
         ));
   }
 
+  Widget _newsCategory() {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.categoryScreen,
+              arguments: {
+                'title': 'Covid News',
+                'catid': 'makalu&covidnews',
+              },
+            );
+          },
+          child: Container(
+            width: 200,
+            child: Card(
+              color: AppColors.bgColor.withOpacity(0.9),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(
+                  Icons.add,
+                  color: AppColors.accentColor,
+                  size: 30,
+                ),
+                Text("Covid News", style: titleText),
+              ]),
+            ),
+          ),
+        )
+      ],
+    );
+  }
   Widget _buildInsight(BuildContext context) {
     return FutureBuilder<List<Insight>>(
         future: _insightService,
