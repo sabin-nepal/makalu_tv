@@ -73,7 +73,7 @@ class NewsService {
   static Future<List<News>> getCategoryNews(
       {String id, var limit = "", var page = ""}) async {
     final _res = await http.get(
-        Uri.parse('${UrlHelper.newsCategoryUrl}?catid=$id&size=$limit&page=$page'));
+        Uri.parse('${UrlHelper.newsCategoryUrl}/$id?size=$limit&page=$page'));
     if (_res.statusCode == 200) {
       final _decoded = jsonDecode(_res.body);
       final _data = _decoded.map<News>((e) => News.fromJson(e)).toList();
