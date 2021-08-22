@@ -5,11 +5,13 @@ class Advertisement {
   final String title;
   final String type;
   final Map media;
+  final String position;
   Advertisement({
     @required this.id,
     @required this.title,
     this.type,
     this.media,
+    this.position,
   });
 
   factory Advertisement.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class Advertisement {
       title: json['title'] as String,
       type: json['type'],
       media: json['medium'],
+      position: json['position'],
     );
   }
 }

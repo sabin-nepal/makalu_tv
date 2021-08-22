@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/core/routes.dart';
+import 'package:makalu_tv/app/models/advertisment.dart';
 import 'package:makalu_tv/app/services/news/video_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -19,8 +21,10 @@ class _VideoScreenState extends State<VideoScreen> {
   List video = [];
   int selectedIndex = 0;
   bool isLoading = false;
+  bool _showAdv = true;
   int currentPage = 1;
   bool noData = false;
+  Advertisement advertisment;
   @override
   void initState() {
     BetterPlayerConfiguration betterPlayerConfiguration =
@@ -31,7 +35,7 @@ class _VideoScreenState extends State<VideoScreen> {
     _fetchData();
   }
 
-  _setUrl(var _url, {bool play = true}) async {
+  _setUrl(var _url, bannerAdd, {bool play = true}) async {
     BetterPlayerDataSource dataSource =
         BetterPlayerDataSource(BetterPlayerDataSourceType.network, _url,
             cacheConfiguration: BetterPlayerCacheConfiguration(
@@ -42,12 +46,14 @@ class _VideoScreenState extends State<VideoScreen> {
             ));
     _betterPlayerController.setupDataSource(dataSource);
     if (play) _betterPlayerController.play();
+    _showAdv = true;
+    advertisment = bannerAdd;
     setState(() {});
   }
 
   void _fetchData() async {
     var _service = await VideoService.getVideo(0);
-    _setUrl(_service.first.media['path'], play: false);
+    _setUrl(_service.first.media['path'], widget.adv.first, play: false);
     _service.forEach((element) {
       video.add(element);
     });
@@ -65,21 +71,97 @@ class _VideoScreenState extends State<VideoScreen> {
           'Video',
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          if (video.isNotEmpty)
-            Container(
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: BetterPlayer(
-                  controller: _betterPlayerController,
+          Column(
+            children: [
+              if (video.isNotEmpty)
+                Container(
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: BetterPlayer(
+                      controller: _betterPlayerController,
+                    ),
+                  ),
                 ),
+              Expanded(
+                child: listVideo(context),
+              )
+            ],
+          ),
+          if (_showAdv) _displayAdv(),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayAdv() {
+    var position = advertisment.position ?? 'center';
+    double top;
+    double bottom;
+    double left;
+    double right;
+    if (position == 'tleft') {
+      top = 0.0;
+      left = 0.0;
+    }
+    if (position == 'tright') {
+      top = 0.0;
+      right = 0.0;
+    }
+    if (position == 'bleft') {
+      bottom = 0.0;
+      left = 0.0;
+    }
+    if (position == 'bright') {
+      bottom = 0.0;
+      right = 0.0;
+    } else {
+      top = 100;
+      right = 0.0;
+      left = 0;
+    }
+    return Positioned(
+      top: top,
+      bottom: bottom,
+      right: right,
+      left: left,
+      child: Card(
+        color: AppColors.bgColor.withOpacity(0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    _showAdv = false;
+                  });
+                },
+                icon: Icon(
+                  Icons.cancel,
+                  color: AppColors.accentColor,
+                )),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.fullImage,
+                  arguments: {'imageUrl': advertisment.media['path']},
+                );
+              },
+              child: CachedNetworkImage(
+                height: position == 'center'
+                    ? null
+                    : MediaQuery.of(context).size.height * 0.30,
+                width: position == 'center'
+                    ? null
+                    : MediaQuery.of(context).size.height * 0.30,
+                fit: BoxFit.cover,
+                imageUrl: advertisment.media['path'],
               ),
             ),
-          Expanded(
-            child: listVideo(context),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -143,7 +225,7 @@ class _VideoScreenState extends State<VideoScreen> {
             color: selectedIndex == i ? Colors.grey : null,
             child: ListTile(
               onTap: () {
-                _setUrl(_video.media['path']);
+                _setUrl(_video.media['path'], widget.adv[i]);
                 setState(() {
                   selectedIndex = i;
                 });
