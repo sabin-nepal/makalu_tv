@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/models/advertisment.dart';
+import 'package:makalu_tv/app/services/adv_service.dart';
 import 'package:makalu_tv/app/services/news/video_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -24,7 +26,10 @@ class _VideoScreenState extends State<VideoScreen> {
   bool _showAdv = true;
   int currentPage = 1;
   bool noData = false;
-  Advertisement advertisment;
+  Advertisement advertisement;
+  List _adv;
+
+  Random random = Random();
   @override
   void initState() {
     BetterPlayerConfiguration betterPlayerConfiguration =
@@ -32,10 +37,11 @@ class _VideoScreenState extends State<VideoScreen> {
             aspectRatio: 16 / 9, fit: BoxFit.contain, handleLifecycle: true);
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     super.initState();
+    _adv = widget.adv;
     _fetchData();
   }
 
-  _setUrl(var _url, bannerAdd, {bool play = true}) async {
+  _setUrl(var _url, fullAdv, {bool play = true}) async {
     BetterPlayerDataSource dataSource =
         BetterPlayerDataSource(BetterPlayerDataSourceType.network, _url,
             cacheConfiguration: BetterPlayerCacheConfiguration(
@@ -47,13 +53,14 @@ class _VideoScreenState extends State<VideoScreen> {
     _betterPlayerController.setupDataSource(dataSource);
     if (play) _betterPlayerController.play();
     _showAdv = true;
-    advertisment = bannerAdd;
+    advertisement = fullAdv;
     setState(() {});
   }
 
   void _fetchData() async {
     var _service = await VideoService.getVideo(0);
-    _setUrl(_service.first.media['path'], widget.adv.first, play: false);
+    var firstAdv = _adv.isEmpty ? null : _adv.first;
+    _setUrl(_service.first.media['path'], firstAdv, play: false);
     _service.forEach((element) {
       video.add(element);
     });
@@ -89,14 +96,14 @@ class _VideoScreenState extends State<VideoScreen> {
               )
             ],
           ),
-          if (_showAdv) _displayAdv(),
+          if (_showAdv && advertisement != null) _displayAdv(),
         ],
       ),
     );
   }
 
   Widget _displayAdv() {
-    var position = advertisment.position ?? 'center';
+    var position = advertisement.position ?? "center";
     double top;
     double bottom;
     double left;
@@ -146,7 +153,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 Navigator.pushNamed(
                   context,
                   AppRoutes.fullImage,
-                  arguments: {'imageUrl': advertisment.media['path']},
+                  arguments: {'imageUrl': advertisement.media['path']},
                 );
               },
               child: CachedNetworkImage(
@@ -157,7 +164,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     ? null
                     : MediaQuery.of(context).size.height * 0.30,
                 fit: BoxFit.cover,
-                imageUrl: advertisment.media['path'],
+                imageUrl: advertisement?.media['path'],
               ),
             ),
           ],
@@ -203,6 +210,13 @@ class _VideoScreenState extends State<VideoScreen> {
                                 value.forEach((element) {
                                   video.add(element);
                                 });
+                                AdvService.getAdv(
+                                        type: "full", page: currentPage - 1)
+                                    .then((fetchadv) {
+                                  fetchadv.forEach((getadv) {
+                                    _adv.add(getadv);
+                                  });
+                                });
                                 isLoading = false;
                                 setState(() {});
                               });
@@ -225,7 +239,10 @@ class _VideoScreenState extends State<VideoScreen> {
             color: selectedIndex == i ? Colors.grey : null,
             child: ListTile(
               onTap: () {
-                _setUrl(_video.media['path'], widget.adv[i]);
+                int rand = _adv.isEmpty ? 0 : random.nextInt(_adv.length);
+                var index = _adv.length <= i ? rand : i;
+                _setUrl(
+                    _video.media['path'], _adv.isEmpty ? null : _adv[index]);
                 setState(() {
                   selectedIndex = i;
                 });

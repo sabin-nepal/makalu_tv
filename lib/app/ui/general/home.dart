@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchAdv() async {
-    var adv = await AdvService.getAdv();
+    var adv = await AdvService.getAdv(type: "full");
     adv.forEach((element) {
       _adv.add(element);
     });
