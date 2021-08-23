@@ -103,7 +103,8 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Widget _displayAdv() {
-    var position = advertisement.position ?? "center";
+    var position = advertisement.position;
+    print(position);
     double top;
     double bottom;
     double left;
@@ -112,15 +113,15 @@ class _VideoScreenState extends State<VideoScreen> {
       top = 0.0;
       left = 0.0;
     }
-    if (position == 'tright') {
+    else if (position == 'tright') {
       top = 0.0;
       right = 0.0;
     }
-    if (position == 'bleft') {
+    else if (position == 'bleft') {
       bottom = 0.0;
       left = 0.0;
     }
-    if (position == 'bright') {
+    else if (position == 'bright') {
       bottom = 0.0;
       right = 0.0;
     } else {
@@ -157,10 +158,10 @@ class _VideoScreenState extends State<VideoScreen> {
                 );
               },
               child: CachedNetworkImage(
-                height: position == 'center'
+                height: position == 'centre'
                     ? null
                     : MediaQuery.of(context).size.height * 0.30,
-                width: position == 'center'
+                width: position == 'centre'
                     ? null
                     : MediaQuery.of(context).size.height * 0.30,
                 fit: BoxFit.cover,
