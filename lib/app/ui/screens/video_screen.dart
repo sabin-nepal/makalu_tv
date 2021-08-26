@@ -78,9 +78,9 @@ class _VideoScreenState extends State<VideoScreen> {
           'Video',
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Column(
+          Stack(
             children: [
               if (video.isNotEmpty)
                 Container(
@@ -91,12 +91,12 @@ class _VideoScreenState extends State<VideoScreen> {
                     ),
                   ),
                 ),
-              Expanded(
-                child: listVideo(context),
-              )
+              if (_showAdv && advertisement != null) _displayAdv(),
             ],
           ),
-          if (_showAdv && advertisement != null) _displayAdv(),
+          Expanded(
+            child: listVideo(context),
+          )
         ],
       ),
     );
@@ -104,7 +104,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
   Widget _displayAdv() {
     var position = advertisement.position;
-    print(position);
     double top;
     double bottom;
     double left;
@@ -112,43 +111,42 @@ class _VideoScreenState extends State<VideoScreen> {
     if (position == 'tleft') {
       top = 0.0;
       left = 0.0;
-    }
-    else if (position == 'tright') {
+    } else if (position == 'tright') {
       top = 0.0;
       right = 0.0;
-    }
-    else if (position == 'bleft') {
+    } else if (position == 'bleft') {
       bottom = 0.0;
       left = 0.0;
-    }
-    else if (position == 'bright') {
+    } else if (position == 'bright') {
       bottom = 0.0;
       right = 0.0;
     } else {
-      top = 100;
+      top = 0;
       right = 0.0;
-      left = 0;
+      left = 100.0;
+      bottom = 0.0;
     }
     return Positioned(
       top: top,
       bottom: bottom,
       right: right,
       left: left,
-      child: Card(
-        color: AppColors.bgColor.withOpacity(0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+      child: Container(
+        child: Row(
           children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _showAdv = false;
-                  });
-                },
-                icon: Icon(
-                  Icons.cancel,
-                  color: AppColors.accentColor,
-                )),
+            if (position == 'bright' ||
+                position == 'tright' ||
+                position == 'centre')
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showAdv = false;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.cancel,
+                    color: AppColors.accentColor,
+                  )),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
@@ -158,16 +156,22 @@ class _VideoScreenState extends State<VideoScreen> {
                 );
               },
               child: CachedNetworkImage(
-                height: position == 'centre'
-                    ? null
-                    : MediaQuery.of(context).size.height * 0.30,
-                width: position == 'centre'
-                    ? null
-                    : MediaQuery.of(context).size.height * 0.30,
-                fit: BoxFit.cover,
+                height: 100,
+                width: 100,
                 imageUrl: advertisement?.media['path'],
               ),
             ),
+            if (position == 'bleft' || position == 'tleft')
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showAdv = false;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.cancel,
+                    color: AppColors.accentColor,
+                  )),
           ],
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:makalu_tv/app/notifiers/open_notifier.dart';
 import 'package:makalu_tv/app/services/category_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
+import 'package:makalu_tv/app/styles/styles.dart';
 import 'package:makalu_tv/app/ui/shared/category_grid_item_list.dart';
 
 class FirstOpen extends StatelessWidget {
@@ -62,7 +63,10 @@ class FirstOpen extends StatelessWidget {
                         });
                   }
                   return Center(
-                      child: Text("Please,Check Your Internet Connection.."));
+                      child: Text(
+                    "Please,Check Your Internet Connection..",
+                    style: boldText,
+                  ));
                 },
               ),
             ),
