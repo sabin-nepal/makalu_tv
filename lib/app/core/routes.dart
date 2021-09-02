@@ -45,9 +45,11 @@ class AppRoutes {
       case fullImage:
         Map _data = settings.arguments as Map;
         String _imageUrl = _data['imageUrl'];
+        String _type = _data['type'] ?? 'image';
         return MaterialPageRoute(
             builder: (_) => FullImageView(
                   imageUrl: _imageUrl,
+                  type: _type,
                 ));
       case categoryScreen:
         Map _data = settings.arguments as Map;

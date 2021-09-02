@@ -4,7 +4,8 @@ import 'package:photo_view/photo_view.dart';
 
 class FullImageView extends StatelessWidget {
   final String imageUrl;
-  FullImageView({this.imageUrl});
+  final String type;
+  FullImageView({this.imageUrl, this.type});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

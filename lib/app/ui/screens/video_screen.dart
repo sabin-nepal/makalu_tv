@@ -39,6 +39,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.initState();
     _adv = widget.adv;
     _fetchData();
+    _setAdv();
   }
 
   _setUrl(var _url, fullAdv, {bool play = true}) async {
@@ -55,6 +56,17 @@ class _VideoScreenState extends State<VideoScreen> {
     _showAdv = true;
     advertisement = fullAdv;
     setState(() {});
+  }
+
+  _setAdv() {
+    Timer.periodic(Duration(seconds: 60), (timer) {
+      if (_betterPlayerController.isPlaying()) {
+        int rand = random.nextInt(_adv.length);
+        _showAdv = true;
+        advertisement = _adv[rand];
+        setState(() {});
+      }
+    });
   }
 
   void _fetchData() async {
@@ -152,14 +164,38 @@ class _VideoScreenState extends State<VideoScreen> {
                 Navigator.pushNamed(
                   context,
                   AppRoutes.fullImage,
-                  arguments: {'imageUrl': advertisement.media['path']},
+                  arguments: {
+                    'imageUrl': advertisement.media['path'],
+                    'type': advertisement.type
+                  },
                 );
               },
-              child: CachedNetworkImage(
-                height: 100,
-                width: 100,
-                imageUrl: advertisement?.media['path'],
-              ),
+              child: advertisement.type == 'video'
+                  ? Container(
+                      height: 100,
+                      width: 100,
+                      child: Flexible(
+                        child: AspectRatio(
+                          aspectRatio: 4 / 3,
+                          child: BetterPlayer.network(
+                            advertisement?.media['path'],
+                            betterPlayerConfiguration:
+                                BetterPlayerConfiguration(
+                                    autoPlay: true,
+                                    controlsConfiguration:
+                                        BetterPlayerControlsConfiguration(
+                                      showControls: false,
+                                      showControlsOnInitialize: false,
+                                    )),
+                          ),
+                        ),
+                      ),
+                    )
+                  : CachedNetworkImage(
+                      height: 100,
+                      width: 100,
+                      imageUrl: advertisement?.media['path'],
+                    ),
             ),
             if (position == 'bleft' || position == 'tleft')
               IconButton(
