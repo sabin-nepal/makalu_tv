@@ -71,8 +71,8 @@ class _NewsPageItemState extends State<NewsPageItem> {
                       onTap: () {
                         Navigator.pushNamed(
                           context,
-                          AppRoutes.fullImage,
-                          arguments: {'imageUrl': _media['path']},
+                          AppRoutes.fullMedia,
+                          arguments: {'url': _media['path']},
                         );
                       },
                       child: CachedNetworkImage(imageUrl: _media['path']),

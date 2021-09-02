@@ -163,9 +163,9 @@ class _VideoScreenState extends State<VideoScreen> {
               onTap: () {
                 Navigator.pushNamed(
                   context,
-                  AppRoutes.fullImage,
+                  AppRoutes.fullMedia,
                   arguments: {
-                    'imageUrl': advertisement.media['path'],
+                    'url': advertisement.media['path'],
                     'type': advertisement.type
                   },
                 );

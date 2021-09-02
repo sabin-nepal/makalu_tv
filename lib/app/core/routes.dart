@@ -7,7 +7,7 @@ import 'package:makalu_tv/app/ui/screens/bookmark_screen.dart';
 import 'package:makalu_tv/app/ui/screens/category_filter.dart';
 import 'package:makalu_tv/app/ui/screens/category_screen.dart';
 import 'package:makalu_tv/app/ui/screens/details/cataegory_news_details.dart';
-import 'package:makalu_tv/app/ui/screens/details/full_image_view.dart';
+import 'package:makalu_tv/app/ui/screens/details/full_media_view.dart';
 import 'package:makalu_tv/app/ui/screens/details/news_details.dart';
 import 'package:makalu_tv/app/ui/screens/insight_screen.dart';
 import 'package:makalu_tv/app/ui/screens/news_screen.dart';
@@ -17,7 +17,7 @@ class AppRoutes {
   static const String mainScreen = 'main_screen';
   static const String newsDetails = 'news_details';
   static const String categoryDetails = 'category_details';
-  static const String fullImage = 'full_image';
+  static const String fullMedia = 'full_media';
   static const String categoryScreen = 'category_screen';
   static const String pollScreen = 'poll_screen';
   static const String newsScreen = 'news_screen';
@@ -42,13 +42,13 @@ class AppRoutes {
             builder: (_) => NewsDetails(
                   news: _news,
                 ));
-      case fullImage:
+      case fullMedia:
         Map _data = settings.arguments as Map;
-        String _imageUrl = _data['imageUrl'];
+        String _url = _data['url'];
         String _type = _data['type'] ?? 'image';
         return MaterialPageRoute(
-            builder: (_) => FullImageView(
-                  imageUrl: _imageUrl,
+            builder: (_) => FullMediaView(
+                  url: _url,
                   type: _type,
                 ));
       case categoryScreen:
