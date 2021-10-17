@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makalu_tv/app/core/routes.dart';
 import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
+import 'package:makalu_tv/app/services/dynamic_link_services.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/sizes.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -171,10 +172,9 @@ class _NewsPageViewState extends State<NewsPageView> {
                   ),
                   IconButton(
                       onPressed: () async {
-                        await Share.share(
-                          _news.url,
-                          subject: _news.title,
-                        );
+                        var link = await DynamicLinksService.createDynamicLink(
+                            _news.id, _news.title, _news.media.first['path']);
+                        await Share.share(link);
                       },
                       icon: Icon(
                         Icons.share,

@@ -24,7 +24,8 @@ class _HomePageState extends State<HomePage> {
     _tabPages = [
       HomeTab(),
       NewsTab(adv: _adv),
-      VideoScreen(adv: _adv),
+      HomeTab(),
+      //VideoScreen(adv: _adv),
     ];
     _getNotification();
   }
