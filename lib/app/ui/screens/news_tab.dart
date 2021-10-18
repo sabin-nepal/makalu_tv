@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:makalu_tv/app/helpers/user_share_preferences.dart';
 import 'package:makalu_tv/app/services/news/news_service.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/styles/styles.dart';
@@ -16,9 +18,38 @@ class NewsTab extends StatefulWidget {
 class _NewsTabState extends State<NewsTab> {
   //int _newsLength;
   int _newNews = 0;
+  List _allNews = [];
+  bool _isLoading = true;
+  @override
+  void initState() {
+    _fetchData();
+    super.initState();
+  }
+
+  _fetchData() async {
+    var _linkId = await UserSharePreferences().dynamicLinkId();
+    try {
+      var news =
+          await NewsService.getNewsType(limit: 95, order: true, id: _linkId);
+      _allNews = _mergeList(news);
+    } on SocketException catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(left: 100, right: 100),
+        content: Text("Connection Failed"),
+      ));
+    }
+    _isLoading = false;
+    await UserSharePreferences().removeDynamicLinkId();
+    setState(() {});
+  }
+
   Future<void> _refreshNews(BuildContext context) async {
-    var _news = await NewsService.getNewsType(limit: 100, order: true);
-    return _news;
+    setState(() {
+      _isLoading = true;
+      _fetchData();
+    });
   }
 
   _mergeList(List news) {
@@ -61,7 +92,10 @@ class _NewsTabState extends State<NewsTab> {
             Center(child: Text(_newNews > 0 ? _newNews.toString() : '')),
             IconButton(
               onPressed: () {
-                setState(() {});
+                setState(() {
+                  _isLoading = true;
+                  _fetchData();
+                });
               },
               icon: Icon(
                 Icons.refresh,
@@ -71,27 +105,18 @@ class _NewsTabState extends State<NewsTab> {
           ],
         ),
         body: RefreshIndicator(
-          onRefresh: () => _refreshNews(context),
-          child: FutureBuilder(
-              future: NewsService.getNewsType(limit: 95, order: true),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                      child: Text('Check your connection and try again..',
-                          style: boldText));
-                }
-                if (snapshot.hasData) {
-                  List news = _mergeList(snapshot.data);
-                  //_newsLength = news.length;
-                  return NewsPageView(
-                    news: news,
-                  );
-                }
-                return Center(child: CircularProgressIndicator());
-              }),
-        ));
+            onRefresh: () => _refreshNews(context),
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _allNews.isEmpty
+                    ? Center(
+                        child: Text(
+                          "Error on connection..",
+                          style: boldText,
+                        ),
+                      )
+                    : NewsPageView(
+                        news: _allNews,
+                      )));
   }
 }

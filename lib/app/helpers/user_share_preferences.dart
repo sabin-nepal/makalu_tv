@@ -139,4 +139,18 @@ class UserSharePreferences {
     allSearches.remove(query);
     pref.setStringList("filterCat", allSearches.toList());
   }
+
+  Future dynamicLinkId({String value}) async {
+    final pref = await SharedPreferences.getInstance();
+    if (value == null) {
+      return pref.getString('dynamicLinkId');
+    } else {
+      pref.setString('dynamicLinkId', value);
+    }
+  }
+
+  Future removeDynamicLinkId() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.remove('dynamicLinkId');
+  }
 }

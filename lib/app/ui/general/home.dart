@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makalu_tv/app/notifiers/push_notification.dart';
 import 'package:makalu_tv/app/services/adv_service.dart';
+import 'package:makalu_tv/app/services/dynamic_link_services.dart';
 import 'package:makalu_tv/app/styles/colors.dart';
 import 'package:makalu_tv/app/ui/screens/home_tab.dart';
 import 'package:makalu_tv/app/ui/screens/news_tab.dart';
@@ -24,8 +25,7 @@ class _HomePageState extends State<HomePage> {
     _tabPages = [
       HomeTab(),
       NewsTab(adv: _adv),
-      HomeTab(),
-      //VideoScreen(adv: _adv),
+      VideoScreen(adv: _adv),
     ];
     _getNotification();
   }
@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isSet) {
+      DynamicLinksService.initDynamicLinks(context);
       await initNotification();
     }
     if (mounted) setState(() => _isSet = true);
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchAdv() async {
-    var adv = await AdvService.getAdv(type: ["full","video"]);
+    var adv = await AdvService.getAdv(type: ["full", "video"]);
     adv.forEach((element) {
       _adv.add(element);
     });

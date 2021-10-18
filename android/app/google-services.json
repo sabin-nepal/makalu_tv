@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "687064004783-2cae98tpb0gsul0jg58e5f05686u00ls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.makalu.makalu_tv",
+            "certificate_hash": "c170fdc0d4203fc21a1da13501ca6d2073c5a086"
+          }
+        },
+        {
           "client_id": "687064004783-mi4cgm29pvemgb731cbuhbuos14c763r.apps.googleusercontent.com",
           "client_type": 3
         }

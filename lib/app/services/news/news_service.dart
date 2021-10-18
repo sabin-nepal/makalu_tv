@@ -27,7 +27,11 @@ class NewsService {
   }
 
   static Future<List<News>> getNewsType(
-      {String type = "", int limit = 10, int offset = 0, bool order}) async {
+      {String type = "",
+      int limit = 10,
+      int offset = 0,
+      bool order,
+      String id}) async {
     var categories = await UserSharePreferences().getFilterCategory();
     var uri = Uri(
       scheme: 'https',
@@ -36,6 +40,7 @@ class NewsService {
       queryParameters: {
         'categories': categories,
         'type': type,
+        'id': id,
         'size': limit.toString(),
         'page': offset.toString(),
         'order': order ? order.toString() : "",
